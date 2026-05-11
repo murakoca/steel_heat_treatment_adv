@@ -1,0 +1,1 @@
+def residual_stress(cr): return 200*cr

@@ -1,0 +1,1 @@
+def creep_rate(stress, temp): return 1e-6

@@ -1,0 +1,1 @@
+def celsius_to_kelvin(T): return T+273.15

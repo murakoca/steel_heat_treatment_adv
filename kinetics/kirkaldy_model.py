@@ -1,0 +1,1 @@
+def kirkaldy_rate(T, comp): return 0.05

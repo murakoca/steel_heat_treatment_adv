@@ -1,0 +1,1 @@
+def precipitate_frac(t,T): return 0.01*t/3600

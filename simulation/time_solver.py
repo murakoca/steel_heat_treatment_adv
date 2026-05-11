@@ -1,0 +1,1 @@
+def euler_step(f, y, dt): return y+dt*f(y)

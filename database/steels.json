@@ -1,0 +1,869 @@
+{
+  "AISI_4140": {
+    "composition": {
+      "C": 0.4,
+      "Cr": 1.0,
+      "Mo": 0.2,
+      "Mn": 0.8,
+      "Si": 0.2
+    },
+    "Ms": 320,
+    "Mf": 180,
+    "Ae1": 727,
+    "Ae3": 780
+  },
+  "AISI_1045": {
+    "composition": {
+      "C": 0.45,
+      "Mn": 0.75
+    },
+    "Ms": 310,
+    "Mf": 170,
+    "Ae1": 727,
+    "Ae3": 770
+  },
+  "AISI_4340": {
+    "composition": {
+      "C": 0.4,
+      "Cr": 0.8,
+      "Ni": 1.8,
+      "Mo": 0.25,
+      "Mn": 0.7,
+      "Si": 0.25
+    },
+    "Ms": 295,
+    "Mf": 150,
+    "Ae1": 727,
+    "Ae3": 774
+  },
+  "AISI_D2": {
+    "composition": {
+      "C": 1.5,
+      "Cr": 12,
+      "Mo": 1,
+      "V": 1
+    },
+    "Ms": 180,
+    "Mf": 50,
+    "Ae1": 825,
+    "Ae3": 950
+  },
+  "AISI_1020": {
+    "composition": {
+      "C": 0.2,
+      "Mn": 0.45
+    },
+    "Ms": 420,
+    "Mf": 260,
+    "Ae1": 727,
+    "Ae3": 850,
+    "category": "low carbon"
+  },
+  "AISI_1060": {
+    "composition": {
+      "C": 0.6,
+      "Mn": 0.75
+    },
+    "Ms": 280,
+    "Mf": 130,
+    "Ae1": 727,
+    "Ae3": 770,
+    "category": "medium carbon"
+  },
+  "AISI_1095": {
+    "composition": {
+      "C": 0.95,
+      "Mn": 0.4
+    },
+    "Ms": 220,
+    "Mf": 70,
+    "Ae1": 727,
+    "Ae3": 750,
+    "category": "high carbon"
+  },
+  "AISI_8620": {
+    "composition": {
+      "C": 0.2,
+      "Cr": 0.5,
+      "Ni": 0.55,
+      "Mo": 0.2,
+      "Mn": 0.8
+    },
+    "Ms": 400,
+    "Mf": 250,
+    "Ae1": 727,
+    "Ae3": 820,
+    "category": "alloy steel (case hardening)"
+  },
+  "AISI_316": {
+    "composition": {
+      "C": 0.08,
+      "Cr": 17.0,
+      "Ni": 12.0,
+      "Mo": 2.5,
+      "Mn": 2.0,
+      "Si": 1.0
+    },
+    "Ms": 200,
+    "Mf": 50,
+    "Ae1": 850,
+    "Ae3": 1000,
+    "category": "austenitic stainless"
+  },
+  "AISI_410": {
+    "composition": {
+      "C": 0.15,
+      "Cr": 12.5
+    },
+    "Ms": 350,
+    "Mf": 200,
+    "Ae1": 820,
+    "Ae3": 950,
+    "category": "martensitic stainless"
+  },
+  "AISI_430": {
+    "composition": {
+      "C": 0.12,
+      "Cr": 17.0
+    },
+    "Ms": 380,
+    "Mf": 220,
+    "Ae1": 820,
+    "Ae3": 930,
+    "category": "ferritic stainless"
+  },
+  "AISI_H13": {
+    "composition": {
+      "C": 0.4,
+      "Cr": 5.0,
+      "Mo": 1.5,
+      "V": 1.0,
+      "Si": 1.0
+    },
+    "Ms": 300,
+    "Mf": 160,
+    "Ae1": 800,
+    "Ae3": 870,
+    "category": "hot work tool steel"
+  },
+  "AISI_M2": {
+    "composition": {
+      "C": 0.85,
+      "Cr": 4.0,
+      "Mo": 5.0,
+      "W": 6.0,
+      "V": 2.0
+    },
+    "Ms": 200,
+    "Mf": 60,
+    "Ae1": 830,
+    "Ae3": 900,
+    "category": "high speed tool steel"
+  },
+  "DP600": {
+    "composition": {
+      "C": 0.1,
+      "Mn": 1.5,
+      "Si": 0.3,
+      "Cr": 0.3
+    },
+    "Ms": 450,
+    "Mf": 300,
+    "Ae1": 727,
+    "Ae3": 900,
+    "category": "AHSS dual phase"
+  },
+  "TRIP700": {
+    "composition": {
+      "C": 0.2,
+      "Mn": 1.5,
+      "Si": 1.5,
+      "Al": 0.05
+    },
+    "Ms": 400,
+    "Mf": 250,
+    "Ae1": 727,
+    "Ae3": 880,
+    "category": "AHSS TRIP"
+  },
+  "AISI_1008": {
+    "composition": {
+      "C": 0.08,
+      "Mn": 0.4
+    },
+    "Ms": 470,
+    "Mf": 320,
+    "Ae1": 727,
+    "Ae3": 890,
+    "category": "low carbon"
+  },
+  "AISI_1010": {
+    "composition": {
+      "C": 0.1,
+      "Mn": 0.45
+    },
+    "Ms": 460,
+    "Mf": 310,
+    "Ae1": 727,
+    "Ae3": 880,
+    "category": "low carbon"
+  },
+  "AISI_1025": {
+    "composition": {
+      "C": 0.25,
+      "Mn": 0.5
+    },
+    "Ms": 400,
+    "Mf": 240,
+    "Ae1": 727,
+    "Ae3": 830,
+    "category": "low carbon"
+  },
+  "AISI_1030": {
+    "composition": {
+      "C": 0.3,
+      "Mn": 0.6
+    },
+    "Ms": 380,
+    "Mf": 220,
+    "Ae1": 727,
+    "Ae3": 810,
+    "category": "medium carbon"
+  },
+  "AISI_1035": {
+    "composition": {
+      "C": 0.35,
+      "Mn": 0.7
+    },
+    "Ms": 360,
+    "Mf": 200,
+    "Ae1": 727,
+    "Ae3": 795,
+    "category": "medium carbon"
+  },
+  "AISI_1040": {
+    "composition": {
+      "C": 0.4,
+      "Mn": 0.75
+    },
+    "Ms": 340,
+    "Mf": 180,
+    "Ae1": 727,
+    "Ae3": 780,
+    "category": "medium carbon"
+  },
+  "AISI_1050": {
+    "composition": {
+      "C": 0.5,
+      "Mn": 0.8
+    },
+    "Ms": 320,
+    "Mf": 160,
+    "Ae1": 727,
+    "Ae3": 770,
+    "category": "medium carbon"
+  },
+  "AISI_1055": {
+    "composition": {
+      "C": 0.55,
+      "Mn": 0.8
+    },
+    "Ms": 300,
+    "Mf": 140,
+    "Ae1": 727,
+    "Ae3": 760,
+    "category": "medium carbon"
+  },
+  "AISI_1065": {
+    "composition": {
+      "C": 0.65,
+      "Mn": 0.85
+    },
+    "Ms": 265,
+    "Mf": 120,
+    "Ae1": 727,
+    "Ae3": 745,
+    "category": "high carbon"
+  },
+  "AISI_1070": {
+    "composition": {
+      "C": 0.7,
+      "Mn": 0.9
+    },
+    "Ms": 250,
+    "Mf": 110,
+    "Ae1": 727,
+    "Ae3": 740,
+    "category": "high carbon"
+  },
+  "AISI_1075": {
+    "composition": {
+      "C": 0.75,
+      "Mn": 0.9
+    },
+    "Ms": 235,
+    "Mf": 95,
+    "Ae1": 727,
+    "Ae3": 735,
+    "category": "high carbon"
+  },
+  "AISI_1080": {
+    "composition": {
+      "C": 0.8,
+      "Mn": 0.9
+    },
+    "Ms": 220,
+    "Mf": 80,
+    "Ae1": 727,
+    "Ae3": 730,
+    "category": "high carbon"
+  },
+  "AISI_1085": {
+    "composition": {
+      "C": 0.85,
+      "Mn": 0.9
+    },
+    "Ms": 210,
+    "Mf": 70,
+    "Ae1": 727,
+    "Ae3": 725,
+    "category": "high carbon"
+  },
+  "AISI_1090": {
+    "composition": {
+      "C": 0.9,
+      "Mn": 0.9
+    },
+    "Ms": 200,
+    "Mf": 60,
+    "Ae1": 727,
+    "Ae3": 720,
+    "category": "high carbon"
+  },
+  "AISI_W1": {
+    "composition": {
+      "C": 1.0,
+      "Mn": 0.3
+    },
+    "Ms": 180,
+    "Mf": 50,
+    "Ae1": 727,
+    "Ae3": 740,
+    "category": "water hardening tool steel"
+  },
+  "AISI_4130": {
+    "composition": {
+      "C": 0.3,
+      "Cr": 1.0,
+      "Mo": 0.2,
+      "Mn": 0.5,
+      "Si": 0.25
+    },
+    "Ms": 360,
+    "Mf": 200,
+    "Ae1": 755,
+    "Ae3": 800,
+    "category": "low alloy (Cr-Mo)"
+  },
+  "AISI_4150": {
+    "composition": {
+      "C": 0.5,
+      "Cr": 1.0,
+      "Mo": 0.2,
+      "Mn": 0.85,
+      "Si": 0.25
+    },
+    "Ms": 290,
+    "Mf": 140,
+    "Ae1": 750,
+    "Ae3": 770,
+    "category": "low alloy (Cr-Mo)"
+  },
+  "AISI_4620": {
+    "composition": {
+      "C": 0.2,
+      "Ni": 1.8,
+      "Mo": 0.25,
+      "Mn": 0.55
+    },
+    "Ms": 400,
+    "Mf": 250,
+    "Ae1": 730,
+    "Ae3": 810,
+    "category": "low alloy (Ni-Mo)"
+  },
+  "AISI_5140": {
+    "composition": {
+      "C": 0.4,
+      "Cr": 0.8,
+      "Mn": 0.8,
+      "Si": 0.25
+    },
+    "Ms": 330,
+    "Mf": 175,
+    "Ae1": 745,
+    "Ae3": 780,
+    "category": "low alloy (Cr)"
+  },
+  "AISI_6150": {
+    "composition": {
+      "C": 0.5,
+      "Cr": 1.0,
+      "V": 0.15,
+      "Mn": 0.8,
+      "Si": 0.25
+    },
+    "Ms": 300,
+    "Mf": 145,
+    "Ae1": 750,
+    "Ae3": 775,
+    "category": "low alloy (Cr-V)"
+  },
+  "AISI_8640": {
+    "composition": {
+      "C": 0.4,
+      "Cr": 0.5,
+      "Ni": 0.55,
+      "Mo": 0.2,
+      "Mn": 0.8
+    },
+    "Ms": 310,
+    "Mf": 155,
+    "Ae1": 727,
+    "Ae3": 780,
+    "category": "low alloy"
+  },
+  "AISI_9310": {
+    "composition": {
+      "C": 0.1,
+      "Cr": 1.2,
+      "Ni": 3.25,
+      "Mo": 0.12,
+      "Mn": 0.55
+    },
+    "Ms": 375,
+    "Mf": 230,
+    "Ae1": 710,
+    "Ae3": 810,
+    "category": "low alloy (carburizing)"
+  },
+  "AISI_52100": {
+    "composition": {
+      "C": 1.0,
+      "Cr": 1.45,
+      "Mn": 0.35,
+      "Si": 0.25
+    },
+    "Ms": 190,
+    "Mf": 60,
+    "Ae1": 740,
+    "Ae3": 800,
+    "category": "bearing steel"
+  },
+  "AISI_304": {
+    "composition": {
+      "C": 0.08,
+      "Cr": 19.0,
+      "Ni": 9.5
+    },
+    "Ms": -100,
+    "Mf": -200,
+    "Ae1": 800,
+    "Ae3": 1000,
+    "category": "austenitic stainless"
+  },
+  "AISI_304L": {
+    "composition": {
+      "C": 0.03,
+      "Cr": 19.0,
+      "Ni": 10.0
+    },
+    "Ms": -100,
+    "Mf": -200,
+    "Ae1": 800,
+    "Ae3": 1000,
+    "category": "austenitic stainless"
+  },
+  "AISI_316L": {
+    "composition": {
+      "C": 0.03,
+      "Cr": 17.0,
+      "Ni": 12.0,
+      "Mo": 2.5
+    },
+    "Ms": -120,
+    "Mf": -220,
+    "Ae1": 810,
+    "Ae3": 1010,
+    "category": "austenitic stainless"
+  },
+  "AISI_321": {
+    "composition": {
+      "C": 0.08,
+      "Cr": 18.0,
+      "Ni": 10.5,
+      "Ti": 0.5
+    },
+    "Ms": -100,
+    "Mf": -200,
+    "Ae1": 800,
+    "Ae3": 1000,
+    "category": "austenitic stainless"
+  },
+  "AISI_347": {
+    "composition": {
+      "C": 0.08,
+      "Cr": 18.0,
+      "Ni": 11.0,
+      "Nb": 0.8
+    },
+    "Ms": -100,
+    "Mf": -200,
+    "Ae1": 800,
+    "Ae3": 1000,
+    "category": "austenitic stainless"
+  },
+  "AISI_409": {
+    "composition": {
+      "C": 0.08,
+      "Cr": 11.0,
+      "Ti": 0.5
+    },
+    "Ms": 380,
+    "Mf": 230,
+    "Ae1": 820,
+    "Ae3": 930,
+    "category": "ferritic stainless"
+  },
+  "AISI_434": {
+    "composition": {
+      "C": 0.12,
+      "Cr": 17.0,
+      "Mo": 1.0
+    },
+    "Ms": 350,
+    "Mf": 200,
+    "Ae1": 815,
+    "Ae3": 920,
+    "category": "ferritic stainless"
+  },
+  "AISI_420": {
+    "composition": {
+      "C": 0.35,
+      "Cr": 13.0
+    },
+    "Ms": 300,
+    "Mf": 150,
+    "Ae1": 815,
+    "Ae3": 930,
+    "category": "martensitic stainless"
+  },
+  "AISI_440C": {
+    "composition": {
+      "C": 1.05,
+      "Cr": 17.0,
+      "Mo": 0.75
+    },
+    "Ms": 200,
+    "Mf": 60,
+    "Ae1": 820,
+    "Ae3": 920,
+    "category": "martensitic stainless"
+  },
+  "AISI_2205": {
+    "composition": {
+      "C": 0.03,
+      "Cr": 22.0,
+      "Ni": 5.5,
+      "Mo": 3.0,
+      "N": 0.18
+    },
+    "Ms": -50,
+    "Mf": -150,
+    "Ae1": 960,
+    "Ae3": 1050,
+    "category": "duplex stainless"
+  },
+  "AISI_2507": {
+    "composition": {
+      "C": 0.03,
+      "Cr": 25.0,
+      "Ni": 7.0,
+      "Mo": 4.0,
+      "N": 0.27
+    },
+    "Ms": -60,
+    "Mf": -160,
+    "Ae1": 970,
+    "Ae3": 1070,
+    "category": "super duplex"
+  },
+  "17-4PH": {
+    "composition": {
+      "C": 0.04,
+      "Cr": 16.0,
+      "Ni": 4.0,
+      "Cu": 3.5,
+      "Nb": 0.3
+    },
+    "Ms": 120,
+    "Mf": -20,
+    "Ae1": 750,
+    "Ae3": 900,
+    "category": "precipitation hardening stainless"
+  },
+  "15-5PH": {
+    "composition": {
+      "C": 0.07,
+      "Cr": 15.0,
+      "Ni": 5.0,
+      "Cu": 3.5,
+      "Nb": 0.3
+    },
+    "Ms": 100,
+    "Mf": -30,
+    "Ae1": 740,
+    "Ae3": 890,
+    "category": "precipitation hardening stainless"
+  },
+  "AISI_O1": {
+    "composition": {
+      "C": 0.9,
+      "Mn": 1.2,
+      "Cr": 0.5,
+      "W": 0.5
+    },
+    "Ms": 200,
+    "Mf": 60,
+    "Ae1": 735,
+    "Ae3": 770,
+    "category": "cold work tool steel"
+  },
+  "AISI_A2": {
+    "composition": {
+      "C": 1.0,
+      "Cr": 5.25,
+      "Mo": 1.1,
+      "V": 0.25
+    },
+    "Ms": 180,
+    "Mf": 50,
+    "Ae1": 795,
+    "Ae3": 860,
+    "category": "cold work tool steel"
+  },
+  "AISI_S7": {
+    "composition": {
+      "C": 0.5,
+      "Cr": 3.25,
+      "Mo": 1.4,
+      "Si": 0.3
+    },
+    "Ms": 280,
+    "Mf": 130,
+    "Ae1": 760,
+    "Ae3": 830,
+    "category": "shock resisting tool steel"
+  },
+  "AISI_H11": {
+    "composition": {
+      "C": 0.4,
+      "Cr": 5.0,
+      "Mo": 1.25,
+      "V": 0.4,
+      "Si": 1.0
+    },
+    "Ms": 310,
+    "Mf": 160,
+    "Ae1": 800,
+    "Ae3": 870,
+    "category": "hot work tool steel"
+  },
+  "AISI_H21": {
+    "composition": {
+      "C": 0.35,
+      "Cr": 3.5,
+      "W": 9.0,
+      "V": 0.4
+    },
+    "Ms": 270,
+    "Mf": 120,
+    "Ae1": 810,
+    "Ae3": 880,
+    "category": "hot work tool steel"
+  },
+  "AISI_M42": {
+    "composition": {
+      "C": 1.1,
+      "Cr": 4.0,
+      "Mo": 3.5,
+      "W": 1.5,
+      "Co": 8.0,
+      "V": 1.2
+    },
+    "Ms": 170,
+    "Mf": 30,
+    "Ae1": 840,
+    "Ae3": 910,
+    "category": "high speed steel"
+  },
+  "AISI_T1": {
+    "composition": {
+      "C": 0.75,
+      "Cr": 4.0,
+      "W": 18.0,
+      "V": 1.0
+    },
+    "Ms": 190,
+    "Mf": 50,
+    "Ae1": 820,
+    "Ae3": 890,
+    "category": "high speed steel"
+  },
+  "DP780": {
+    "composition": {
+      "C": 0.12,
+      "Mn": 2.0,
+      "Si": 0.4,
+      "Cr": 0.4
+    },
+    "Ms": 430,
+    "Mf": 270,
+    "Ae1": 725,
+    "Ae3": 890,
+    "category": "AHSS dual phase"
+  },
+  "DP980": {
+    "composition": {
+      "C": 0.15,
+      "Mn": 2.5,
+      "Si": 0.5,
+      "Cr": 0.5
+    },
+    "Ms": 410,
+    "Mf": 250,
+    "Ae1": 720,
+    "Ae3": 880,
+    "category": "AHSS dual phase"
+  },
+  "TRIP600": {
+    "composition": {
+      "C": 0.2,
+      "Mn": 1.5,
+      "Si": 1.5,
+      "Al": 0.05
+    },
+    "Ms": 400,
+    "Mf": 240,
+    "Ae1": 727,
+    "Ae3": 870,
+    "category": "AHSS TRIP"
+  },
+  "TRIP800": {
+    "composition": {
+      "C": 0.25,
+      "Mn": 1.8,
+      "Si": 1.5,
+      "Al": 0.05
+    },
+    "Ms": 370,
+    "Mf": 210,
+    "Ae1": 725,
+    "Ae3": 860,
+    "category": "AHSS TRIP"
+  },
+  "CP800": {
+    "composition": {
+      "C": 0.12,
+      "Mn": 2.2,
+      "Si": 0.6,
+      "Cr": 0.5,
+      "Mo": 0.2
+    },
+    "Ms": 420,
+    "Mf": 260,
+    "Ae1": 720,
+    "Ae3": 880,
+    "category": "AHSS complex phase"
+  },
+  "MS1200": {
+    "composition": {
+      "C": 0.15,
+      "Mn": 1.8,
+      "Si": 0.5,
+      "Cr": 0.4,
+      "Mo": 0.2
+    },
+    "Ms": 400,
+    "Mf": 230,
+    "Ae1": 715,
+    "Ae3": 870,
+    "category": "AHSS martensitic"
+  },
+  "TWIP900": {
+    "composition": {
+      "C": 0.6,
+      "Mn": 22.0,
+      "Al": 1.5,
+      "Si": 0.5
+    },
+    "Ms": -50,
+    "Mf": -200,
+    "Ae1": 650,
+    "Ae3": 850,
+    "category": "AHSS TWIP"
+  },
+  "QP980": {
+    "composition": {
+      "C": 0.22,
+      "Mn": 2.0,
+      "Si": 1.5
+    },
+    "Ms": 380,
+    "Mf": 200,
+    "Ae1": 725,
+    "Ae3": 860,
+    "category": "AHSS Q&P"
+  },
+  "M250": {
+    "composition": {
+      "C": 0.03,
+      "Ni": 18.0,
+      "Co": 7.5,
+      "Mo": 5.0,
+      "Ti": 0.5,
+      "Al": 0.1
+    },
+    "Ms": 160,
+    "Mf": 40,
+    "Ae1": 600,
+    "Ae3": 720,
+    "category": "maraging steel"
+  },
+  "M300": {
+    "composition": {
+      "C": 0.03,
+      "Ni": 18.5,
+      "Co": 9.0,
+      "Mo": 5.0,
+      "Ti": 0.7,
+      "Al": 0.1
+    },
+    "Ms": 140,
+    "Mf": 30,
+    "Ae1": 600,
+    "Ae3": 720,
+    "category": "maraging steel"
+  },
+  "Hadfield": {
+    "composition": {
+      "C": 1.2,
+      "Mn": 13.0
+    },
+    "Ms": -150,
+    "Mf": -250,
+    "Ae1": 700,
+    "Ae3": 900,
+    "category": "austenitic manganese steel"
+  }
+}

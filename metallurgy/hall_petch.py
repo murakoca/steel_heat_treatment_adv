@@ -1,0 +1,1 @@
+def hall_petch(s0,k,d): return s0+k/d**0.5

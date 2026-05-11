@@ -1,0 +1,1 @@
+def test_hardness(): pass

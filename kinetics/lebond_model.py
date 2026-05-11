@@ -1,0 +1,1 @@
+def lebond_rate(T, phase): return 0.01

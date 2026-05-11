@@ -1,0 +1,193 @@
+/* Global */
+QMainWindow { background-color: #1e1e2e; color: #cdd6f4; }
+QLabel { color: #cdd6f4; }
+
+/* GroupBox */
+QGroupBox { 
+    font-size: 14px; 
+    font-weight: bold; 
+    border: 1px solid #45475a; 
+    border-radius: 8px; 
+    margin-top: 18px; 
+    padding-top: 14px; 
+    color: #cdd6f4; 
+}
+QGroupBox::title { 
+    subcontrol-origin: margin; 
+    left: 10px; 
+    padding: 0 8px; 
+    color: #89b4fa; 
+    background-color: #1e1e2e; 
+}
+
+/* Button */
+QPushButton { 
+    background-color: #89b4fa; 
+    color: #1e1e2e; 
+    border-radius: 6px; 
+    padding: 8px 16px; 
+    font-weight: bold; 
+}
+QPushButton:hover { background-color: #74c7ec; }
+QPushButton:pressed { background-color: #89dceb; }
+QPushButton:disabled { background-color: #45475a; color: #6c7086; }
+
+/* Input fields */
+QLineEdit, QTextEdit, QPlainTextEdit { 
+    background-color: #313244; 
+    color: #cdd6f4; 
+    border: 1px solid #45475a; 
+    border-radius: 4px; 
+    padding: 6px; 
+    selection-background-color: #89b4fa; 
+    selection-color: #1e1e2e; 
+}
+
+/* ComboBox */
+QComboBox { 
+    background-color: #313244; 
+    color: #cdd6f4; 
+    border: 1px solid #45475a; 
+    border-radius: 4px; 
+    padding: 4px 8px; 
+    min-width: 6em; 
+}
+QComboBox:hover { border-color: #89b4fa; }
+QComboBox::drop-down { 
+    subcontrol-origin: padding; 
+    subcontrol-position: top right; 
+    width: 20px; 
+    border-left: 1px solid #45475a; 
+    background-color: #313244; 
+}
+QComboBox::down-arrow { 
+    image: none; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #cdd6f4;
+    margin-right: 5px;
+}
+QComboBox QAbstractItemView { 
+    background-color: #313244; 
+    color: #cdd6f4; 
+    selection-background-color: #89b4fa; 
+    selection-color: #1e1e2e; 
+    outline: none; 
+    border: 1px solid #45475a; 
+    border-radius: 4px; 
+    padding: 4px; 
+}
+QComboBox QAbstractItemView::item { 
+    padding: 6px 10px; 
+    min-height: 24px; 
+    color: #cdd6f4;
+}
+QComboBox QAbstractItemView::item:hover { 
+    background-color: #45475a; 
+    color: #cdd6f4; 
+}
+QComboBox QAbstractItemView::item:selected { 
+    background-color: #89b4fa; 
+    color: #1e1e2e; 
+}
+
+/* Table */
+QTableWidget { 
+    background-color: #313244; 
+    color: #cdd6f4; 
+    border: 1px solid #45475a; 
+    gridline-color: #45475a; 
+    selection-background-color: #89b4fa; 
+    selection-color: #1e1e2e; 
+    alternate-background-color: #2a2a3a;
+}
+QTableWidget::item {
+    color: #cdd6f4;
+    padding: 4px;
+}
+QHeaderView::section { 
+    background-color: #313244; 
+    color: #cdd6f4; 
+    padding: 6px; 
+    border: 1px solid #45475a; 
+    font-weight: bold;
+}
+
+/* ProgressBar */
+QProgressBar { 
+    border: 1px solid #45475a; 
+    border-radius: 4px; 
+    text-align: center; 
+    color: #cdd6f4; 
+    background-color: #313244; 
+}
+QProgressBar::chunk { background-color: #89b4fa; border-radius: 3px; }
+
+/* TabWidget */
+QTabWidget::pane { 
+    border: 1px solid #45475a; 
+    background-color: #1e1e2e; 
+    top: -1px;
+}
+QTabBar::tab { 
+    background-color: #313244; 
+    color: #a6adc8; 
+    padding: 10px 18px; 
+    margin-right: 3px; 
+    border-top-left-radius: 6px; 
+    border-top-right-radius: 6px; 
+    font-weight: bold;
+}
+QTabBar::tab:selected { 
+    background-color: #45475a; 
+    color: #89b4fa; 
+}
+QTabBar::tab:hover:!selected { 
+    background-color: #3a3b4e; 
+    color: #cdd6f4; 
+}
+
+/* Scrollbar */
+QScrollBar:vertical { 
+    background: #1e1e2e; 
+    width: 12px; 
+    margin: 0; 
+}
+QScrollBar::handle:vertical { 
+    background: #45475a; 
+    border-radius: 6px; 
+    min-height: 30px; 
+}
+QScrollBar::handle:vertical:hover { background: #585b70; }
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }
+
+/* StatusBar */
+QStatusBar {
+    background-color: #313244;
+    color: #a6adc8;
+    border-top: 1px solid #45475a;
+}
+
+/* Tooltip */
+QToolTip {
+    background-color: #313244;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    padding: 4px;
+    font-size: 12px;
+}
+/* TabWidget - Geniş Sekmeler */
+QTabBar::tab {
+    min-width: 140px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QTabWidget::pane {
+    top: -2px;
+}
+
+QTabBar {
+    qproperty-expanding: 1;
+}

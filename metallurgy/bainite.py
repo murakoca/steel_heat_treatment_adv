@@ -1,0 +1,1 @@
+def Bs(comp): return 550-200*comp.get('C',0)

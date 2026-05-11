@@ -1,0 +1,1 @@
+def Ms(comp): return 539-423*comp.get('C',0)*100

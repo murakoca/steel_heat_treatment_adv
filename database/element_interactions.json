@@ -1,0 +1,162 @@
+[
+  {
+    "pair": [
+      "C",
+      "Fe"
+    ],
+    "effect": "Fe₃C sementit → perlit yapısının temeli",
+    "type": "faz"
+  },
+  {
+    "pair": [
+      "C",
+      "Cr"
+    ],
+    "effect": "Cr₂₃C₆, Cr₇C₃ → korozyon direnci ve sertlik",
+    "type": "karbür"
+  },
+  {
+    "pair": [
+      "C",
+      "Mo"
+    ],
+    "effect": "Mo₂C → ikincil sertleşme ve sürünme dayanımı",
+    "type": "karbür"
+  },
+  {
+    "pair": [
+      "C",
+      "V"
+    ],
+    "effect": "VC → tane inceltme, aşınma direnci, ikincil sertleşme",
+    "type": "karbür"
+  },
+  {
+    "pair": [
+      "C",
+      "W"
+    ],
+    "effect": "WC, W₂C → kırmızı sertlik, aşınma direnci",
+    "type": "karbür"
+  },
+  {
+    "pair": [
+      "C",
+      "Nb"
+    ],
+    "effect": "NbC → çökeltme sertleşmesi, tane inceltme",
+    "type": "karbür"
+  },
+  {
+    "pair": [
+      "C",
+      "Ti"
+    ],
+    "effect": "TiC → çok kararlı karbür, tane inceltme",
+    "type": "karbür"
+  },
+  {
+    "pair": [
+      "Mn",
+      "S"
+    ],
+    "effect": "MnS → sıcak kırılganlığı önler, işlenebilirliği artırır",
+    "type": "kalıntı"
+  },
+  {
+    "pair": [
+      "Cr",
+      "Ni"
+    ],
+    "effect": "18/8 paslanmaz çelik: korozyon + tokluk sinerjisi",
+    "type": "sinerji"
+  },
+  {
+    "pair": [
+      "Cr",
+      "Mo"
+    ],
+    "effect": "PREN artışı, çukurcuk korozyonu direnci",
+    "type": "sinerji"
+  },
+  {
+    "pair": [
+      "V",
+      "N"
+    ],
+    "effect": "VN → tane inceltme, çökeltme sertleşmesi",
+    "type": "nitrür"
+  },
+  {
+    "pair": [
+      "Al",
+      "N"
+    ],
+    "effect": "AlN → tane inceltme, nitrürleme",
+    "type": "nitrür"
+  },
+  {
+    "pair": [
+      "Ti",
+      "N"
+    ],
+    "effect": "TiN → kararlı nitrür, tane inceltme",
+    "type": "nitrür"
+  },
+  {
+    "pair": [
+      "B",
+      "N"
+    ],
+    "effect": "BN → borun sertleşebilirlik etkisini yok eder",
+    "type": "zararlı"
+  },
+  {
+    "pair": [
+      "Co",
+      "W"
+    ],
+    "effect": "Yüksek hız çeliklerinde sinerjik kırmızı sertlik",
+    "type": "sinerji"
+  },
+  {
+    "pair": [
+      "Cu",
+      "Ni"
+    ],
+    "effect": "Cu sıcak kırılganlığını Ni önler",
+    "type": "koruyucu"
+  },
+  {
+    "pair": [
+      "Mn",
+      "C"
+    ],
+    "effect": "Östenit stabilitesi artar, Ms düşer",
+    "type": "sinerji"
+  },
+  {
+    "pair": [
+      "Si",
+      "C"
+    ],
+    "effect": "Grafitleşmeyi teşvik eder, karbür kararlılığını azaltır",
+    "type": "etkileşim"
+  },
+  {
+    "pair": [
+      "Ce",
+      "S"
+    ],
+    "effect": "Ce₂O₂S → kalıntı morfolojisini küreselleştirir",
+    "type": "kalıntı"
+  },
+  {
+    "pair": [
+      "Ca",
+      "S"
+    ],
+    "effect": "CaS → kalıntı morfoloji kontrolü",
+    "type": "kalıntı"
+  }
+]

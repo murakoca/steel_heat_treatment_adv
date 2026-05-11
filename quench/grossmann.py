@@ -1,0 +1,1 @@
+def grossmann_di(comp,gs): return 50

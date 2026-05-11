@@ -1,0 +1,1 @@
+def fatigue_limit(hrc): return 0.5*hrc*9.81

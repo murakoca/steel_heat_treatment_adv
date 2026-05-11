@@ -1,0 +1,1 @@
+def free_energy(phi, T): return phi**2*(1-phi)**2

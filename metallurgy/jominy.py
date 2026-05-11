@@ -1,0 +1,1 @@
+def jominy_hardness(steel, dist): return 60-dist*0.8

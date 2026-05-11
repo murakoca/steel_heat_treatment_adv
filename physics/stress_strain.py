@@ -1,0 +1,1 @@
+def thermal_strain(alpha, dT): return alpha*dT

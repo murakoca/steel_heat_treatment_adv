@@ -1,0 +1,1 @@
+def interp1d(x,y,xi): import numpy as np; return np.interp(xi,x,y)

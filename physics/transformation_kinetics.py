@@ -1,0 +1,1 @@
+def lever_rule(C0, Ca, Cb): return (C0-Ca)/(Cb-Ca) if Cb!=Ca else 0

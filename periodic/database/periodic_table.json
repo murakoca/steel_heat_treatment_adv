@@ -1,0 +1,1064 @@
+{
+  "1": {
+    "sym": "H",
+    "name": "Hidrojen",
+    "mass": 1.008,
+    "elec": "1s¹",
+    "melt": -259.1,
+    "boil": -252.9,
+    "dens": 9e-05
+  },
+  "2": {
+    "sym": "He",
+    "name": "Helyum",
+    "mass": 4.003,
+    "elec": "1s²",
+    "melt": -272.2,
+    "boil": -268.9,
+    "dens": 0.00018
+  },
+  "3": {
+    "sym": "Li",
+    "name": "Lityum",
+    "mass": 6.94,
+    "elec": "[He]2s¹",
+    "melt": 180.5,
+    "boil": 1342,
+    "dens": 0.534
+  },
+  "4": {
+    "sym": "Be",
+    "name": "Berilyum",
+    "mass": 9.012,
+    "elec": "[He]2s²",
+    "melt": 1287,
+    "boil": 2470,
+    "dens": 1.85
+  },
+  "5": {
+    "sym": "B",
+    "name": "Bor",
+    "mass": 10.81,
+    "elec": "[He]2s²2p¹",
+    "melt": 2076,
+    "boil": 3927,
+    "dens": 2.34
+  },
+  "6": {
+    "sym": "C",
+    "name": "Karbon",
+    "mass": 12.011,
+    "elec": "[He]2s²2p²",
+    "melt": 3550,
+    "boil": 4027,
+    "dens": 2.26
+  },
+  "7": {
+    "sym": "N",
+    "name": "Azot",
+    "mass": 14.007,
+    "elec": "[He]2s²2p³",
+    "melt": -210,
+    "boil": -195.8,
+    "dens": 0.00125
+  },
+  "8": {
+    "sym": "O",
+    "name": "Oksijen",
+    "mass": 15.999,
+    "elec": "[He]2s²2p⁴",
+    "melt": -218.8,
+    "boil": -183,
+    "dens": 0.00143
+  },
+  "9": {
+    "sym": "F",
+    "name": "Flor",
+    "mass": 18.998,
+    "elec": "[He]2s²2p⁵",
+    "melt": -219.6,
+    "boil": -188.1,
+    "dens": 0.0017
+  },
+  "10": {
+    "sym": "Ne",
+    "name": "Neon",
+    "mass": 20.18,
+    "elec": "[He]2s²2p⁶",
+    "melt": -248.6,
+    "boil": -246.1,
+    "dens": 0.0009
+  },
+  "11": {
+    "sym": "Na",
+    "name": "Sodyum",
+    "mass": 22.99,
+    "elec": "[Ne]3s¹",
+    "melt": 97.8,
+    "boil": 883,
+    "dens": 0.971
+  },
+  "12": {
+    "sym": "Mg",
+    "name": "Magnezyum",
+    "mass": 24.305,
+    "elec": "[Ne]3s²",
+    "melt": 650,
+    "boil": 1090,
+    "dens": 1.738
+  },
+  "13": {
+    "sym": "Al",
+    "name": "Alüminyum",
+    "mass": 26.982,
+    "elec": "[Ne]3s²3p¹",
+    "melt": 660.3,
+    "boil": 2470,
+    "dens": 2.7
+  },
+  "14": {
+    "sym": "Si",
+    "name": "Silisyum",
+    "mass": 28.085,
+    "elec": "[Ne]3s²3p²",
+    "melt": 1414,
+    "boil": 3265,
+    "dens": 2.33
+  },
+  "15": {
+    "sym": "P",
+    "name": "Fosfor",
+    "mass": 30.974,
+    "elec": "[Ne]3s²3p³",
+    "melt": 44.2,
+    "boil": 280.5,
+    "dens": 1.82
+  },
+  "16": {
+    "sym": "S",
+    "name": "Kükürt",
+    "mass": 32.06,
+    "elec": "[Ne]3s²3p⁴",
+    "melt": 115.2,
+    "boil": 444.6,
+    "dens": 2.07
+  },
+  "17": {
+    "sym": "Cl",
+    "name": "Klor",
+    "mass": 35.45,
+    "elec": "[Ne]3s²3p⁵",
+    "melt": -101.5,
+    "boil": -34,
+    "dens": 0.00321
+  },
+  "18": {
+    "sym": "Ar",
+    "name": "Argon",
+    "mass": 39.948,
+    "elec": "[Ne]3s²3p⁶",
+    "melt": -189.3,
+    "boil": -185.8,
+    "dens": 0.00178
+  },
+  "19": {
+    "sym": "K",
+    "name": "Potasyum",
+    "mass": 39.098,
+    "elec": "[Ar]4s¹",
+    "melt": 63.4,
+    "boil": 759,
+    "dens": 0.862
+  },
+  "20": {
+    "sym": "Ca",
+    "name": "Kalsiyum",
+    "mass": 40.078,
+    "elec": "[Ar]4s²",
+    "melt": 842,
+    "boil": 1484,
+    "dens": 1.54
+  },
+  "21": {
+    "sym": "Sc",
+    "name": "Skandiyum",
+    "mass": 44.956,
+    "elec": "[Ar]3d¹4s²",
+    "melt": 1541,
+    "boil": 2836,
+    "dens": 2.99
+  },
+  "22": {
+    "sym": "Ti",
+    "name": "Titanyum",
+    "mass": 47.867,
+    "elec": "[Ar]3d²4s²",
+    "melt": 1668,
+    "boil": 3287,
+    "dens": 4.54
+  },
+  "23": {
+    "sym": "V",
+    "name": "Vanadyum",
+    "mass": 50.942,
+    "elec": "[Ar]3d³4s²",
+    "melt": 1910,
+    "boil": 3407,
+    "dens": 6.11
+  },
+  "24": {
+    "sym": "Cr",
+    "name": "Krom",
+    "mass": 51.996,
+    "elec": "[Ar]3d⁵4s¹",
+    "melt": 1907,
+    "boil": 2671,
+    "dens": 7.19
+  },
+  "25": {
+    "sym": "Mn",
+    "name": "Mangan",
+    "mass": 54.938,
+    "elec": "[Ar]3d⁵4s²",
+    "melt": 1246,
+    "boil": 2061,
+    "dens": 7.44
+  },
+  "26": {
+    "sym": "Fe",
+    "name": "Demir",
+    "mass": 55.845,
+    "elec": "[Ar]3d⁶4s²",
+    "melt": 1538,
+    "boil": 2861,
+    "dens": 7.87
+  },
+  "27": {
+    "sym": "Co",
+    "name": "Kobalt",
+    "mass": 58.933,
+    "elec": "[Ar]3d⁷4s²",
+    "melt": 1495,
+    "boil": 2927,
+    "dens": 8.9
+  },
+  "28": {
+    "sym": "Ni",
+    "name": "Nikel",
+    "mass": 58.693,
+    "elec": "[Ar]3d⁸4s²",
+    "melt": 1455,
+    "boil": 2913,
+    "dens": 8.91
+  },
+  "29": {
+    "sym": "Cu",
+    "name": "Bakır",
+    "mass": 63.546,
+    "elec": "[Ar]3d¹⁰4s¹",
+    "melt": 1085,
+    "boil": 2562,
+    "dens": 8.96
+  },
+  "30": {
+    "sym": "Zn",
+    "name": "Çinko",
+    "mass": 65.38,
+    "elec": "[Ar]3d¹⁰4s²",
+    "melt": 419.5,
+    "boil": 907,
+    "dens": 7.13
+  },
+  "31": {
+    "sym": "Ga",
+    "name": "Galyum",
+    "mass": 69.723,
+    "elec": "[Ar]3d¹⁰4s²4p¹",
+    "melt": 29.8,
+    "boil": 2204,
+    "dens": 5.91
+  },
+  "32": {
+    "sym": "Ge",
+    "name": "Germanyum",
+    "mass": 72.63,
+    "elec": "[Ar]3d¹⁰4s²4p²",
+    "melt": 938.3,
+    "boil": 2833,
+    "dens": 5.32
+  },
+  "33": {
+    "sym": "As",
+    "name": "Arsenik",
+    "mass": 74.922,
+    "elec": "[Ar]3d¹⁰4s²4p³",
+    "melt": 817,
+    "boil": 614,
+    "dens": 5.78
+  },
+  "34": {
+    "sym": "Se",
+    "name": "Selenyum",
+    "mass": 78.971,
+    "elec": "[Ar]3d¹⁰4s²4p⁴",
+    "melt": 221,
+    "boil": 685,
+    "dens": 4.79
+  },
+  "35": {
+    "sym": "Br",
+    "name": "Brom",
+    "mass": 79.904,
+    "elec": "[Ar]3d¹⁰4s²4p⁵",
+    "melt": -7.3,
+    "boil": 58.8,
+    "dens": 3.12
+  },
+  "36": {
+    "sym": "Kr",
+    "name": "Kripton",
+    "mass": 83.798,
+    "elec": "[Ar]3d¹⁰4s²4p⁶",
+    "melt": -157.4,
+    "boil": -153.2,
+    "dens": 0.00375
+  },
+  "37": {
+    "sym": "Rb",
+    "name": "Rubidyum",
+    "mass": 85.468,
+    "elec": "[Kr]5s¹",
+    "melt": 39.3,
+    "boil": 688,
+    "dens": 1.53
+  },
+  "38": {
+    "sym": "Sr",
+    "name": "Stronsiyum",
+    "mass": 87.62,
+    "elec": "[Kr]5s²",
+    "melt": 777,
+    "boil": 1382,
+    "dens": 2.54
+  },
+  "39": {
+    "sym": "Y",
+    "name": "İtriyum",
+    "mass": 88.906,
+    "elec": "[Kr]4d¹5s²",
+    "melt": 1522,
+    "boil": 3345,
+    "dens": 4.47
+  },
+  "40": {
+    "sym": "Zr",
+    "name": "Zirkonyum",
+    "mass": 91.224,
+    "elec": "[Kr]4d²5s²",
+    "melt": 1855,
+    "boil": 4409,
+    "dens": 6.51
+  },
+  "41": {
+    "sym": "Nb",
+    "name": "Niyobyum",
+    "mass": 92.906,
+    "elec": "[Kr]4d⁴5s¹",
+    "melt": 2477,
+    "boil": 4744,
+    "dens": 8.57
+  },
+  "42": {
+    "sym": "Mo",
+    "name": "Molibden",
+    "mass": 95.95,
+    "elec": "[Kr]4d⁵5s¹",
+    "melt": 2623,
+    "boil": 4639,
+    "dens": 10.22
+  },
+  "43": {
+    "sym": "Tc",
+    "name": "Teknesyum",
+    "mass": 98,
+    "elec": "[Kr]4d⁵5s²",
+    "melt": 2157,
+    "boil": 4265,
+    "dens": 11.5
+  },
+  "44": {
+    "sym": "Ru",
+    "name": "Rutenyum",
+    "mass": 101.07,
+    "elec": "[Kr]4d⁷5s¹",
+    "melt": 2334,
+    "boil": 4150,
+    "dens": 12.37
+  },
+  "45": {
+    "sym": "Rh",
+    "name": "Rodyum",
+    "mass": 102.91,
+    "elec": "[Kr]4d⁸5s¹",
+    "melt": 1964,
+    "boil": 3695,
+    "dens": 12.41
+  },
+  "46": {
+    "sym": "Pd",
+    "name": "Paladyum",
+    "mass": 106.42,
+    "elec": "[Kr]4d¹⁰",
+    "melt": 1555,
+    "boil": 2963,
+    "dens": 12.02
+  },
+  "47": {
+    "sym": "Ag",
+    "name": "Gümüş",
+    "mass": 107.87,
+    "elec": "[Kr]4d¹⁰5s¹",
+    "melt": 961.8,
+    "boil": 2162,
+    "dens": 10.49
+  },
+  "48": {
+    "sym": "Cd",
+    "name": "Kadmiyum",
+    "mass": 112.41,
+    "elec": "[Kr]4d¹⁰5s²",
+    "melt": 321.1,
+    "boil": 767,
+    "dens": 8.65
+  },
+  "49": {
+    "sym": "In",
+    "name": "İndiyum",
+    "mass": 114.82,
+    "elec": "[Kr]4d¹⁰5s²5p¹",
+    "melt": 156.6,
+    "boil": 2072,
+    "dens": 7.31
+  },
+  "50": {
+    "sym": "Sn",
+    "name": "Kalay",
+    "mass": 118.71,
+    "elec": "[Kr]4d¹⁰5s²5p²",
+    "melt": 231.9,
+    "boil": 2602,
+    "dens": 7.29
+  },
+  "51": {
+    "sym": "Sb",
+    "name": "Antimon",
+    "mass": 121.76,
+    "elec": "[Kr]4d¹⁰5s²5p³",
+    "melt": 630.6,
+    "boil": 1587,
+    "dens": 6.68
+  },
+  "52": {
+    "sym": "Te",
+    "name": "Tellür",
+    "mass": 127.6,
+    "elec": "[Kr]4d¹⁰5s²5p⁴",
+    "melt": 449.5,
+    "boil": 988,
+    "dens": 6.24
+  },
+  "53": {
+    "sym": "I",
+    "name": "İyot",
+    "mass": 126.9,
+    "elec": "[Kr]4d¹⁰5s²5p⁵",
+    "melt": 113.7,
+    "boil": 184.3,
+    "dens": 4.93
+  },
+  "54": {
+    "sym": "Xe",
+    "name": "Ksenon",
+    "mass": 131.29,
+    "elec": "[Kr]4d¹⁰5s²5p⁶",
+    "melt": -111.8,
+    "boil": -108,
+    "dens": 0.0059
+  },
+  "55": {
+    "sym": "Cs",
+    "name": "Sezyum",
+    "mass": 132.91,
+    "elec": "[Xe]6s¹",
+    "melt": 28.5,
+    "boil": 671,
+    "dens": 1.88
+  },
+  "56": {
+    "sym": "Ba",
+    "name": "Baryum",
+    "mass": 137.33,
+    "elec": "[Xe]6s²",
+    "melt": 727,
+    "boil": 1897,
+    "dens": 3.62
+  },
+  "57": {
+    "sym": "La",
+    "name": "Lantan",
+    "mass": 138.91,
+    "elec": "[Xe]5d¹6s²",
+    "melt": 920,
+    "boil": 3464,
+    "dens": 6.15
+  },
+  "58": {
+    "sym": "Ce",
+    "name": "Seryum",
+    "mass": 140.12,
+    "elec": "[Xe]4f¹5d¹6s²",
+    "melt": 795,
+    "boil": 3443,
+    "dens": 6.77
+  },
+  "59": {
+    "sym": "Pr",
+    "name": "Praseodim",
+    "mass": 140.91,
+    "elec": "[Xe]4f³6s²",
+    "melt": 935,
+    "boil": 3520,
+    "dens": 6.77
+  },
+  "60": {
+    "sym": "Nd",
+    "name": "Neodim",
+    "mass": 144.24,
+    "elec": "[Xe]4f⁴6s²",
+    "melt": 1024,
+    "boil": 3074,
+    "dens": 7.01
+  },
+  "61": {
+    "sym": "Pm",
+    "name": "Prometyum",
+    "mass": 145,
+    "elec": "[Xe]4f⁵6s²",
+    "melt": 1042,
+    "boil": 3000,
+    "dens": 7.26
+  },
+  "62": {
+    "sym": "Sm",
+    "name": "Samaryum",
+    "mass": 150.36,
+    "elec": "[Xe]4f⁶6s²",
+    "melt": 1072,
+    "boil": 1794,
+    "dens": 7.52
+  },
+  "63": {
+    "sym": "Eu",
+    "name": "Öropyum",
+    "mass": 151.96,
+    "elec": "[Xe]4f⁷6s²",
+    "melt": 822,
+    "boil": 1529,
+    "dens": 5.24
+  },
+  "64": {
+    "sym": "Gd",
+    "name": "Gadolinyum",
+    "mass": 157.25,
+    "elec": "[Xe]4f⁷5d¹6s²",
+    "melt": 1313,
+    "boil": 3273,
+    "dens": 7.9
+  },
+  "65": {
+    "sym": "Tb",
+    "name": "Terbiyum",
+    "mass": 158.93,
+    "elec": "[Xe]4f⁹6s²",
+    "melt": 1356,
+    "boil": 3230,
+    "dens": 8.23
+  },
+  "66": {
+    "sym": "Dy",
+    "name": "Disprosyum",
+    "mass": 162.5,
+    "elec": "[Xe]4f¹⁰6s²",
+    "melt": 1412,
+    "boil": 2567,
+    "dens": 8.55
+  },
+  "67": {
+    "sym": "Ho",
+    "name": "Holmiyum",
+    "mass": 164.93,
+    "elec": "[Xe]4f¹¹6s²",
+    "melt": 1474,
+    "boil": 2700,
+    "dens": 8.8
+  },
+  "68": {
+    "sym": "Er",
+    "name": "Erbiyum",
+    "mass": 167.26,
+    "elec": "[Xe]4f¹²6s²",
+    "melt": 1529,
+    "boil": 2868,
+    "dens": 9.07
+  },
+  "69": {
+    "sym": "Tm",
+    "name": "Tulyum",
+    "mass": 168.93,
+    "elec": "[Xe]4f¹³6s²",
+    "melt": 1545,
+    "boil": 1950,
+    "dens": 9.32
+  },
+  "70": {
+    "sym": "Yb",
+    "name": "İterbiyum",
+    "mass": 173.05,
+    "elec": "[Xe]4f¹⁴6s²",
+    "melt": 824,
+    "boil": 1196,
+    "dens": 6.97
+  },
+  "71": {
+    "sym": "Lu",
+    "name": "Lutesyum",
+    "mass": 174.97,
+    "elec": "[Xe]4f¹⁴5d¹6s²",
+    "melt": 1663,
+    "boil": 3402,
+    "dens": 9.84
+  },
+  "72": {
+    "sym": "Hf",
+    "name": "Hafniyum",
+    "mass": 178.49,
+    "elec": "[Xe]4f¹⁴5d²6s²",
+    "melt": 2233,
+    "boil": 4603,
+    "dens": 13.31
+  },
+  "73": {
+    "sym": "Ta",
+    "name": "Tantal",
+    "mass": 180.95,
+    "elec": "[Xe]4f¹⁴5d³6s²",
+    "melt": 2996,
+    "boil": 5458,
+    "dens": 16.65
+  },
+  "74": {
+    "sym": "W",
+    "name": "Volfram",
+    "mass": 183.84,
+    "elec": "[Xe]4f¹⁴5d⁴6s²",
+    "melt": 3422,
+    "boil": 5555,
+    "dens": 19.25
+  },
+  "75": {
+    "sym": "Re",
+    "name": "Renyum",
+    "mass": 186.21,
+    "elec": "[Xe]4f¹⁴5d⁵6s²",
+    "melt": 3186,
+    "boil": 5596,
+    "dens": 21.02
+  },
+  "76": {
+    "sym": "Os",
+    "name": "Osmiyum",
+    "mass": 190.23,
+    "elec": "[Xe]4f¹⁴5d⁶6s²",
+    "melt": 3033,
+    "boil": 5012,
+    "dens": 22.59
+  },
+  "77": {
+    "sym": "Ir",
+    "name": "İridyum",
+    "mass": 192.22,
+    "elec": "[Xe]4f¹⁴5d⁷6s²",
+    "melt": 2446,
+    "boil": 4428,
+    "dens": 22.56
+  },
+  "78": {
+    "sym": "Pt",
+    "name": "Platin",
+    "mass": 195.08,
+    "elec": "[Xe]4f¹⁴5d⁹6s¹",
+    "melt": 1768,
+    "boil": 3825,
+    "dens": 21.45
+  },
+  "79": {
+    "sym": "Au",
+    "name": "Altın",
+    "mass": 196.97,
+    "elec": "[Xe]4f¹⁴5d¹⁰6s¹",
+    "melt": 1064,
+    "boil": 2856,
+    "dens": 19.3
+  },
+  "80": {
+    "sym": "Hg",
+    "name": "Cıva",
+    "mass": 200.59,
+    "elec": "[Xe]4f¹⁴5d¹⁰6s²",
+    "melt": -38.8,
+    "boil": 357,
+    "dens": 13.53
+  },
+  "81": {
+    "sym": "Tl",
+    "name": "Talyum",
+    "mass": 204.38,
+    "elec": "[Xe]4f¹⁴5d¹⁰6s²6p¹",
+    "melt": 304,
+    "boil": 1473,
+    "dens": 11.85
+  },
+  "82": {
+    "sym": "Pb",
+    "name": "Kurşun",
+    "mass": 207.2,
+    "elec": "[Xe]4f¹⁴5d¹⁰6s²6p²",
+    "melt": 327.5,
+    "boil": 1749,
+    "dens": 11.34
+  },
+  "83": {
+    "sym": "Bi",
+    "name": "Bizmut",
+    "mass": 208.98,
+    "elec": "[Xe]4f¹⁴5d¹⁰6s²6p³",
+    "melt": 271.4,
+    "boil": 1564,
+    "dens": 9.78
+  },
+  "84": {
+    "sym": "Po",
+    "name": "Polonyum",
+    "mass": 209,
+    "elec": "[Xe]4f¹⁴5d¹⁰6s²6p⁴",
+    "melt": 254,
+    "boil": 962,
+    "dens": 9.2
+  },
+  "85": {
+    "sym": "At",
+    "name": "Astatin",
+    "mass": 210,
+    "elec": "[Xe]4f¹⁴5d¹⁰6s²6p⁵",
+    "melt": 302,
+    "boil": 337,
+    "dens": 7.0
+  },
+  "86": {
+    "sym": "Rn",
+    "name": "Radon",
+    "mass": 222,
+    "elec": "[Xe]4f¹⁴5d¹⁰6s²6p⁶",
+    "melt": -71,
+    "boil": -61.7,
+    "dens": 0.00973
+  },
+  "87": {
+    "sym": "Fr",
+    "name": "Fransiyum",
+    "mass": 223,
+    "elec": "[Rn]7s¹",
+    "melt": 27,
+    "boil": 677,
+    "dens": 2.9
+  },
+  "88": {
+    "sym": "Ra",
+    "name": "Radyum",
+    "mass": 226,
+    "elec": "[Rn]7s²",
+    "melt": 700,
+    "boil": 1737,
+    "dens": 5.5
+  },
+  "89": {
+    "sym": "Ac",
+    "name": "Aktinyum",
+    "mass": 227,
+    "elec": "[Rn]6d¹7s²",
+    "melt": 1050,
+    "boil": 3198,
+    "dens": 10.07
+  },
+  "90": {
+    "sym": "Th",
+    "name": "Toryum",
+    "mass": 232.04,
+    "elec": "[Rn]6d²7s²",
+    "melt": 1750,
+    "boil": 4788,
+    "dens": 11.72
+  },
+  "91": {
+    "sym": "Pa",
+    "name": "Protaktinyum",
+    "mass": 231.04,
+    "elec": "[Rn]5f²6d¹7s²",
+    "melt": 1568,
+    "boil": 4027,
+    "dens": 15.37
+  },
+  "92": {
+    "sym": "U",
+    "name": "Uranyum",
+    "mass": 238.03,
+    "elec": "[Rn]5f³6d¹7s²",
+    "melt": 1135,
+    "boil": 4131,
+    "dens": 18.95
+  },
+  "93": {
+    "sym": "Np",
+    "name": "Neptünyum",
+    "mass": 237,
+    "elec": "[Rn]5f⁴6d¹7s²",
+    "melt": 644,
+    "boil": 4000,
+    "dens": 20.45
+  },
+  "94": {
+    "sym": "Pu",
+    "name": "Plütonyum",
+    "mass": 244,
+    "elec": "[Rn]5f⁶7s²",
+    "melt": 640,
+    "boil": 3228,
+    "dens": 19.86
+  },
+  "95": {
+    "sym": "Am",
+    "name": "Amerisyum",
+    "mass": 243,
+    "elec": "[Rn]5f⁷7s²",
+    "melt": 1176,
+    "boil": 2607,
+    "dens": 13.67
+  },
+  "96": {
+    "sym": "Cm",
+    "name": "Küriyum",
+    "mass": 247,
+    "elec": "[Rn]5f⁷6d¹7s²",
+    "melt": 1345,
+    "boil": 3110,
+    "dens": 13.51
+  },
+  "97": {
+    "sym": "Bk",
+    "name": "Berkelyum",
+    "mass": 247,
+    "elec": "[Rn]5f⁹7s²",
+    "melt": 986,
+    "boil": 2627,
+    "dens": 14.78
+  },
+  "98": {
+    "sym": "Cf",
+    "name": "Kaliforniyum",
+    "mass": 251,
+    "elec": "[Rn]5f¹⁰7s²",
+    "melt": 900,
+    "boil": 1470,
+    "dens": 15.1
+  },
+  "99": {
+    "sym": "Es",
+    "name": "Einsteinyum",
+    "mass": 252,
+    "elec": "[Rn]5f¹¹7s²",
+    "melt": 860,
+    "boil": 1269,
+    "dens": 13.5
+  },
+  "100": {
+    "sym": "Fm",
+    "name": "Fermiyum",
+    "mass": 257,
+    "elec": "[Rn]5f¹²7s²",
+    "melt": 1527,
+    "boil": null,
+    "dens": null
+  },
+  "101": {
+    "sym": "Md",
+    "name": "Mendelevyum",
+    "mass": 258,
+    "elec": "[Rn]5f¹³7s²",
+    "melt": 827,
+    "boil": null,
+    "dens": null
+  },
+  "102": {
+    "sym": "No",
+    "name": "Nobelyum",
+    "mass": 259,
+    "elec": "[Rn]5f¹⁴7s²",
+    "melt": 827,
+    "boil": null,
+    "dens": null
+  },
+  "103": {
+    "sym": "Lr",
+    "name": "Lavrensiyum",
+    "mass": 266,
+    "elec": "[Rn]5f¹⁴7s²7p¹",
+    "melt": 1627,
+    "boil": null,
+    "dens": null
+  },
+  "104": {
+    "sym": "Rf",
+    "name": "Rutherfordyum",
+    "mass": 267,
+    "elec": "[Rn]5f¹⁴6d²7s²",
+    "melt": 2100,
+    "boil": null,
+    "dens": null
+  },
+  "105": {
+    "sym": "Db",
+    "name": "Dubniyum",
+    "mass": 268,
+    "elec": "[Rn]5f¹⁴6d³7s²",
+    "melt": null,
+    "boil": null,
+    "dens": null
+  },
+  "106": {
+    "sym": "Sg",
+    "name": "Seaborgiyum",
+    "mass": 269,
+    "elec": "[Rn]5f¹⁴6d⁴7s²",
+    "melt": null,
+    "boil": null,
+    "dens": null
+  },
+  "107": {
+    "sym": "Bh",
+    "name": "Bohriyum",
+    "mass": 270,
+    "elec": "[Rn]5f¹⁴6d⁵7s²",
+    "melt": null,
+    "boil": null,
+    "dens": null
+  },
+  "108": {
+    "sym": "Hs",
+    "name": "Hassiyum",
+    "mass": 269,
+    "elec": "[Rn]5f¹⁴6d⁶7s²",
+    "melt": null,
+    "boil": null,
+    "dens": null
+  },
+  "109": {
+    "sym": "Mt",
+    "name": "Meitneriyum",
+    "mass": 278,
+    "elec": "[Rn]5f¹⁴6d⁷7s²",
+    "melt": null,
+    "boil": null,
+    "dens": null
+  },
+  "110": {
+    "sym": "Ds",
+    "name": "Darmstadtiyum",
+    "mass": 281,
+    "elec": "[Rn]5f¹⁴6d⁹7s¹",
+    "melt": null,
+    "boil": null,
+    "dens": null
+  },
+  "111": {
+    "sym": "Rg",
+    "name": "Röntgenyum",
+    "mass": 282,
+    "elec": "[Rn]5f¹⁴6d¹⁰7s¹",
+    "melt": null,
+    "boil": null,
+    "dens": null
+  },
+  "112": {
+    "sym": "Cn",
+    "name": "Kopernikyum",
+    "mass": 285,
+    "elec": "[Rn]5f¹⁴6d¹⁰7s²",
+    "melt": null,
+    "boil": null,
+    "dens": null
+  },
+  "113": {
+    "sym": "Nh",
+    "name": "Nihonyum",
+    "mass": 286,
+    "elec": "[Rn]5f¹⁴6d¹⁰7s²7p¹",
+    "melt": null,
+    "boil": null,
+    "dens": null
+  },
+  "114": {
+    "sym": "Fl",
+    "name": "Flerovyum",
+    "mass": 289,
+    "elec": "[Rn]5f¹⁴6d¹⁰7s²7p²",
+    "melt": null,
+    "boil": null,
+    "dens": null
+  },
+  "115": {
+    "sym": "Mc",
+    "name": "Moskovyum",
+    "mass": 290,
+    "elec": "[Rn]5f¹⁴6d¹⁰7s²7p³",
+    "melt": null,
+    "boil": null,
+    "dens": null
+  },
+  "116": {
+    "sym": "Lv",
+    "name": "Livermoryum",
+    "mass": 293,
+    "elec": "[Rn]5f¹⁴6d¹⁰7s²7p⁴",
+    "melt": null,
+    "boil": null,
+    "dens": null
+  },
+  "117": {
+    "sym": "Ts",
+    "name": "Tennesin",
+    "mass": 294,
+    "elec": "[Rn]5f¹⁴6d¹⁰7s²7p⁵",
+    "melt": null,
+    "boil": null,
+    "dens": null
+  },
+  "118": {
+    "sym": "Og",
+    "name": "Oganesson",
+    "mass": 294,
+    "elec": "[Rn]5f¹⁴6d¹⁰7s²7p⁶",
+    "melt": null,
+    "boil": null,
+    "dens": null
+  }
+}

@@ -1,0 +1,1 @@
+def distortion_size(severity): return 0.1*severity

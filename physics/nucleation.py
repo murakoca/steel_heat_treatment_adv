@@ -1,0 +1,1 @@
+def classical_nucleation(dGv, gamma, T): return 1e30*(gamma**3/(dGv**2*T))**0.5

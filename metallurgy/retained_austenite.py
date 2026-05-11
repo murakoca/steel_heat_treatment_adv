@@ -1,0 +1,1 @@
+def retained(ms): return max(0,0.1-0.001*(ms-200))

@@ -1,0 +1,185 @@
+{
+  "Fe": {
+    "role": "Çeliğin ana elementi (%95-99)",
+    "details": [
+      "Ferrit (α) ve östenit (γ) matrisi",
+      "Karbon çözünürlüğü sıcaklığa bağlıdır",
+      "Allotropik dönüşüm gösterir (BCC↔FCC)"
+    ],
+    "max": 100,
+    "range": "95-99%"
+  },
+  "C": {
+    "role": "En önemli alaşım elementi. Sertlik ve mukavemeti belirler.",
+    "details": [
+      "Östenit dengeleyici (γ fazı genişletici)",
+      "Çelik sınıfını belirler (%0.02-2.1)",
+      "Ms sıcaklığını düşürür",
+      "Fe₃C sementit ve alaşım karbürleri oluşturur",
+      "Sertleşebilirliği artırır, kaynak kabiliyetini azaltır"
+    ],
+    "max": 2.1,
+    "range": "0.02-2.1%"
+  },
+  "Mn": {
+    "role": "Deoksidasyon, kükürt kontrolü, sertleşebilirlik.",
+    "details": [
+      "Östenit dengeleyici",
+      "CE formülünde Mn/6",
+      "MnS oluşturarak sıcak kırılganlığı önler",
+      "Ms sıcaklığını düşürür",
+      "Tane büyümesini engeller"
+    ],
+    "max": 2.0,
+    "range": "0.3-1.5%"
+  },
+  "Si": {
+    "role": "Deoksidasyon, manyetik özellikler, elastikiyet.",
+    "details": [
+      "Ferrit dengeleyici",
+      "Deoksidasyon (sıvı çelikten oksijen giderir)",
+      "Elektrik çeliklerinde manyetik özellikler",
+      "Yay çeliklerinde elastikiyet",
+      "Grafitleşmeyi teşvik eder"
+    ],
+    "max": 2.0,
+    "range": "0.1-0.5%"
+  },
+  "Cr": {
+    "role": "Korozyon direnci, sertleşebilirlik, karbür oluşumu.",
+    "details": [
+      "Ferrit dengeleyici",
+      "%10.5+ paslanmaz çelik",
+      "Cr₂₃C₆, Cr₇C₃ karbürleri",
+      "Oksidasyon direnci",
+      "Yüksek sıcaklık dayanımı"
+    ],
+    "max": 30,
+    "range": "0.5-18%"
+  },
+  "Ni": {
+    "role": "Tokluk, korozyon direnci, östenit kararlılığı.",
+    "details": [
+      "Östenit dengeleyici",
+      "Tokluğu artırır, gevrekleşmeyi önler",
+      "Paslanmaz çeliklerde korozyon direnci",
+      "Kriyojenik uygulamalar",
+      "Karbon difüzyonunu yavaşlatır"
+    ],
+    "max": 30,
+    "range": "0.5-20%"
+  },
+  "Mo": {
+    "role": "Sertleşebilirlik, yüksek sıcaklık dayanımı, korozyon.",
+    "details": [
+      "Ferrit dengeleyici, karbür yapıcı",
+      "CE'de Mo/5",
+      "Sıcak sürünme dayanımı",
+      "Çukurcuk korozyonu direnci",
+      "Mo₂C, Mo₆C karbürleri"
+    ],
+    "max": 10,
+    "range": "0.1-5%"
+  },
+  "V": {
+    "role": "Tane inceltme, aşınma direnci, ikincil sertleşme.",
+    "details": [
+      "Güçlü karbür/nitrür yapıcı (VC, VN)",
+      "Tane büyümesini engeller",
+      "İkincil sertleşme (temperlemede)",
+      "Aşınma direncini artırır",
+      "Mikro alaşım elementi"
+    ],
+    "max": 5,
+    "range": "0.05-2%"
+  },
+  "W": {
+    "role": "Yüksek sıcaklık dayanımı, kırmızı sertlik, aşınma.",
+    "details": [
+      "Karbür yapıcı (WC, W₂C, W₆C)",
+      "Yüksek hız çeliklerinde kırmızı sertlik",
+      "Aşınma direnci",
+      "En yüksek ergime noktası (3422°C)"
+    ],
+    "max": 20,
+    "range": "1-18%"
+  },
+  "Co": {
+    "role": "Kırmızı sertlik, manyetik özellikler.",
+    "details": [
+      "Karbür yapmaz, matrikste çözünür",
+      "Yüksek hız çeliklerinde kırmızı sertlik",
+      "Maraging çeliklerinde çökeltme",
+      "Manyetik çelikler",
+      "Stratejik element"
+    ],
+    "max": 18,
+    "range": "0.5-18%"
+  },
+  "Nb": {
+    "role": "Tane inceltme, çökeltme sertleşmesi.",
+    "details": [
+      "Karbür/nitrür yapıcı (NbC, NbN)",
+      "Mikro alaşım (çok düşük miktar)",
+      "HSLA çelikleri",
+      "Taneler arası korozyon önleme"
+    ],
+    "max": 1.0,
+    "range": "0.02-0.8%"
+  },
+  "Ti": {
+    "role": "Deoksidasyon, tane inceltme, korozyon.",
+    "details": [
+      "Güçlü karbür/nitrür (TiC, TiN)",
+      "Paslanmaz stabilizasyonu",
+      "IF çelikleri",
+      "Kaynakta tane inceltme"
+    ],
+    "max": 2.0,
+    "range": "0.01-1%"
+  },
+  "Al": {
+    "role": "Deoksidasyon, tane inceltme, nitrürleme.",
+    "details": [
+      "Deoksidan (son oksijeni alır)",
+      "AlN ile tane inceltme",
+      "Nitrürleme çeliklerinde yüzey sertliği",
+      "Ferrit dengeleyici"
+    ],
+    "max": 2.0,
+    "range": "0.01-0.1%"
+  },
+  "Cu": {
+    "role": "Korozyon direnci, çökeltme sertleşmesi.",
+    "details": [
+      "Atmosferik korozyon direnci",
+      "Çökeltme sertleşmesi",
+      "Antibakteriyel çelikler",
+      "Sıcak kırılganlık riski"
+    ],
+    "max": 2.0,
+    "range": "0.2-1.5%"
+  },
+  "B": {
+    "role": "Sertleşebilirliği ppm seviyesinde aşırı artırır.",
+    "details": [
+      "5-30 ppm yeterlidir",
+      "Tane sınırına segrege olur",
+      "Ferrit çekirdeklenmesini geciktirir",
+      "Ti/Al ile korunmalıdır"
+    ],
+    "max": 0.005,
+    "range": "0.0005-0.003%"
+  },
+  "N": {
+    "role": "Östenit stabilitesi, yüzey sertleştirme.",
+    "details": [
+      "Östenit dengeleyici",
+      "Nitrürleme ile yüzey sertleştirme",
+      "Dubleks çeliklerde faz dengesi",
+      "Yaşlanma gevrekleşmesi riski"
+    ],
+    "max": 0.5,
+    "range": "0.003-0.3%"
+  }
+}

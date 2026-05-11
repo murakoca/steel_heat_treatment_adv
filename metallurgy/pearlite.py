@@ -1,0 +1,1 @@
+def Ps(): return 727
