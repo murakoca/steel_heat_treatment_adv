@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Isil Islem Simulasyon Platformu - Periyodik Tablolu"""
+"""Isıl İşlem Simülasyon Platformu - Tüm Özellikler"""
 import sys, os, json
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -22,10 +22,21 @@ from simulation.engine import SimulationEngine
 from part.geometry import Cylinder, Plate
 from furnace.profile import FurnaceProfile
 from periodic.table import PeriodicTable
+from metallurgy.lever_rule import calculate as lever_calculate, FE_C_EXAMPLES
 
 def load_steel_list():
     with open(DB_PATH) as f:
         return list(json.load(f).keys())
+
+MATERIAL_GUIDE = {
+    "Düşük Karbonlu (örn. 1020)": "Yapısal çelikler, araba gövdeleri, borular.",
+    "Orta Karbonlu (örn. 1045)": "Şaft, aks, dişli. Isıl işlemle sertleştirilebilir.",
+    "Yüksek Karbonlu (örn. 1095)": "Yay, bıçak, kesici takım.",
+    "Alaşımlı (örn. 4140)": "Krank mili, iniş takımı.",
+    "Paslanmaz (örn. 316)": "Kimya, medikal, mutfak.",
+    "Takım Çeliği (örn. H13)": "Sıcak iş kalıpları.",
+    "AHSS (örn. DP600)": "Otomotiv panelleri."
+}
 
 class Worker(QThread):
     progress = pyqtSignal(int)
@@ -39,7 +50,7 @@ class Worker(QThread):
 
     def run(self):
         try:
-            self.log.emit("Baslatiliyor...")
+            self.log.emit("Başlatılıyor...")
             steel = Material.from_database(self.cfg["steel"])
             pname = self.cfg["process"]
             if pname == "Quenching":
@@ -71,10 +82,10 @@ class CoolingCanvas(FigureCanvasQTAgg):
         t, T = data
         self.ax.plot(t, T, 'c-', lw=2.5)
         if ms_temp:
-            self.ax.axhline(ms_temp, color='#f38ba8', ls='--', lw=1.5, label=f'Ms={ms_temp}C')
+            self.ax.axhline(ms_temp, color='#f38ba8', ls='--', lw=1.5, label=f'Ms={ms_temp}°C')
             self.ax.legend(framealpha=0.3, facecolor='#313244', edgecolor='#45475a', labelcolor='#cdd6f4')
-        self.ax.set_xlabel("Zaman (s)"); self.ax.set_ylabel("Sicaklik (C)")
-        self.ax.set_title("Soguma Egrisi"); self.ax.grid(True, alpha=0.15, color='#cdd6f4')
+        self.ax.set_xlabel("Zaman (s)"); self.ax.set_ylabel("Sıcaklık (°C)")
+        self.ax.set_title("Soğuma Eğrisi"); self.ax.grid(True, alpha=0.15, color='#cdd6f4')
         self.draw()
 
 class HardnessCanvas(FigureCanvasQTAgg):
@@ -87,7 +98,7 @@ class HardnessCanvas(FigureCanvasQTAgg):
 
     def plot(self, hardness):
         self.ax.clear()
-        labels = ['Yuzey HRC','Merkez HRC','Yuzey HV','Merkez HV']
+        labels = ['Yüzey HRC','Merkez HRC','Yüzey HV','Merkez HV']
         vals = [hardness.surface_hrc, hardness.core_hrc, hardness.surface_hv, hardness.core_hv]
         colors = ['#89b4fa','#74c7ec','#f38ba8','#fab387']
         bars = self.ax.bar(labels, vals, color=colors, edgecolor='#45475a')
@@ -100,7 +111,7 @@ class HardnessCanvas(FigureCanvasQTAgg):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Isil Islem Simulasyon Platformu")
+        self.setWindowTitle("Isıl İşlem Simülasyon Platformu")
         self.setMinimumSize(1400, 900)
         self.steels = load_steel_list()
         self.pt = PeriodicTable()
@@ -109,7 +120,7 @@ class MainWindow(QMainWindow):
 
     def _load_style(self):
         try:
-            with open(os.path.join(BASE_DIR, "styles.qss")) as f:
+            with open(os.path.join(BASE_DIR, "styles.qss"), encoding='utf-8') as f:
                 self.setStyleSheet(f.read())
         except: pass
 
@@ -119,12 +130,13 @@ class MainWindow(QMainWindow):
         tabs = QTabWidget()
         main_layout.addWidget(tabs)
 
-        # ===== SIMULASYON =====
+        # ===== SİMÜLASYON =====
         sim_tab = QWidget(); sim_layout = QVBoxLayout(sim_tab)
-        top = QGroupBox("Proses Tanimi"); form = QFormLayout(top)
+        top = QGroupBox("Proses Tanımı"); form = QFormLayout(top)
         h1 = QHBoxLayout()
         self.steel_cb = QComboBox(); self.steel_cb.addItems(self.steels)
-        h1.addWidget(QLabel("Celik:")); h1.addWidget(self.steel_cb)
+        self.steel_cb.currentTextChanged.connect(self._show_steel_info)
+        h1.addWidget(QLabel("Çelik:")); h1.addWidget(self.steel_cb)
         self.steel_lbl = QLabel(); self.steel_lbl.setStyleSheet("color:#a6adc8;")
         h1.addWidget(self.steel_lbl)
         form.addRow(h1)
@@ -136,14 +148,14 @@ class MainWindow(QMainWindow):
         self.proc_params = QWidget(); self.proc_layout = QFormLayout(self.proc_params)
         form.addRow("Parametreler:", self.proc_params)
         self._on_proc_changed("Quenching")
-        self.run_btn = QPushButton("Simulasyonu Calistir")
+        self.run_btn = QPushButton("▶ Simülasyonu Çalıştır")
         self.run_btn.clicked.connect(self._start_sim); self.run_btn.setMinimumHeight(40)
         form.addRow(self.run_btn)
         sim_layout.addWidget(top)
         self.progress = QProgressBar(); self.progress.setVisible(False)
         sim_layout.addWidget(self.progress)
         self.res_tabs = QTabWidget()
-        self.cooling_canvas = CoolingCanvas(self); self.res_tabs.addTab(self.cooling_canvas, "Soguma")
+        self.cooling_canvas = CoolingCanvas(self); self.res_tabs.addTab(self.cooling_canvas, "Soğuma")
         self.hardness_canvas = HardnessCanvas(self); self.res_tabs.addTab(self.hardness_canvas, "Sertlik")
         ms_tab = QWidget(); ms_lay = QVBoxLayout(ms_tab)
         self.ms_lbl = QLabel(""); ms_lay.addWidget(self.ms_lbl)
@@ -151,17 +163,31 @@ class MainWindow(QMainWindow):
         self.ms_table.setHorizontalHeaderLabels(["Faz","Oran %","Sertlik HV","C %"])
         self.ms_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         ms_lay.addWidget(self.ms_table)
-        self.res_tabs.addTab(ms_tab, "Mikroyapi")
+        self.res_tabs.addTab(ms_tab, "Mikroyapı")
         self.log_txt = QTextEdit(); self.log_txt.setReadOnly(True)
         self.res_tabs.addTab(self.log_txt, "Log")
         sim_layout.addWidget(self.res_tabs)
-        tabs.addTab(sim_tab, "Simulasyon")
+        tabs.addTab(sim_tab, "🔥 Simülasyon")
 
-        # ===== PERIYODIK TABLO =====
+        # ===== MALZEME REHBERİ =====
+        guide_tab = QWidget(); guide_layout = QVBoxLayout(guide_tab)
+        guide_label = QLabel("Malzeme Seçim Rehberi")
+        guide_label.setFont(QFont("Segoe UI",14, QFont.Bold))
+        guide_layout.addWidget(guide_label)
+        for title, desc in MATERIAL_GUIDE.items():
+            grp = QGroupBox(title)
+            grp_lay = QVBoxLayout(grp)
+            lbl = QLabel(desc); lbl.setWordWrap(True)
+            grp_lay.addWidget(lbl)
+            guide_layout.addWidget(grp)
+        guide_layout.addStretch()
+        tabs.addTab(guide_tab, "📚 Rehber")
+
+        # ===== PERİYODİK TABLO =====
         periodic_tab = QWidget(); periodic_layout = QVBoxLayout(periodic_tab)
         info_panel = QGroupBox("Element Bilgisi")
         info_layout = QHBoxLayout(info_panel)
-        self.elem_info_lbl = QLabel("Bir elemente tiklayin...")
+        self.elem_info_lbl = QLabel("Bir elemente tıklayın...")
         self.elem_info_lbl.setWordWrap(True)
         self.elem_info_lbl.setStyleSheet("font-size:13px; color:#cdd6f4;")
         info_layout.addWidget(self.elem_info_lbl)
@@ -194,32 +220,75 @@ class MainWindow(QMainWindow):
             btn.setToolTip(f"{el['name']} ({el['sym']})")
             grid.addWidget(btn, r, c)
         periodic_layout.addWidget(table_widget)
-        steel_panel = QGroupBox("Alasim Etkileri")
+        steel_panel = QGroupBox("Alaşım Etkileri")
         steel_layout = QVBoxLayout(steel_panel)
         self.steel_info_text = QTextEdit(); self.steel_info_text.setReadOnly(True)
         self.steel_info_text.setMaximumHeight(200)
         steel_layout.addWidget(self.steel_info_text)
         periodic_layout.addWidget(steel_panel)
-        tabs.addTab(periodic_tab, "Periyodik Tablo")
-        self.statusBar().showMessage("Hazir")
+        tabs.addTab(periodic_tab, "🧪 Elementler")
+
+        # ===== LEVER RULE =====
+        lever_tab = QWidget(); lever_layout = QVBoxLayout(lever_tab)
+        info_lbl = QLabel("<h2>⚖️ Kaldıraç Kuralı (Lever Rule)</h2>İki fazlı bölgede faz oranlarını hesaplayın.")
+        info_lbl.setWordWrap(True)
+        lever_layout.addWidget(info_lbl)
+        form_group = QGroupBox("Kompozisyon Değerleri")
+        form = QFormLayout(form_group)
+        self.lever_ca = QLineEdit("0.022")
+        form.addRow("Cα (α fazı %):", self.lever_ca)
+        self.lever_cb = QLineEdit("6.67")
+        form.addRow("Cβ (β fazı %):", self.lever_cb)
+        self.lever_co = QLineEdit("0.8")
+        form.addRow("Co (Genel %):", self.lever_co)
+        btn_layout = QHBoxLayout()
+        calc_btn = QPushButton("Hesapla")
+        calc_btn.clicked.connect(self._calc_lever)
+        btn_layout.addWidget(calc_btn)
+        example_cb = QComboBox()
+        example_cb.addItem("--- Örnekler ---")
+        for key in FE_C_EXAMPLES:
+            example_cb.addItem(key)
+        example_cb.currentTextChanged.connect(lambda t: self._load_lever_example(t))
+        btn_layout.addWidget(example_cb)
+        btn_layout.addStretch()
+        form.addRow(btn_layout)
+        lever_layout.addWidget(form_group)
+        result_group = QGroupBox("Sonuç")
+        result_layout = QVBoxLayout(result_group)
+        self.lever_result = QLabel("<i>Değerleri girin ve Hesapla'ya basın...</i>")
+        self.lever_result.setWordWrap(True)
+        self.lever_result.setStyleSheet("font-size:14px; padding:10px;")
+        result_layout.addWidget(self.lever_result)
+        lever_layout.addWidget(result_group)
+        lever_layout.addStretch()
+        tabs.addTab(lever_tab, "⚖️ Lever Kuralı")
+
+        self.statusBar().showMessage("Hazır")
+
+    def _show_steel_info(self, name):
+        try:
+            m = Material.from_database(name)
+            self.steel_lbl.setText(f"Ms={m.Ms}°C, C=%{m.carbon*100:.2f}")
+        except: self.steel_lbl.setText("")
 
     def _on_proc_changed(self, proc):
         while self.proc_layout.count():
             item = self.proc_layout.takeAt(0)
             if item.widget(): item.widget().deleteLater()
         if proc == "Quenching":
-            self.aust_edit = QLineEdit("850"); self.proc_layout.addRow("Ostenitleme Sic. (C):", self.aust_edit)
+            self.aust_edit = QLineEdit("850"); self.proc_layout.addRow("Östenitleme Sıc. (°C):", self.aust_edit)
             self.media_cb = QComboBox(); self.media_cb.addItems(["Oil","Water","Polymer","Brine"])
             self.proc_layout.addRow("Ortam:", self.media_cb)
             self.ag_cb = QComboBox(); self.ag_cb.addItems(["moderate","still","vigorous"])
             self.proc_layout.addRow("Ajitasyon:", self.ag_cb)
         elif proc == "Tempering":
-            self.temp_edit = QLineEdit("300"); self.proc_layout.addRow("Sicaklik (C):", self.temp_edit)
-            self.time_edit = QLineEdit("3600"); self.proc_layout.addRow("Sure (s):", self.time_edit)
+            self.temp_edit = QLineEdit("300"); self.proc_layout.addRow("Sıcaklık (°C):", self.temp_edit)
+            self.time_edit = QLineEdit("3600"); self.proc_layout.addRow("Süre (s):", self.time_edit)
         elif proc == "Carburizing":
-            self.ctemp_edit = QLineEdit("930"); self.proc_layout.addRow("Sicaklik (C):", self.ctemp_edit)
-            self.ctime_edit = QLineEdit("7200"); self.proc_layout.addRow("Sure (s):", self.ctime_edit)
-            self.cpot_edit = QLineEdit("0.8"); self.proc_layout.addRow("C Pot. (%):", self.cpot_edit)
+            self.ctemp_edit = QLineEdit("930"); self.proc_layout.addRow("Sıcaklık (°C):", self.ctemp_edit)
+            self.ctime_edit = QLineEdit("7200"); self.proc_layout.addRow("Süre (s):", self.ctime_edit)
+            self.cpot_edit = QLineEdit("0.8"); self.proc_layout.addRow("C Potansiyeli (%):", self.cpot_edit)
 
     def _start_sim(self):
         self.run_btn.setEnabled(False); self.progress.setVisible(True); self.progress.setValue(0)
@@ -238,7 +307,7 @@ class MainWindow(QMainWindow):
                 cfg["carb_time"] = float(self.ctime_edit.text())
                 cfg["carbon_pot"] = float(self.cpot_edit.text())
         except Exception as e:
-            QMessageBox.critical(self, "Hata", str(e))
+            QMessageBox.critical(self, "Hata", f"Geçersiz değer: {e}")
             self.run_btn.setEnabled(True); self.progress.setVisible(False); return
         self.worker = Worker(cfg)
         self.worker.progress.connect(self.progress.setValue)
@@ -250,7 +319,8 @@ class MainWindow(QMainWindow):
     def _sim_done(self, res):
         self.progress.setVisible(False); self.run_btn.setEnabled(True)
         if res.cooling_curve:
-            self.cooling_canvas.plot(res.cooling_curve, ms_temp=Material.from_database(self.steel_cb.currentText()).Ms)
+            mat = Material.from_database(self.steel_cb.currentText())
+            self.cooling_canvas.plot(res.cooling_curve, ms_temp=mat.Ms)
         if res.hardness: self.hardness_canvas.plot(res.hardness)
         if res.phases:
             self.ms_table.setRowCount(0)
@@ -264,38 +334,63 @@ class MainWindow(QMainWindow):
 
     def _sim_err(self, msg):
         self.progress.setVisible(False); self.run_btn.setEnabled(True)
-        QMessageBox.critical(self, "Hata", msg)
+        QMessageBox.critical(self, "Simülasyon Hatası", msg)
 
     def _show_element(self, num):
         el = self.pt.get(num)
         if not el: return
         info = f"<b>{el['name']} ({el['sym']})</b><br>"
-        info += f"Atom No: {num} | Kutle: {el['mass']} u<br>"
+        info += f"Atom No: {num} | Kütle: {el['mass']} u<br>"
         if el.get('melt') is not None:
-            info += f"Erime: {el['melt']}C | Kaynama: {el['boil']}C<br>"
+            info += f"Erime: {el['melt']}°C | Kaynama: {el['boil']}°C<br>"
         self.elem_info_lbl.setText(info)
         effect = self.pt.get_effect(el['sym'])
         txt = ""
         if effect:
-            txt += f"<b>{el['sym']} - Celikteki Rolu:</b><br>{effect['role']}<br><br>"
+            txt += f"<b>{el['sym']} - Çelikteki Rolü:</b><br>{effect['role']}<br><br>"
             for d in effect['details']: txt += f"• {d}<br>"
             txt += f"<br>Maks: %{effect['max']} | Tipik: {effect['range']}"
         elif el['sym'] == 'Fe':
-            txt = "<b>Demir - Celigin temeli</b><br>"
+            txt = "<b>Demir - Çeliğin temeli</b><br>"
         else:
-            txt = f"<i>{el['name']} alasim elementi degil.</i>"
+            txt = f"<i>{el['name']} alaşım elementi değil.</i>"
         inter = self.pt.get_interactions(el['sym'])
         if inter:
-            txt += "<br><br><b>Etkilesimler:</b><br>"
+            txt += "<br><br><b>Etkileşimler:</b><br>"
             for ix in inter:
                 other = ix['pair'][1] if ix['pair'][0] == el['sym'] else ix['pair'][0]
-                txt += f"• {el['sym']} + {other} -> {ix['effect']}<br>"
+                txt += f"• {el['sym']} + {other} → {ix['effect']}<br>"
         self.steel_info_text.setHtml(txt)
+
+    def _calc_lever(self):
+        try:
+            Ca = float(self.lever_ca.text())
+            Cb = float(self.lever_cb.text())
+            Co = float(self.lever_co.text())
+            result = lever_calculate(Ca, Cb, Co)
+            txt = f"<b>Faz Oranları:</b><br>"
+            txt += f"α fazı: <b>%{result.percent_alpha:.1f}</b><br>"
+            txt += f"β fazı: <b>%{result.percent_beta:.1f}</b><br><br>"
+            txt += f"<b>Kaldıraç Kuralı:</b><br>"
+            txt += f"fα = (Cβ - Co) / (Cβ - Cα) = ({Cb} - {Co}) / ({Cb} - {Ca}) = <b>{result.fraction_alpha:.4f}</b><br>"
+            txt += f"fβ = (Co - Cα) / (Cβ - Cα) = ({Co} - {Ca}) / ({Cb} - {Ca}) = <b>{result.fraction_beta:.4f}</b>"
+            self.lever_result.setText(txt)
+        except ValueError as e:
+            self.lever_result.setText(f"<span style='color:#f38ba8;'>Hata: {e}</span>")
+
+    def _load_lever_example(self, name):
+        if name in FE_C_EXAMPLES:
+            ex = FE_C_EXAMPLES[name]
+            self.lever_ca.setText(str(ex["Ca"]))
+            self.lever_cb.setText(str(ex["Cb"]))
+            self.lever_co.setText(str(ex["Co"]))
+            self._calc_lever()
 
 
 def main():
     app = QApplication(sys.argv)
     app.setStyle("Fusion")
+    app.setFont(QFont("Segoe UI", 9))
     win = MainWindow()
     win.show()
     sys.exit(app.exec_())
