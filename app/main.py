@@ -22,6 +22,7 @@ from simulation.engine import SimulationEngine
 from part.geometry import Cylinder, Plate
 from furnace.profile import FurnaceProfile
 from periodic.table import PeriodicTable
+from metallurgy.ree import REEDatabase
 from metallurgy.lever_rule import calculate as lever_calculate, FE_C_EXAMPLES
 
 def load_steel_list():
@@ -263,6 +264,77 @@ class MainWindow(QMainWindow):
         lever_layout.addWidget(result_group)
         lever_layout.addStretch()
         tabs.addTab(lever_tab, "⚖️ Lever Kuralı")
+
+        # ===== REE SEKMESI =====
+        self.ree_db = REEDatabase()
+        ree_data = self.ree_db.get_all()
+        
+        ree_tab = QWidget()
+        ree_layout = QVBoxLayout(ree_tab)
+        
+        # Başlık
+        title = QLabel("<h2>🧪 Nadir Toprak Elementleri (REE)</h2>")
+        title.setWordWrap(True)
+        ree_layout.addWidget(title)
+        
+        # Açıklama
+        desc = QTextEdit()
+        desc.setReadOnly(True)
+        desc.setMaximumHeight(100)
+        desc.setHtml(f"<p>{ree_data['description']}</p>"
+                     f"<p><b>17 element:</b> {', '.join(ree_data['elements'])}</p>"
+                     f"<p><b>Hafif REE:</b> {', '.join(ree_data['light_ree'])}</p>"
+                     f"<p><b>Ağır REE:</b> {', '.join(ree_data['heavy_ree'])}</p>")
+        ree_layout.addWidget(desc)
+        
+        # Sekme içinde alt sekmeler
+        ree_tabs = QTabWidget()
+        
+        # --- Uygulamalar ---
+        app_tab = QWidget()
+        app_layout = QVBoxLayout(app_tab)
+        apps = ree_data["applications"]
+        for app_name, app_info in apps.items():
+            grp = QGroupBox(f"📌 {app_name}")
+            grp_lay = QVBoxLayout(grp)
+            lbl = QLabel(f"<b>Elementler:</b> {', '.join(app_info['elements'])}<br>"
+                        f"<b>Açıklama:</b> {app_info['desc']}")
+            lbl.setWordWrap(True)
+            grp_lay.addWidget(lbl)
+            app_layout.addWidget(grp)
+        app_layout.addStretch()
+        ree_tabs.addTab(app_tab, "Uygulamalar")
+        
+        # --- Kullanım Dağılımı ---
+        usage_tab = QWidget()
+        usage_layout = QVBoxLayout(usage_tab)
+        usage_lbl = QLabel("<h3>ABD Nadir Toprak Kullanımı</h3>")
+        usage_layout.addWidget(usage_lbl)
+        for sector, pct in ree_data["usage_distribution"].items():
+            bar = QProgressBar()
+            bar.setValue(pct)
+            bar.setFormat(f"{sector}: %{pct}")
+            usage_layout.addWidget(QLabel(sector))
+            usage_layout.addWidget(bar)
+        usage_layout.addStretch()
+        ree_tabs.addTab(usage_tab, "Kullanım Dağılımı")
+        
+        # --- Mineraller ve Ekstraksiyon ---
+        mineral_tab = QWidget()
+        mineral_layout = QVBoxLayout(mineral_tab)
+        mineral_layout.addWidget(QLabel("<h3>REE Mineralleri</h3>"))
+        for m in ree_data["minerals"]:
+            mineral_layout.addWidget(QLabel(f"• <b>{m['name']}</b>: {m['formula']} ({m['type']})"))
+        mineral_layout.addWidget(QLabel("<br><h3>Ekstraksiyon Aşamaları</h3>"))
+        for i, step in enumerate(ree_data["extraction_steps"], 1):
+            mineral_layout.addWidget(QLabel(f"  {i}. {step}"))
+        mineral_layout.addWidget(QLabel(f"<br><b>⚠️ Zorluk:</b> {ree_data['separation_challenge']}"))
+        mineral_layout.addStretch()
+        ree_tabs.addTab(mineral_tab, "Mineraller & İşleme")
+        
+        ree_layout.addWidget(ree_tabs)
+        tabs.addTab(ree_tab, "🧪 REE")
+
 
         self.statusBar().showMessage("Hazır")
 

@@ -1,0 +1,151 @@
+{
+  "description": "Nadir Toprak Elementleri (REE), 15 lantanit + skandiyum (Sc) ve itriyum (Y) olmak üzere 17 elementten oluşur. İsmine rağmen nispeten bol bulunurlar, ancak konsantre formda nadirdirler. Benzersiz manyetik, optik ve elektronik özellikleri nedeniyle ileri teknolojiler için kritiktir.",
+  "elements": [
+    "Sc",
+    "Y",
+    "La",
+    "Ce",
+    "Pr",
+    "Nd",
+    "Pm",
+    "Sm",
+    "Eu",
+    "Gd",
+    "Tb",
+    "Dy",
+    "Ho",
+    "Er",
+    "Tm",
+    "Yb",
+    "Lu"
+  ],
+  "light_ree": [
+    "La",
+    "Ce",
+    "Pr",
+    "Nd",
+    "Pm",
+    "Sm",
+    "Eu"
+  ],
+  "heavy_ree": [
+    "Gd",
+    "Tb",
+    "Dy",
+    "Ho",
+    "Er",
+    "Tm",
+    "Yb",
+    "Lu",
+    "Sc",
+    "Y"
+  ],
+  "minerals": [
+    {
+      "name": "Monazit",
+      "formula": "(Ce,La,Nd,Th)PO₄",
+      "type": "Fosfat"
+    },
+    {
+      "name": "Bastnäsit",
+      "formula": "(Ce,La,Y)CO₃F",
+      "type": "Karbonat-florür"
+    },
+    {
+      "name": "Ksenotim",
+      "formula": "YPO₄",
+      "type": "Fosfat (ağır REE)"
+    },
+    {
+      "name": "Loparit",
+      "formula": "(Ce,Na,Ca)(Ti,Nb)O₃",
+      "type": "Oksit"
+    }
+  ],
+  "extraction_steps": [
+    "Kırma ve öğütme",
+    "Köpük flotasyonu / gravite ayırma",
+    "Asit/alkali liçi",
+    "Çözücü ekstraksiyonu (SX) ile ayırma",
+    "İyon değiştirme",
+    "İndirgeme ve saflaştırma"
+  ],
+  "applications": {
+    "Elektrikli Araç Motorları": {
+      "elements": [
+        "Nd",
+        "Dy",
+        "Pr"
+      ],
+      "desc": "Yüksek mukavemetli kalıcı mıknatıslar"
+    },
+    "Rüzgar Türbinleri": {
+      "elements": [
+        "Nd",
+        "Dy"
+      ],
+      "desc": "Verimli jeneratör mıknatısları"
+    },
+    "Akıllı Telefonlar": {
+      "elements": [
+        "Nd",
+        "Y",
+        "Eu",
+        "Tb"
+      ],
+      "desc": "Hoparlör, titreşim, ekran fosforu"
+    },
+    "Savunma Sistemleri": {
+      "elements": [
+        "Sm",
+        "Gd",
+        "Dy"
+      ],
+      "desc": "Radar, güdüm, lazer sistemleri"
+    },
+    "Katalitik Konvertörler": {
+      "elements": [
+        "Ce",
+        "La"
+      ],
+      "desc": "Otomotiv emisyon kontrolü (%62 kullanım)"
+    },
+    "Cam Parlatma & Seramik": {
+      "elements": [
+        "Ce",
+        "La"
+      ],
+      "desc": "Optik cam, lens parlatma (%9)"
+    },
+    "Petrol Rafinajı": {
+      "elements": [
+        "La",
+        "Ce"
+      ],
+      "desc": "FCC katalizörleri (%13)"
+    },
+    "Fosforlar & Aydınlatma": {
+      "elements": [
+        "Eu",
+        "Tb",
+        "Y"
+      ],
+      "desc": "LED, floresan lamba fosforu (%3)"
+    }
+  },
+  "usage_distribution": {
+    "Katalizör": 62,
+    "Metalurji": 13,
+    "Cam & Seramik": 9,
+    "Mıknatıslar": 7,
+    "Fosforlar": 3,
+    "Diğer": 6
+  },
+  "separation_challenge": "REE'lerin kimyasal özellikleri birbirine çok benzediğinden, solvent ekstraksiyonu ile ayırma zor ve maliyetlidir. 99.99% saflık için yüzlerce aşama gerekebilir.",
+  "top_producers": {
+    "Çin": "~%70 (dünya üretimi)",
+    "ABD": "~%15 (Mountain Pass)",
+    "Avustralya": "~%8 (Lynas)",
+    "Myanmar": "~%5"
+  }
+}
