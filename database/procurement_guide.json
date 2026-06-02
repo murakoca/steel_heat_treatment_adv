@@ -1,0 +1,92 @@
+{
+  "tr": {
+    "title": "📊 Satın Alma Rehberi – Toplam Değer Yaklaşımı",
+    "subtitle": "\"Çelik maliyet baskısı altında ayakta kalan satın alma kararları\"",
+    "sections": {
+      "lower_total_cost": {
+        "title": "1. Daha Düşük Toplam Maliyet",
+        "content": [
+          "Toplam Maliyet = Satın Alma Fiyatı + İşletme Maliyeti + Kalite Maliyeti + Gecikme Maliyeti",
+          "• Tedarikçi A: 100.000 TL + 20.000 TL yeniden işleme + 15.000 TL gecikme = 145.000 TL",
+          "• Tedarikçi B: 110.000 TL = daha ekonomik!"
+        ]
+      },
+      "lower_project_risk": {
+        "title": "2. Daha Düşük Proje Riski",
+        "content": [
+          "Kalitesiz malzeme, tedarikçi iflası, teslimat gecikmesi riskleri.",
+          "Profesyonel ekipler tedarikçi geçmişini, sertifikaları, referansları inceler."
+        ]
+      },
+      "on_time_delivery": {
+        "title": "3. Zamanında Teslimat",
+        "content": [
+          "Üretim hattı durduğunda maliyetler çok yüksektir.",
+          "%5 daha pahalı ama zamanında teslim eden tedarikçi tercih edilir."
+        ]
+      },
+      "best_total_value": {
+        "title": "4. En İyi Toplam Değer",
+        "content": [
+          "En düşük fiyat ≠ En iyi satın alma kararı",
+          "Toplam değer: Fiyat + Kalite + Güvenilirlik + Teslimat + Destek + Risk"
+        ]
+      }
+    },
+    "calculator": {
+      "title": "Toplam Maliyet Hesaplayıcı",
+      "supplier_a": "Tedarikçi A",
+      "supplier_b": "Tedarikçi B",
+      "purchase_price": "Satın Alma Fiyatı",
+      "rework_cost": "Yeniden İşleme",
+      "delay_cost": "Gecikme",
+      "quality_cost": "Kalite Kaybı",
+      "total": "Gerçek Toplam"
+    }
+  },
+  "en": {
+    "title": "📊 Procurement Guide – Total Value Approach",
+    "subtitle": "\"Procurement decisions that hold up under steel-cost pressure\"",
+    "sections": {
+      "lower_total_cost": {
+        "title": "1. Lower Total Cost",
+        "content": [
+          "Total Cost = Purchase Price + Operating Cost + Quality Cost + Delay Cost",
+          "• Supplier A: 100k + 20k rework + 15k delay = 145k",
+          "• Supplier B: 110k = more economical!"
+        ]
+      },
+      "lower_project_risk": {
+        "title": "2. Lower Project Risk",
+        "content": [
+          "Risks: poor materials, supplier bankruptcy, delivery delays.",
+          "Professional teams examine history, certifications, references."
+        ]
+      },
+      "on_time_delivery": {
+        "title": "3. On-Time Delivery",
+        "content": [
+          "When production stops, costs skyrocket.",
+          "Managers prefer 5% more expensive but on-time supplier."
+        ]
+      },
+      "best_total_value": {
+        "title": "4. Best Total Value",
+        "content": [
+          "Lowest price ≠ Best decision",
+          "Value = Price + Quality + Reliability + Delivery + Support + Risk"
+        ]
+      }
+    },
+    "calculator": {
+      "title": "Total Cost Calculator",
+      "supplier_a": "Supplier A",
+      "supplier_b": "Supplier B",
+      "purchase_price": "Purchase Price",
+      "rework_cost": "Rework",
+      "delay_cost": "Delay",
+      "quality_cost": "Quality Loss",
+      "total": "True Total"
+    }
+  }
+}

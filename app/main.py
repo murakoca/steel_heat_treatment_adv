@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Isıl İşlem Simülasyon Platformu - Tüm Özellikler"""
+"""Isıl İşlem Simülasyon Platformu – Tüm Özellikler (v2.6)"""
 import sys, os, json
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -22,8 +22,10 @@ from simulation.engine import SimulationEngine
 from part.geometry import Cylinder, Plate
 from furnace.profile import FurnaceProfile
 from periodic.table import PeriodicTable
-from metallurgy.ree import REEDatabase
 from metallurgy.lever_rule import calculate as lever_calculate, FE_C_EXAMPLES
+from metallurgy.ree import REEDatabase
+from metallurgy.interactive_fec import FeCDiagram
+from procurement.calculator import SupplierCost, compare_suppliers
 
 def load_steel_list():
     with open(DB_PATH) as f:
@@ -116,6 +118,8 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(1400, 900)
         self.steels = load_steel_list()
         self.pt = PeriodicTable()
+        # Boş fec_sliders sözlüğünü erkenden oluştur (hata almamak için)
+        self.fec_sliders = {}
         self._ui()
         self._load_style()
 
@@ -236,23 +240,16 @@ class MainWindow(QMainWindow):
         lever_layout.addWidget(info_lbl)
         form_group = QGroupBox("Kompozisyon Değerleri")
         form = QFormLayout(form_group)
-        self.lever_ca = QLineEdit("0.022")
-        form.addRow("Cα (α fazı %):", self.lever_ca)
-        self.lever_cb = QLineEdit("6.67")
-        form.addRow("Cβ (β fazı %):", self.lever_cb)
-        self.lever_co = QLineEdit("0.8")
-        form.addRow("Co (Genel %):", self.lever_co)
+        self.lever_ca = QLineEdit("0.022"); form.addRow("Cα (α fazı %):", self.lever_ca)
+        self.lever_cb = QLineEdit("6.67"); form.addRow("Cβ (β fazı %):", self.lever_cb)
+        self.lever_co = QLineEdit("0.8"); form.addRow("Co (Genel %):", self.lever_co)
         btn_layout = QHBoxLayout()
-        calc_btn = QPushButton("Hesapla")
-        calc_btn.clicked.connect(self._calc_lever)
+        calc_btn = QPushButton("Hesapla"); calc_btn.clicked.connect(self._calc_lever)
         btn_layout.addWidget(calc_btn)
-        example_cb = QComboBox()
-        example_cb.addItem("--- Örnekler ---")
-        for key in FE_C_EXAMPLES:
-            example_cb.addItem(key)
+        example_cb = QComboBox(); example_cb.addItem("--- Örnekler ---")
+        for key in FE_C_EXAMPLES: example_cb.addItem(key)
         example_cb.currentTextChanged.connect(lambda t: self._load_lever_example(t))
-        btn_layout.addWidget(example_cb)
-        btn_layout.addStretch()
+        btn_layout.addWidget(example_cb); btn_layout.addStretch()
         form.addRow(btn_layout)
         lever_layout.addWidget(form_group)
         result_group = QGroupBox("Sonuç")
@@ -265,63 +262,34 @@ class MainWindow(QMainWindow):
         lever_layout.addStretch()
         tabs.addTab(lever_tab, "⚖️ Lever Kuralı")
 
-        # ===== REE SEKMESI =====
+        # ===== REE =====
         self.ree_db = REEDatabase()
         ree_data = self.ree_db.get_all()
-        
-        ree_tab = QWidget()
-        ree_layout = QVBoxLayout(ree_tab)
-        
-        # Başlık
-        title = QLabel("<h2>🧪 Nadir Toprak Elementleri (REE)</h2>")
-        title.setWordWrap(True)
+        ree_tab = QWidget(); ree_layout = QVBoxLayout(ree_tab)
+        title = QLabel("<h2>🧪 Nadir Toprak Elementleri (REE)</h2>"); title.setWordWrap(True)
         ree_layout.addWidget(title)
-        
-        # Açıklama
-        desc = QTextEdit()
-        desc.setReadOnly(True)
-        desc.setMaximumHeight(100)
-        desc.setHtml(f"<p>{ree_data['description']}</p>"
-                     f"<p><b>17 element:</b> {', '.join(ree_data['elements'])}</p>"
-                     f"<p><b>Hafif REE:</b> {', '.join(ree_data['light_ree'])}</p>"
-                     f"<p><b>Ağır REE:</b> {', '.join(ree_data['heavy_ree'])}</p>")
+        desc = QTextEdit(); desc.setReadOnly(True); desc.setMaximumHeight(100)
+        desc.setHtml(f"<p>{ree_data['description']}</p><p><b>17 element:</b> {', '.join(ree_data['elements'])}</p>")
         ree_layout.addWidget(desc)
-        
-        # Sekme içinde alt sekmeler
         ree_tabs = QTabWidget()
-        
-        # --- Uygulamalar ---
-        app_tab = QWidget()
-        app_layout = QVBoxLayout(app_tab)
-        apps = ree_data["applications"]
-        for app_name, app_info in apps.items():
+        app_tab = QWidget(); app_layout = QVBoxLayout(app_tab)
+        for app_name, app_info in ree_data["applications"].items():
             grp = QGroupBox(f"📌 {app_name}")
             grp_lay = QVBoxLayout(grp)
-            lbl = QLabel(f"<b>Elementler:</b> {', '.join(app_info['elements'])}<br>"
-                        f"<b>Açıklama:</b> {app_info['desc']}")
+            lbl = QLabel(f"<b>Elementler:</b> {', '.join(app_info['elements'])}<br><b>Açıklama:</b> {app_info['desc']}")
             lbl.setWordWrap(True)
             grp_lay.addWidget(lbl)
             app_layout.addWidget(grp)
         app_layout.addStretch()
         ree_tabs.addTab(app_tab, "Uygulamalar")
-        
-        # --- Kullanım Dağılımı ---
-        usage_tab = QWidget()
-        usage_layout = QVBoxLayout(usage_tab)
-        usage_lbl = QLabel("<h3>ABD Nadir Toprak Kullanımı</h3>")
-        usage_layout.addWidget(usage_lbl)
+        usage_tab = QWidget(); usage_layout = QVBoxLayout(usage_tab)
+        usage_lbl = QLabel("<h3>ABD Nadir Toprak Kullanımı</h3>"); usage_layout.addWidget(usage_lbl)
         for sector, pct in ree_data["usage_distribution"].items():
-            bar = QProgressBar()
-            bar.setValue(pct)
-            bar.setFormat(f"{sector}: %{pct}")
-            usage_layout.addWidget(QLabel(sector))
-            usage_layout.addWidget(bar)
+            bar = QProgressBar(); bar.setValue(pct); bar.setFormat(f"{sector}: %{pct}")
+            usage_layout.addWidget(QLabel(sector)); usage_layout.addWidget(bar)
         usage_layout.addStretch()
         ree_tabs.addTab(usage_tab, "Kullanım Dağılımı")
-        
-        # --- Mineraller ve Ekstraksiyon ---
-        mineral_tab = QWidget()
-        mineral_layout = QVBoxLayout(mineral_tab)
+        mineral_tab = QWidget(); mineral_layout = QVBoxLayout(mineral_tab)
         mineral_layout.addWidget(QLabel("<h3>REE Mineralleri</h3>"))
         for m in ree_data["minerals"]:
             mineral_layout.addWidget(QLabel(f"• <b>{m['name']}</b>: {m['formula']} ({m['type']})"))
@@ -331,13 +299,175 @@ class MainWindow(QMainWindow):
         mineral_layout.addWidget(QLabel(f"<br><b>⚠️ Zorluk:</b> {ree_data['separation_challenge']}"))
         mineral_layout.addStretch()
         ree_tabs.addTab(mineral_tab, "Mineraller & İşleme")
-        
         ree_layout.addWidget(ree_tabs)
         tabs.addTab(ree_tab, "🧪 REE")
 
+        # ===== İNTERAKTİF Fe–C DİYAGRAMI =====
+        self.fec_engine = FeCDiagram()
+        fec_tab = QWidget(); fec_layout = QHBoxLayout(fec_tab)
+        left_panel = QWidget(); left_layout = QVBoxLayout(left_panel)
+        fig = Figure(figsize=(10, 8), facecolor='#1e1e2e')
+        self.fec_canvas = FigureCanvasQTAgg(fig)
+        self.fec_ax = fig.add_subplot(111, facecolor='#1e1e2e')
+        self.fec_ax.tick_params(colors='#cdd6f4', labelsize=10)
+        for spine in self.fec_ax.spines.values(): spine.set_color('#45475a')
+        self.fec_ax.xaxis.label.set_color('#cdd6f4'); self.fec_ax.yaxis.label.set_color('#cdd6f4')
+        self.fec_ax.title.set_color('#cdd6f4')
+        left_layout.addWidget(self.fec_canvas)
+        right_panel = QWidget(); right_panel.setMaximumWidth(350)
+        right_layout = QVBoxLayout(right_panel)
+        mat_group = QGroupBox("📋 Hazır Malzeme Seç")
+        mat_layout = QVBoxLayout(mat_group)
+        self.fec_material_cb = QComboBox(); self.fec_material_cb.addItem("--- Özel Bileşim ---")
+        for steel_name in load_steel_list(): self.fec_material_cb.addItem(steel_name)
+        self.fec_material_cb.currentTextChanged.connect(self._on_fec_material_changed)
+        mat_layout.addWidget(self.fec_material_cb)
+        right_layout.addWidget(mat_group)
+        elem_group = QGroupBox("🧪 Element Bileşimi (%)")
+        elem_layout = QFormLayout(elem_group)
+        # fec_sliders sözlüğünü yeniden oluştur (önceki boş sözlüğü güncelle)
+        self.fec_sliders = {}
+        elements = [("C", 0.0, 6.67, 0.77, "Karbon"), ("Mn", 0.0, 2.0, 0.5, "Mangan"),
+                    ("Si", 0.0, 2.0, 0.2, "Silisyum"), ("Cr", 0.0, 30.0, 0.0, "Krom"),
+                    ("Ni", 0.0, 30.0, 0.0, "Nikel"), ("Mo", 0.0, 10.0, 0.0, "Molibden")]
+        for elem, min_v, max_v, default, name in elements:
+            row = QHBoxLayout()
+            lbl = QLabel(f"{name} ({elem}):"); lbl.setMinimumWidth(80); row.addWidget(lbl)
+            slider = QSlider(Qt.Horizontal); slider.setRange(int(min_v*100), int(max_v*100))
+            slider.setValue(int(default*100))
+            slider.valueChanged.connect(lambda v, e=elem: self._on_fec_slider_changed(e))
+            row.addWidget(slider)
+            val_lbl = QLabel(f"%{default:.2f}"); val_lbl.setMinimumWidth(50); row.addWidget(val_lbl)
+            elem_layout.addRow(row)
+            self.fec_sliders[elem] = {"slider": slider, "label": val_lbl, "min": min_v, "max": max_v}
+        right_layout.addWidget(elem_group)
+        temp_group = QGroupBox("🌡️ Sıcaklık (°C)")
+        temp_layout = QVBoxLayout(temp_group)
+        self.fec_temp_slider = QSlider(Qt.Horizontal); self.fec_temp_slider.setRange(0, 1600)
+        self.fec_temp_slider.setValue(727); self.fec_temp_slider.valueChanged.connect(self._on_fec_temp_changed)
+        temp_layout.addWidget(self.fec_temp_slider)
+        self.fec_temp_lbl = QLabel("727°C"); self.fec_temp_lbl.setAlignment(Qt.AlignCenter)
+        self.fec_temp_lbl.setStyleSheet("font-size:16px; font-weight:bold; color:#89b4fa;")
+        temp_layout.addWidget(self.fec_temp_lbl)
+        right_layout.addWidget(temp_group)
+        phase_group = QGroupBox("📊 Faz Analizi")
+        phase_layout = QVBoxLayout(phase_group)
+        self.fec_phase_info = QTextEdit(); self.fec_phase_info.setReadOnly(True)
+        self.fec_phase_info.setMaximumHeight(150); self.fec_phase_info.setStyleSheet("font-size:13px;")
+        phase_layout.addWidget(self.fec_phase_info)
+        right_layout.addWidget(phase_group)
+        reset_btn = QPushButton("🔄 Varsayılana Dön"); reset_btn.clicked.connect(self._reset_fec)
+        right_layout.addWidget(reset_btn)
+        right_layout.addStretch()
+        fec_layout.addWidget(left_panel, 3)
+        fec_layout.addWidget(right_panel, 1)
+        tabs.addTab(fec_tab, "🔬 Fe–C Diyagramı")
+        # Şimdi güvenle çizim yapabiliriz
+        self._redraw_fec()
+
+        # ===== SATIN ALMA REHBERİ =====
+        proc_tab = QWidget(); proc_layout = QVBoxLayout(proc_tab)
+        lang_layout = QHBoxLayout()
+        self.proc_lang = "tr"
+        self.proc_tr_btn = QPushButton("🇹🇷 Türkçe"); self.proc_tr_btn.setCheckable(True); self.proc_tr_btn.setChecked(True)
+        self.proc_tr_btn.clicked.connect(lambda: self._switch_proc_lang("tr"))
+        self.proc_en_btn = QPushButton("🇬🇧 English"); self.proc_en_btn.setCheckable(True)
+        self.proc_en_btn.clicked.connect(lambda: self._switch_proc_lang("en"))
+        lang_layout.addWidget(self.proc_tr_btn); lang_layout.addWidget(self.proc_en_btn)
+        lang_layout.addStretch()
+        proc_layout.addLayout(lang_layout)
+        scroll = QScrollArea(); scroll.setWidgetResizable(True)
+        scroll_content = QWidget()
+        self.proc_scroll_layout = QVBoxLayout(scroll_content); scroll.setWidget(scroll_content)
+        proc_layout.addWidget(scroll, 1)
+        calc_group = QGroupBox("")
+        self.proc_calc_layout = QVBoxLayout(calc_group)
+        proc_layout.addWidget(calc_group)
+        with open(os.path.join(BASE_DIR, "..", "database", "procurement_guide.json"), encoding='utf-8') as f:
+            self.proc_data = json.load(f)
+        self._build_procurement_ui()
+        tabs.addTab(proc_tab, "📊 Satın Alma")
 
         self.statusBar().showMessage("Hazır")
 
+    # ===== PROCUREMENT METODLARI =====
+    def _switch_proc_lang(self, lang):
+        self.proc_lang = lang
+        self.proc_tr_btn.setChecked(lang == "tr"); self.proc_en_btn.setChecked(lang == "en")
+        self._build_procurement_ui()
+
+    def _build_procurement_ui(self):
+        lang = self.proc_lang; data = self.proc_data[lang]
+        while self.proc_scroll_layout.count():
+            item = self.proc_scroll_layout.takeAt(0)
+            if item.widget(): item.widget().deleteLater()
+        title = QLabel(f"<h2>{data['title']}</h2>"); title.setWordWrap(True)
+        self.proc_scroll_layout.addWidget(title)
+        subtitle = QLabel(f"<i>{data['subtitle']}</i>"); subtitle.setWordWrap(True)
+        subtitle.setStyleSheet("color:#a6adc8; font-size:14px; margin-bottom:15px;")
+        self.proc_scroll_layout.addWidget(subtitle)
+        for key, section in data["sections"].items():
+            grp = QGroupBox(section["title"]); grp_lay = QVBoxLayout(grp)
+            for line in section["content"]:
+                lbl = QLabel(line); lbl.setWordWrap(True)
+                if line.startswith("•"): lbl.setStyleSheet("color:#cdd6f4; padding-left:15px;")
+                elif line == "": continue
+                elif not line.startswith(" ") and line != "": lbl.setStyleSheet("color:#cdd6f4; font-weight:bold;")
+                else: lbl.setStyleSheet("color:#cdd6f4;")
+                grp_lay.addWidget(lbl)
+            self.proc_scroll_layout.addWidget(grp)
+        self.proc_scroll_layout.addStretch()
+        calc = data["calculator"]
+        parent = self.proc_calc_layout.parentWidget()
+        if parent:
+            old_group = parent.findChild(QGroupBox, "")
+            if old_group: old_group.setTitle(calc["title"])
+        while self.proc_calc_layout.count():
+            item = self.proc_calc_layout.takeAt(0)
+            if item.widget(): item.widget().deleteLater()
+        a_group = QGroupBox(calc["supplier_a"]); a_layout = QFormLayout(a_group)
+        self.proc_a_price = QLineEdit("100000"); a_layout.addRow(f"{calc['purchase_price']} (TL):", self.proc_a_price)
+        self.proc_a_rework = QLineEdit("20000"); a_layout.addRow(f"{calc['rework_cost']} (TL):", self.proc_a_rework)
+        self.proc_a_delay = QLineEdit("15000"); a_layout.addRow(f"{calc['delay_cost']} (TL):", self.proc_a_delay)
+        self.proc_a_quality = QLineEdit("10000"); a_layout.addRow(f"{calc['quality_cost']} (TL):", self.proc_a_quality)
+        self.proc_a_total = QLabel(""); a_layout.addRow(f"{calc['total']}:", self.proc_a_total)
+        self.proc_calc_layout.addWidget(a_group)
+        b_group = QGroupBox(calc["supplier_b"]); b_layout = QFormLayout(b_group)
+        self.proc_b_price = QLineEdit("110000"); b_layout.addRow(f"{calc['purchase_price']} (TL):", self.proc_b_price)
+        self.proc_b_rework = QLineEdit("5000"); b_layout.addRow(f"{calc['rework_cost']} (TL):", self.proc_b_rework)
+        self.proc_b_delay = QLineEdit("0"); b_layout.addRow(f"{calc['delay_cost']} (TL):", self.proc_b_delay)
+        self.proc_b_quality = QLineEdit("0"); b_layout.addRow(f"{calc['quality_cost']} (TL):", self.proc_b_quality)
+        self.proc_b_total = QLabel(""); b_layout.addRow(f"{calc['total']}:", self.proc_b_total)
+        self.proc_calc_layout.addWidget(b_group)
+        calc_btn = QPushButton("🔄 Hesapla"); calc_btn.clicked.connect(self._calc_procurement)
+        self.proc_calc_layout.addWidget(calc_btn)
+        self.proc_result = QLabel("")
+        self.proc_result.setStyleSheet("font-size:16px; font-weight:bold; color:#89b4fa; padding:10px;")
+        self.proc_calc_layout.addWidget(self.proc_result)
+        self._calc_procurement()
+
+    def _calc_procurement(self):
+        try:
+            a = SupplierCost(name="A", purchase_price=float(self.proc_a_price.text()),
+                             rework_cost=float(self.proc_a_rework.text()),
+                             delay_cost=float(self.proc_a_delay.text()),
+                             quality_cost=float(self.proc_a_quality.text()))
+            b = SupplierCost(name="B", purchase_price=float(self.proc_b_price.text()),
+                             rework_cost=float(self.proc_b_rework.text()),
+                             delay_cost=float(self.proc_b_delay.text()),
+                             quality_cost=float(self.proc_b_quality.text()))
+            self.proc_a_total.setText(f"{a.total:,.0f} TL"); self.proc_b_total.setText(f"{b.total:,.0f} TL")
+            winner, diff = compare_suppliers(a, b)
+            if winner is None:
+                msg = "İki tedarikçi eşit maliyete sahip." if self.proc_lang == "tr" else "Both suppliers have equal cost."
+            else:
+                cheaper = "daha ekonomik!" if self.proc_lang == "tr" else "is more economical!"
+                msg = f"✅ {winner.name} {cheaper} ({diff:,.0f} TL fark)"
+            self.proc_result.setText(msg)
+        except ValueError:
+            self.proc_result.setText("⚠️ Lütfen geçerli sayılar girin.")
+
+    # ===== DİĞER METODLAR =====
     def _show_steel_info(self, name):
         try:
             m = Material.from_database(name)
@@ -411,8 +541,7 @@ class MainWindow(QMainWindow):
     def _show_element(self, num):
         el = self.pt.get(num)
         if not el: return
-        info = f"<b>{el['name']} ({el['sym']})</b><br>"
-        info += f"Atom No: {num} | Kütle: {el['mass']} u<br>"
+        info = f"<b>{el['name']} ({el['sym']})</b><br>Atom No: {num} | Kütle: {el['mass']} u<br>"
         if el.get('melt') is not None:
             info += f"Erime: {el['melt']}°C | Kaynama: {el['boil']}°C<br>"
         self.elem_info_lbl.setText(info)
@@ -422,10 +551,8 @@ class MainWindow(QMainWindow):
             txt += f"<b>{el['sym']} - Çelikteki Rolü:</b><br>{effect['role']}<br><br>"
             for d in effect['details']: txt += f"• {d}<br>"
             txt += f"<br>Maks: %{effect['max']} | Tipik: {effect['range']}"
-        elif el['sym'] == 'Fe':
-            txt = "<b>Demir - Çeliğin temeli</b><br>"
-        else:
-            txt = f"<i>{el['name']} alaşım elementi değil.</i>"
+        elif el['sym'] == 'Fe': txt = "<b>Demir - Çeliğin temeli</b><br>"
+        else: txt = f"<i>{el['name']} alaşım elementi değil.</i>"
         inter = self.pt.get_interactions(el['sym'])
         if inter:
             txt += "<br><br><b>Etkileşimler:</b><br>"
@@ -436,15 +563,10 @@ class MainWindow(QMainWindow):
 
     def _calc_lever(self):
         try:
-            Ca = float(self.lever_ca.text())
-            Cb = float(self.lever_cb.text())
-            Co = float(self.lever_co.text())
+            Ca = float(self.lever_ca.text()); Cb = float(self.lever_cb.text()); Co = float(self.lever_co.text())
             result = lever_calculate(Ca, Cb, Co)
-            txt = f"<b>Faz Oranları:</b><br>"
-            txt += f"α fazı: <b>%{result.percent_alpha:.1f}</b><br>"
-            txt += f"β fazı: <b>%{result.percent_beta:.1f}</b><br><br>"
-            txt += f"<b>Kaldıraç Kuralı:</b><br>"
-            txt += f"fα = (Cβ - Co) / (Cβ - Cα) = ({Cb} - {Co}) / ({Cb} - {Ca}) = <b>{result.fraction_alpha:.4f}</b><br>"
+            txt = f"<b>Faz Oranları:</b><br>α fazı: <b>%{result.percent_alpha:.1f}</b><br>β fazı: <b>%{result.percent_beta:.1f}</b><br><br>"
+            txt += f"<b>Kaldıraç Kuralı:</b><br>fα = (Cβ - Co) / (Cβ - Cα) = ({Cb} - {Co}) / ({Cb} - {Ca}) = <b>{result.fraction_alpha:.4f}</b><br>"
             txt += f"fβ = (Co - Cα) / (Cβ - Cα) = ({Co} - {Ca}) / ({Cb} - {Ca}) = <b>{result.fraction_beta:.4f}</b>"
             self.lever_result.setText(txt)
         except ValueError as e:
@@ -453,11 +575,87 @@ class MainWindow(QMainWindow):
     def _load_lever_example(self, name):
         if name in FE_C_EXAMPLES:
             ex = FE_C_EXAMPLES[name]
-            self.lever_ca.setText(str(ex["Ca"]))
-            self.lever_cb.setText(str(ex["Cb"]))
-            self.lever_co.setText(str(ex["Co"]))
+            self.lever_ca.setText(str(ex["Ca"])); self.lever_cb.setText(str(ex["Cb"])); self.lever_co.setText(str(ex["Co"]))
             self._calc_lever()
 
+    def _redraw_fec(self, highlight_T=None):
+        if not self.fec_sliders:  # slider'lar henüz oluşturulmadıysa çizim yapma
+            return
+        composition = {}
+        for elem, data in self.fec_sliders.items():
+            composition[elem] = data["slider"].value() / 100.0
+        C_pct = composition.get("C", 0.77)
+        T_val = highlight_T if highlight_T else self.fec_temp_slider.value()
+        self.fec_ax.clear()
+        self.fec_ax.tick_params(colors='#cdd6f4', labelsize=10)
+        for spine in self.fec_ax.spines.values(): spine.set_color('#45475a')
+        self.fec_ax.xaxis.label.set_color('#cdd6f4'); self.fec_ax.yaxis.label.set_color('#cdd6f4')
+        self.fec_ax.title.set_color('#cdd6f4')
+        self.fec_engine.draw(self.fec_ax, composition, highlight_point=(C_pct, T_val))
+        self.fec_canvas.draw()
+
+    def _on_fec_slider_changed(self, element):
+        if element in self.fec_sliders:
+            data = self.fec_sliders[element]
+            val = data["slider"].value() / 100.0
+            data["label"].setText(f"%{val:.2f}")
+            self._redraw_fec()
+            self._update_fec_phase_info()
+
+    def _on_fec_temp_changed(self):
+        T = self.fec_temp_slider.value()
+        self.fec_temp_lbl.setText(f"{T}°C")
+        self._redraw_fec(highlight_T=T)
+        self._update_fec_phase_info()
+
+    def _on_fec_material_changed(self, steel_name):
+        if steel_name == "--- Özel Bileşim ---": return
+        try:
+            mat = Material.from_database(steel_name)
+            comp = mat.composition
+            for elem, data in self.fec_sliders.items():
+                if elem in comp:
+                    val = int(comp[elem] * 100)
+                    data["slider"].setValue(val)
+                    data["label"].setText(f"%{comp[elem]:.2f}")
+                elif elem == "C":
+                    val = int(mat.carbon * 100)
+                    data["slider"].setValue(val)
+                    data["label"].setText(f"%{mat.carbon:.2f}")
+            self._redraw_fec()
+            self._update_fec_phase_info()
+        except Exception as e:
+            pass
+
+    def _update_fec_phase_info(self):
+        if not self.fec_sliders:
+            return
+        composition = {}
+        for elem, data in self.fec_sliders.items():
+            composition[elem] = data["slider"].value() / 100.0
+        C_pct = composition.get("C", 0.77)
+        T_val = self.fec_temp_slider.value()
+        result = self.fec_engine.get_phases(T_val, C_pct, composition)
+        html = f"<h3>{result.description}</h3><table width='100%'><tr><th>Faz</th><th>Oran</th><th>Gösterge</th></tr>"
+        colors = {"α": "#89b4fa", "γ": "#f38ba8", "Fe₃C": "#fab387", "Sıvı": "#a6e3a1", "Perlit": "#cba6f7", "Ledeburit": "#f9e2af"}
+        for phase, frac in result.fractions.items():
+            pct = frac * 100
+            color = colors.get(phase.split()[0], "#cdd6f4")
+            bar = "█" * int(pct / 5) + "░" * (20 - int(pct / 5))
+            html += f"<tr><td>{phase}</td><td>%{pct:.1f}</td><td><span style='color:{color}'>{bar}</span></td></tr>"
+        html += "</table>"
+        html += f"<p><b>Ötektoid Sıcaklığı:</b> {self.fec_engine.adjust_boundaries(composition)['T_A1']:.0f}°C</p>"
+        html += f"<p><b>Ötektoid Bileşimi:</b> %{self.fec_engine.adjust_boundaries(composition)['C_eutectoid']:.3f} C</p>"
+        self.fec_phase_info.setHtml(html)
+
+    def _reset_fec(self):
+        defaults = {"C": 77, "Mn": 50, "Si": 20, "Cr": 0, "Ni": 0, "Mo": 0}
+        for elem, val in defaults.items():
+            if elem in self.fec_sliders:
+                self.fec_sliders[elem]["slider"].setValue(val)
+                self.fec_sliders[elem]["label"].setText(f"%{val/100:.2f}")
+        self.fec_temp_slider.setValue(727); self.fec_temp_lbl.setText("727°C")
+        self._redraw_fec(); self._update_fec_phase_info()
 
 def main():
     app = QApplication(sys.argv)
