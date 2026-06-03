@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Isıl İşlem Simülasyon Platformu – v2.7 (Figure hatası düzeltildi)"""
+"""Isıl İşlem Simülasyon Platformu – Tüm Özellikler (v2.6)"""
 import sys, os, json
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -26,10 +26,6 @@ from metallurgy.lever_rule import calculate as lever_calculate, FE_C_EXAMPLES
 from metallurgy.ree import REEDatabase
 from metallurgy.interactive_fec import FeCDiagram
 from procurement.calculator import SupplierCost, compare_suppliers
-from reports.pdf_generator import generate_pdf_report
-from metallurgy.ttt_cct_plot import load_ttt_data, draw_ttt
-from mechanics.distortion_calc import estimate_residual_stress, distortion_risk
-from simulation.carburizing_sim import simulate_carburizing
 
 def load_steel_list():
     with open(DB_PATH) as f:
@@ -122,8 +118,8 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(1400, 900)
         self.steels = load_steel_list()
         self.pt = PeriodicTable()
+        # Boş fec_sliders sözlüğünü erkenden oluştur (hata almamak için)
         self.fec_sliders = {}
-        self.current_result = None
         self._ui()
         self._load_style()
 
@@ -329,6 +325,7 @@ class MainWindow(QMainWindow):
         right_layout.addWidget(mat_group)
         elem_group = QGroupBox("🧪 Element Bileşimi (%)")
         elem_layout = QFormLayout(elem_group)
+        # fec_sliders sözlüğünü yeniden oluştur (önceki boş sözlüğü güncelle)
         self.fec_sliders = {}
         elements = [("C", 0.0, 6.67, 0.77, "Karbon"), ("Mn", 0.0, 2.0, 0.5, "Mangan"),
                     ("Si", 0.0, 2.0, 0.2, "Silisyum"), ("Cr", 0.0, 30.0, 0.0, "Krom"),
@@ -365,6 +362,7 @@ class MainWindow(QMainWindow):
         fec_layout.addWidget(left_panel, 3)
         fec_layout.addWidget(right_panel, 1)
         tabs.addTab(fec_tab, "🔬 Fe–C Diyagramı")
+        # Şimdi güvenle çizim yapabiliriz
         self._redraw_fec()
 
         # ===== SATIN ALMA REHBERİ =====
@@ -389,62 +387,6 @@ class MainWindow(QMainWindow):
             self.proc_data = json.load(f)
         self._build_procurement_ui()
         tabs.addTab(proc_tab, "📊 Satın Alma")
-
-        # ===== PDF RAPOR =====
-        pdf_tab = QWidget(); pdf_layout = QVBoxLayout(pdf_tab)
-        pdf_btn = QPushButton("📄 PDF Rapor Oluştur")
-        pdf_btn.clicked.connect(self._generate_pdf_report)
-        pdf_layout.addWidget(pdf_btn)
-        self.pdf_status = QLabel("")
-        pdf_layout.addWidget(self.pdf_status)
-        pdf_layout.addStretch()
-        tabs.addTab(pdf_tab, "📄 PDF Rapor")
-
-        # ===== TTT/CCT DİYAGRAMI =====
-        ttt_tab = QWidget(); ttt_layout = QVBoxLayout(ttt_tab)
-        ttt_mat_layout = QHBoxLayout()
-        ttt_mat_layout.addWidget(QLabel("Çelik:"))
-        self.ttt_steel_cb = QComboBox(); self.ttt_steel_cb.addItems(self.steels)
-        self.ttt_steel_cb.currentTextChanged.connect(self._draw_ttt_diagram)
-        ttt_mat_layout.addWidget(self.ttt_steel_cb); ttt_mat_layout.addStretch()
-        ttt_layout.addLayout(ttt_mat_layout)
-        ttt_fig = Figure(figsize=(8,6), facecolor='#1e1e2e')
-        self.ttt_canvas = FigureCanvasQTAgg(ttt_fig)
-        self.ttt_ax = ttt_fig.add_subplot(111, facecolor='#1e1e2e')
-        self.ttt_ax.tick_params(colors='#cdd6f4')
-        for sp in self.ttt_ax.spines.values(): sp.set_color('#45475a')
-        ttt_layout.addWidget(self.ttt_canvas)
-        tabs.addTab(ttt_tab, "📈 TTT/CCT")
-
-        # ===== DİSTORSİYON =====
-        distort_tab = QWidget(); distort_layout = QFormLayout(distort_tab)
-        self.distort_coolrate = QLineEdit("50"); distort_layout.addRow("Soğuma Hızı (°C/s):", self.distort_coolrate)
-        self.distort_mart = QLineEdit("0.8"); distort_layout.addRow("Martensit Oranı (0-1):", self.distort_mart)
-        self.distort_carbon = QLineEdit("0.4"); distort_layout.addRow("Karbon (%)", self.distort_carbon)
-        self.distort_yield = QLineEdit("800"); distort_layout.addRow("Akma Dayanımı (MPa):", self.distort_yield)
-        self.distort_btn = QPushButton("Hesapla"); self.distort_btn.clicked.connect(self._calc_distortion)
-        distort_layout.addRow(self.distort_btn)
-        self.distort_result = QLabel(""); distort_layout.addRow("Sonuç:", self.distort_result)
-        tabs.addTab(distort_tab, "🔧 Distorsiyon")
-
-        # ===== KARBON DİFÜZYONU =====
-        diff_tab = QWidget(); diff_layout = QVBoxLayout(diff_tab)
-        diff_form = QFormLayout()
-        self.diff_temp = QLineEdit("930"); diff_form.addRow("Sıcaklık (°C):", self.diff_temp)
-        self.diff_time = QLineEdit("2"); diff_form.addRow("Süre (saat):", self.diff_time)
-        self.diff_cs = QLineEdit("0.8"); diff_form.addRow("Yüzey C pot. (%):", self.diff_cs)
-        self.diff_c0 = QLineEdit("0.2"); diff_form.addRow("Başlangıç C (%):", self.diff_c0)
-        self.diff_depth = QLineEdit("5"); diff_form.addRow("Maks. derinlik (mm):", self.diff_depth)
-        diff_btn = QPushButton("Simüle Et"); diff_btn.clicked.connect(self._simulate_diffusion)
-        diff_form.addRow(diff_btn)
-        diff_layout.addLayout(diff_form)
-        diff_fig = Figure(figsize=(8,4), facecolor='#1e1e2e')
-        self.diff_canvas = FigureCanvasQTAgg(diff_fig)
-        self.diff_ax = diff_fig.add_subplot(111, facecolor='#1e1e2e')
-        self.diff_ax.tick_params(colors='#cdd6f4')
-        for sp in self.diff_ax.spines.values(): sp.set_color('#45475a')
-        diff_layout.addWidget(self.diff_canvas)
-        tabs.addTab(diff_tab, "🧪 Karbon Difüzyonu")
 
         self.statusBar().showMessage("Hazır")
 
@@ -577,7 +519,6 @@ class MainWindow(QMainWindow):
         self.worker.start()
 
     def _sim_done(self, res):
-        self.current_result = res  # PDF rapor için sakla
         self.progress.setVisible(False); self.run_btn.setEnabled(True)
         if res.cooling_curve:
             mat = Material.from_database(self.steel_cb.currentText())
@@ -638,7 +579,8 @@ class MainWindow(QMainWindow):
             self._calc_lever()
 
     def _redraw_fec(self, highlight_T=None):
-        if not self.fec_sliders: return
+        if not self.fec_sliders:  # slider'lar henüz oluşturulmadıysa çizim yapma
+            return
         composition = {}
         for elem, data in self.fec_sliders.items():
             composition[elem] = data["slider"].value() / 100.0
@@ -686,7 +628,8 @@ class MainWindow(QMainWindow):
             pass
 
     def _update_fec_phase_info(self):
-        if not self.fec_sliders: return
+        if not self.fec_sliders:
+            return
         composition = {}
         for elem, data in self.fec_sliders.items():
             composition[elem] = data["slider"].value() / 100.0
@@ -713,57 +656,6 @@ class MainWindow(QMainWindow):
                 self.fec_sliders[elem]["label"].setText(f"%{val/100:.2f}")
         self.fec_temp_slider.setValue(727); self.fec_temp_lbl.setText("727°C")
         self._redraw_fec(); self._update_fec_phase_info()
-
-    # ===== YENİ METODLAR =====
-    def _generate_pdf_report(self):
-        if not self.current_result:
-            self.pdf_status.setText("Önce simülasyon çalıştırın.")
-            return
-        try:
-            path = generate_pdf_report(self.current_result, Material.from_database(self.steel_cb.currentText()),
-                                       {"process": self.proc_cb.currentText(), "aust_temp": getattr(self, 'aust_edit', None)})
-            self.pdf_status.setText(f"Rapor oluşturuldu: {path}")
-        except Exception as e:
-            self.pdf_status.setText(f"Hata: {e}")
-
-    def _draw_ttt_diagram(self):
-        steel = self.ttt_steel_cb.currentText()
-        ttt_data = load_ttt_data(steel)
-        self.ttt_ax.clear()
-        self.ttt_ax.tick_params(colors='#cdd6f4')
-        for sp in self.ttt_ax.spines.values(): sp.set_color('#45475a')
-        draw_ttt(self.ttt_ax, ttt_data)
-        self.ttt_canvas.draw()
-
-    def _calc_distortion(self):
-        try:
-            cr = float(self.distort_coolrate.text())
-            fm = float(self.distort_mart.text())
-            cp = float(self.distort_carbon.text())
-            ys = float(self.distort_yield.text())
-            stress = estimate_residual_stress(cr, fm, cp)
-            risk = distortion_risk(stress, ys)
-            self.distort_result.setText(f"Kalıntı Gerilme: {stress} MPa | Risk: {risk}")
-        except ValueError:
-            self.distort_result.setText("Geçersiz giriş.")
-
-    def _simulate_diffusion(self):
-        try:
-            T = float(self.diff_temp.text())
-            t_h = float(self.diff_time.text())
-            Cs = float(self.diff_cs.text())
-            C0 = float(self.diff_c0.text())
-            depth = float(self.diff_depth.text())
-            x_mm, profile = simulate_carburizing(T, t_h, Cs, C0, depth)
-            self.diff_ax.clear()
-            self.diff_ax.plot(x_mm, profile, 'c-', lw=2)
-            self.diff_ax.set_xlabel("Derinlik (mm)")
-            self.diff_ax.set_ylabel("Karbon (%)")
-            self.diff_ax.set_title("Karbon Profili")
-            self.diff_ax.grid(True, alpha=0.3)
-            self.diff_canvas.draw()
-        except Exception as e:
-            pass
 
 def main():
     app = QApplication(sys.argv)
