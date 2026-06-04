@@ -191,3 +191,140 @@ QTabWidget::pane {
 QTabBar {
     qproperty-expanding: 1;
 }
+/* ScrollArea (Alaşım Rehberi, Hata Modları için) */
+QScrollArea {
+    background-color: #1e1e2e;
+    border: none;
+}
+
+/* GroupBox içindeki yazılar */
+QGroupBox QLabel {
+    color: #cdd6f4;
+}
+
+QGroupBox QTextEdit {
+    background-color: #313244;
+    color: #cdd6f4;
+}
+
+QGroupBox QTableWidget {
+    background-color: #313244;
+    color: #cdd6f4;
+}
+
+/* Dil seçim ComboBox'ı */
+QStatusBar QComboBox {
+    background-color: #313244;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-weight: bold;
+}
+
+QStatusBar QComboBox:hover {
+    border-color: #89b4fa;
+}
+
+QStatusBar QComboBox QAbstractItemView {
+    background-color: #313244;
+    color: #cdd6f4;
+    selection-background-color: #89b4fa;
+}
+/* ── Satın Alma, Alaşım Rehberi, Hata Modları için tam koyu tema ── */
+
+/* ScrollArea ve içerik widget'ları */
+QScrollArea, QScrollArea > QWidget > QWidget {
+    background-color: #1e1e2e;
+    border: none;
+}
+
+/* Tüm QLabel'lar (şeffaf arka planlı) */
+QLabel {
+    color: #cdd6f4;
+    background-color: transparent;
+}
+
+/* QGroupBox ve içindeki etiketler */
+QGroupBox {
+    background-color: #1e1e2e;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    border-radius: 8px;
+    margin-top: 14px;
+    padding-top: 14px;
+    font-weight: bold;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 10px;
+    padding: 0 6px;
+    color: #89b4fa;
+    background-color: #1e1e2e;
+}
+
+QGroupBox QLabel {
+    color: #cdd6f4;
+    background-color: transparent;
+}
+
+/* QTextEdit (salt okunur/okunabilir fark etmez) */
+QTextEdit, QPlainTextEdit {
+    background-color: #313244;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    border-radius: 4px;
+    padding: 6px;
+    selection-background-color: #89b4fa;
+    selection-color: #1e1e2e;
+}
+
+/* QTableWidget ve başlıkları */
+QTableWidget {
+    background-color: #313244;
+    color: #cdd6f4;
+    gridline-color: #45475a;
+    border: 1px solid #45475a;
+    alternate-background-color: #2a2a3a;
+}
+
+QTableWidget::item {
+    color: #cdd6f4;
+    padding: 4px;
+}
+
+QHeaderView::section {
+    background-color: #313244;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    padding: 6px;
+    font-weight: bold;
+}
+
+/* QProgressBar */
+QProgressBar {
+    background-color: #313244;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    border-radius: 4px;
+    text-align: center;
+}
+
+QProgressBar::chunk {
+    background-color: #89b4fa;
+    border-radius: 3px;
+}
+
+/* Satın alma hesaplayıcıdaki QLineEdit'ler */
+QLineEdit {
+    background-color: #313244;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    border-radius: 4px;
+    padding: 4px 6px;
+}
+
+QLineEdit:focus {
+    border-color: #89b4fa;
+}

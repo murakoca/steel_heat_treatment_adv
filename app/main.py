@@ -542,11 +542,13 @@ class MainWindow(QMainWindow):
         tabs.addTab(failure_tab, "🔧 Hata Modları")
 
         # Dil butonu
-        self.lang_btn = QPushButton("🇹🇷 TR")
-        self.lang_btn.setFixedSize(80, 28)
-        self.lang_btn.setStyleSheet("QPushButton { background-color: #313244; color: #cdd6f4; border: 1px solid #45475a; border-radius: 4px; font-weight: bold; } QPushButton:hover { background-color: #45475a; }")
-        self.lang_btn.clicked.connect(self._toggle_language)
-        self.statusBar().addPermanentWidget(self.lang_btn)
+        self.lang_combo = QComboBox()
+        self.lang_combo.addItems(["🇹🇷 Türkçe", "🇬🇧 English"])
+        self.lang_combo.setCurrentIndex(0 if self.lang_manager.current_lang == "tr" else 1)
+        self.lang_combo.setFixedWidth(130)
+        self.lang_combo.setStyleSheet("QComboBox { background-color: #313244; color: #cdd6f4; border: 1px solid #45475a; border-radius: 4px; padding: 2px 6px; font-weight: bold; } QComboBox:hover { border-color: #89b4fa; } QComboBox QAbstractItemView { background-color: #313244; color: #cdd6f4; selection-background-color: #89b4fa; }")
+        self.lang_combo.currentIndexChanged.connect(self._on_lang_changed)
+        self.statusBar().addPermanentWidget(self.lang_combo)
         self.statusBar().showMessage(self.lang_manager.tr("ready"))
         self._translate_failure_modes()
 
@@ -634,20 +636,32 @@ class MainWindow(QMainWindow):
             self.steel_lbl.setText(f"Ms={m.Ms}°C, C=%{m.carbon*100:.2f}")
         except: self.steel_lbl.setText("")
 
+    def _get_process_name(self):
+        """Seçili prosesin İngilizce adını döndürür."""
+        display_text = self.proc_cb.currentText()
+        if display_text in [self.lang_manager.tr("quenching"), "Quenching"]:
+            return "Quenching"
+        elif display_text in [self.lang_manager.tr("tempering"), "Tempering"]:
+            return "Tempering"
+        elif display_text in [self.lang_manager.tr("carburizing"), "Carburizing"]:
+            return "Carburizing"
+        return "Quenching"
+
     def _on_proc_changed(self, proc):
         while self.proc_layout.count():
             item = self.proc_layout.takeAt(0)
             if item.widget(): item.widget().deleteLater()
-        if proc == self.lang_manager.tr("quenching") or proc == "Quenching":
+        internal = self._get_process_name()
+        if internal == "Quenching":
             self.aust_edit = QLineEdit("850"); self.proc_layout.addRow(self.lang_manager.tr("aust_temp"), self.aust_edit)
             self.media_cb = QComboBox(); self.media_cb.addItems(["Oil","Water","Polymer","Brine"])
             self.proc_layout.addRow(self.lang_manager.tr("media"), self.media_cb)
             self.ag_cb = QComboBox(); self.ag_cb.addItems(["moderate","still","vigorous"])
             self.proc_layout.addRow(self.lang_manager.tr("agitation"), self.ag_cb)
-        elif proc == self.lang_manager.tr("tempering") or proc == "Tempering":
+        elif internal == "Tempering":
             self.temp_edit = QLineEdit("300"); self.proc_layout.addRow("Sıcaklık (°C):", self.temp_edit)
             self.time_edit = QLineEdit("3600"); self.proc_layout.addRow("Süre (s):", self.time_edit)
-        elif proc == self.lang_manager.tr("carburizing") or proc == "Carburizing":
+        elif internal == "Carburizing":
             self.ctemp_edit = QLineEdit("930"); self.proc_layout.addRow("Sıcaklık (°C):", self.ctemp_edit)
             self.ctime_edit = QLineEdit("7200"); self.proc_layout.addRow("Süre (s):", self.ctime_edit)
             self.cpot_edit = QLineEdit("0.8"); self.proc_layout.addRow("C Potansiyeli (%):", self.cpot_edit)
@@ -655,9 +669,9 @@ class MainWindow(QMainWindow):
     def _start_sim(self):
         self.run_btn.setEnabled(False); self.progress.setVisible(True); self.progress.setValue(0)
         self.log_txt.clear()
-        cfg = {"steel": self.steel_cb.currentText(), "process": self.proc_cb.currentText()}
+        cfg = {"steel": self.steel_cb.currentText(), "process": self._get_process_name()}
         try:
-            if cfg["process"] in [self.lang_manager.tr("quenching"), "Quenching"]:
+            if cfg["process"] == "Quenching":
                 cfg["aust_temp"] = float(self.aust_edit.text())
                 cfg["media"] = self.media_cb.currentText()
                 cfg["agitation"] = self.ag_cb.currentText()
@@ -866,10 +880,16 @@ class MainWindow(QMainWindow):
         except Exception as e:
             pass
 
+    def _on_lang_changed(self, index):
+        lang = "tr" if index == 0 else "en"
+        if lang != self.lang_manager.current_lang:
+            self.lang_manager.set_language(lang)
+            self._retranslate_ui()
+
     def _toggle_language(self):
         self.lang_manager.toggle()
         lang = self.lang_manager.current_lang
-        self.lang_btn.setText("🇹🇷 TR" if lang == "tr" else "🇬🇧 EN")
+        self.lang_combo.setCurrentIndex(0 if lang == "tr" else 1)
         self._retranslate_ui()
 
     def _retranslate_ui(self):
@@ -878,7 +898,8 @@ class MainWindow(QMainWindow):
             (0, "simulation_tab"), (1, "guide_tab"), (2, "periodic_tab"),
             (3, "lever_tab"), (4, "fec_tab"), (5, "ree_tab"),
             (6, "procurement_tab"), (7, "pdf_tab"), (8, "ttt_tab"),
-            (9, "distortion_tab"), (10, "diffusion_tab"), (11, "alloy_tab")
+            (9, "distortion_tab"), (10, "diffusion_tab"), (11, "alloy_tab"),
+            (12, "failure_modes_tab")
         ]
         tabs = self.findChild(QTabWidget)
         if tabs:
@@ -886,7 +907,14 @@ class MainWindow(QMainWindow):
                 if i < tabs.count():
                     tabs.setTabText(i, self.lang_manager.tr(key))
         self.statusBar().showMessage(self.lang_manager.tr("ready"))
-        self._translate_failure_modes()
+        self.run_btn.setText(self.lang_manager.tr("run_btn"))
+        if hasattr(self, '_translate_failure_modes'):
+            self._translate_failure_modes()
+        # ComboBox dil göstergesini güncelle
+        if hasattr(self, 'lang_combo'):
+            self.lang_combo.blockSignals(True)
+            self.lang_combo.setCurrentIndex(0 if self.lang_manager.current_lang == "tr" else 1)
+            self.lang_combo.blockSignals(False)
 
     def _translate_failure_modes(self):
         lang = self.lang_manager.current_lang
