@@ -1,0 +1,314 @@
+{
+  "title": "Alaşım Elementlerinin Çelik Üzerindeki Etkisi",
+  "intro": "Alaşım elementleri, çeliğin mekanik özelliklerini, sertleşebilirliğini, tokluğunu, korozyon direncini, aşınma direncini ve diğer özelliklerini iyileştirmek için eklenir.",
+  "why_alloy": [
+    "Mukavemet, sertlik ve aşınma direncini artırır",
+    "Sertleşebilirliği ve sertleşme derinliğini artırır",
+    "Tokluğu ve sünekliği iyileştirir",
+    "Korozyon ve oksidasyon direncini geliştirir",
+    "Tane yapısını inceltir ve temizliği iyileştirir",
+    "Belirli uygulamalar için özel özellikler sağlar"
+  ],
+  "classification": {
+    "güçlendiriciler": {
+      "title": "GÜÇLENDİRİCİLER",
+      "desc": "Mukavemet, sertlik, aşınma direncini artırır",
+      "elements": [
+        "C",
+        "Mn",
+        "Si",
+        "Cr",
+        "Mo",
+        "V",
+        "Nb",
+        "Ti",
+        "W",
+        "B"
+      ]
+    },
+    "sertleşebilirlik": {
+      "title": "SERTLEŞEBİLİRLİK ARTIRICILAR",
+      "desc": "Sertleşebilirliği artırır",
+      "elements": [
+        "Mn",
+        "Cr",
+        "Mo",
+        "Ni",
+        "Si",
+        "B"
+      ]
+    },
+    "ostenit_stabilizorleri": {
+      "title": "OSTENİT STABİLİZÖRLERİ",
+      "desc": "Osteniti korur",
+      "elements": [
+        "Ni",
+        "Mn",
+        "C",
+        "N"
+      ]
+    },
+    "ferrit_stabilizorleri": {
+      "title": "FERRİT STABİLİZÖRLERİ",
+      "desc": "Ferriti teşvik eder",
+      "elements": [
+        "Cr",
+        "Mo",
+        "V",
+        "Nb",
+        "Ti",
+        "W",
+        "Si",
+        "Al"
+      ]
+    }
+  },
+  "elements": {
+    "C": {
+      "name": "Karbon",
+      "typical_range": "0.02 – 1.2",
+      "strength_hardness": "Mukavemet, sertlik ve aşınma direncini artırır",
+      "hardenability": "Sertleşebilirliği büyük ölçüde artırır",
+      "ductility_toughness": "Sünekliği azaltır",
+      "wear_resistance": "Aşınma direncini artırır",
+      "corrosion_resistance": "Doğrudan etkisi yok",
+      "other": "En önemli element"
+    },
+    "Mn": {
+      "name": "Mangan",
+      "typical_range": "0.20 – 1.80",
+      "strength_hardness": "Mukavemet ve sertliği artırır",
+      "hardenability": "Sertleşebilirliği güçlü şekilde artırır",
+      "ductility_toughness": "Tokluğu iyileştirir",
+      "wear_resistance": "Aşınma direncini artırır",
+      "corrosion_resistance": "Atmosferik korozyon direncini iyileştirir",
+      "other": "Deoksidan ve desülfürizör"
+    },
+    "Si": {
+      "name": "Silisyum",
+      "typical_range": "0.15 – 0.60",
+      "strength_hardness": "Mukavemet ve elastikiyet limitini artırır",
+      "hardenability": "Sertleşebilirliği hafif artırır",
+      "ductility_toughness": "Sünekliği hafif azaltır",
+      "wear_resistance": "Aşınma direncini iyileştirir",
+      "corrosion_resistance": "Oksidasyon ve tavlanma direncini artırır",
+      "other": "Güçlü deoksidan"
+    },
+    "Cr": {
+      "name": "Krom",
+      "typical_range": "0.50 – 1.50 (Paslanmaz çeliklerde %12'ye kadar)",
+      "strength_hardness": "Mukavemet, sertlik ve sıcak mukavemeti artırır",
+      "hardenability": "Sertleşebilirliği artırır",
+      "ductility_toughness": "Sünekliği hafif azaltır",
+      "wear_resistance": "Aşınma direncini büyük ölçüde artırır",
+      "corrosion_resistance": "Korozyon direncini büyük ölçüde iyileştirir",
+      "other": "Paslanmaz çeliklerde esas"
+    },
+    "Ni": {
+      "name": "Nikel",
+      "typical_range": "0.50 – 5.00",
+      "strength_hardness": "Mukavemeti artırır (orta derecede)",
+      "hardenability": "Sertleşebilirliği artırır (orta derecede)",
+      "ductility_toughness": "Tokluk ve sünekliği büyük ölçüde iyileştirir",
+      "wear_resistance": "Aşınma direncini hafif iyileştirir",
+      "corrosion_resistance": "Mükemmel korozyon direnci",
+      "other": "Ostenit stabilizörü"
+    },
+    "Mo": {
+      "name": "Molibden",
+      "typical_range": "0.20 – 1.00",
+      "strength_hardness": "Özellikle yüksek sıcaklıkta mukavemeti artırır",
+      "hardenability": "Sertleşebilirliği güçlü şekilde artırır",
+      "ductility_toughness": "Süneklik üzerinde az etkisi vardır",
+      "wear_resistance": "Yüksek sıcaklıkta aşınma direncini iyileştirir",
+      "corrosion_resistance": "Çukurlaşma ve yarık korozyonuna direnci iyileştirir",
+      "other": "Temper gevrekleşmesini önler"
+    },
+    "V": {
+      "name": "Vanadyum",
+      "typical_range": "0.05 – 0.30",
+      "strength_hardness": "Mukavemet ve aşınma direncini büyük ölçüde artırır",
+      "hardenability": "Sertleşebilirliği artırır",
+      "ductility_toughness": "Sünekliği büyük ölçüde azaltır",
+      "wear_resistance": "Aşınma direncini büyük ölçüde artırır",
+      "corrosion_resistance": "Doğrudan etkisi yok",
+      "other": "İnce karbürler (VC) oluşturur"
+    },
+    "W": {
+      "name": "Tungsten (Volfram)",
+      "typical_range": "0.50 – 2.00",
+      "strength_hardness": "Mukavemet ve sıcak mukavemeti artırır",
+      "hardenability": "Sertleşebilirliği artırır",
+      "ductility_toughness": "Sünekliği büyük ölçüde azaltır",
+      "wear_resistance": "Aşınma direncini büyük ölçüde artırır",
+      "corrosion_resistance": "Doğrudan etkisi yok",
+      "other": "Kırmızı sıcak sertliği"
+    },
+    "Nb": {
+      "name": "Niyobyum",
+      "typical_range": "0.02 – 0.20",
+      "strength_hardness": "Mukavemeti artırır",
+      "hardenability": "Az etkisi vardır",
+      "ductility_toughness": "Tokluğu iyileştirir",
+      "wear_resistance": "Aşınma direncini artırır",
+      "corrosion_resistance": "Doğrudan etkisi yok",
+      "other": "Tane inceltici"
+    },
+    "B": {
+      "name": "Bor",
+      "typical_range": "0.0005 – 0.0050",
+      "strength_hardness": "Hafif artış",
+      "hardenability": "Sertleşebilirliği büyük ölçüde artırır",
+      "ductility_toughness": "Önemli etkisi yok",
+      "wear_resistance": "Önemli etkisi yok",
+      "corrosion_resistance": "Doğrudan etkisi yok",
+      "other": "Sıkı kontrol edilmeli"
+    },
+    "Ti": {
+      "name": "Titanyum",
+      "typical_range": "0.01 – 0.05",
+      "strength_hardness": "Tane inceltme ile mukavemeti artırır",
+      "hardenability": "Az etkisi vardır",
+      "ductility_toughness": "Tokluğu iyileştirir",
+      "wear_resistance": "Hafif iyileştirme",
+      "corrosion_resistance": "Tane sınırı korozyonuna direnci iyileştirir",
+      "other": "TiC, TiN oluşturur"
+    },
+    "Al": {
+      "name": "Alüminyum",
+      "typical_range": "0.02 – 0.10",
+      "strength_hardness": "Hafif artış",
+      "hardenability": "Az etkisi vardır",
+      "ductility_toughness": "Önemli etkisi yok",
+      "wear_resistance": "Önemli etkisi yok",
+      "corrosion_resistance": "Önemli etkisi yok",
+      "other": "Güçlü deoksidan"
+    },
+    "Cu": {
+      "name": "Bakır",
+      "typical_range": "0.20 – 1.00",
+      "strength_hardness": "Hafif artış",
+      "hardenability": "Az etkisi vardır",
+      "ductility_toughness": "Tokluğu iyileştirir",
+      "wear_resistance": "Hafif iyileştirme",
+      "corrosion_resistance": "Atmosferik korozyon direncini iyileştirir",
+      "other": "Hava koşullarına dayanıklı çeliklerde"
+    },
+    "S": {
+      "name": "Kükürt",
+      "typical_range": "< 0.05 (düşük tutulmalı)",
+      "strength_hardness": "Süneklik ve tokluğu azaltır",
+      "hardenability": "Etkisi yok",
+      "ductility_toughness": "Tokluğu büyük ölçüde azaltır",
+      "wear_resistance": "Aşınma direncini azaltır",
+      "corrosion_resistance": "Sıcak kısalığa ve korozyona neden olabilir",
+      "other": "MnS kalıntıları (zararlı)"
+    },
+    "P": {
+      "name": "Fosfor",
+      "typical_range": "< 0.04 (düşük tutulmalı)",
+      "strength_hardness": "Mukavemeti hafif artırır",
+      "hardenability": "Etkisi yok",
+      "ductility_toughness": "Tokluğu büyük ölçüde azaltır",
+      "wear_resistance": "Aşınma direncini azaltır",
+      "corrosion_resistance": "Soğuk kısalığa ve korozyona neden olur",
+      "other": "Zararlı safsızlık"
+    }
+  },
+  "trends": {
+    "Mukavemet / Sertlik": {
+      "up": [
+        "C",
+        "Mn",
+        "Si",
+        "Cr",
+        "Mo",
+        "V",
+        "W",
+        "Nb",
+        "Ti"
+      ],
+      "arrow": "↑"
+    },
+    "Süneklik / Tokluk": {
+      "up_inc": [
+        "Mn",
+        "Ni"
+      ],
+      "up_dec": [
+        "C",
+        "Si",
+        "Cr",
+        "Mo",
+        "V",
+        "W"
+      ],
+      "arrow_inc": "↑",
+      "arrow_dec": "↓"
+    },
+    "Sertleşebilirlik": {
+      "up": [
+        "C",
+        "Mn",
+        "Cr",
+        "Mo",
+        "Ni",
+        "Si",
+        "B"
+      ],
+      "arrow": "↑"
+    },
+    "Aşınma Direnci": {
+      "up": [
+        "C",
+        "Cr",
+        "Mo",
+        "V",
+        "W"
+      ],
+      "arrow": "↑"
+    },
+    "Korozyon Direnci": {
+      "up": [
+        "Cr",
+        "Ni",
+        "Si",
+        "Cu"
+      ],
+      "arrow": "↑"
+    },
+    "Yüksek Sıcaklık Mukavemeti": {
+      "up": [
+        "Mo",
+        "W",
+        "Cr",
+        "V"
+      ],
+      "arrow": "↑"
+    }
+  },
+  "examples": [
+    {
+      "name": "Cr-Mo çelikleri (örn. 1,25Cr-0,5Mo)",
+      "desc": "Yüksek mukavemet ve sertlik, enerji santrallerinde kullanılır."
+    },
+    {
+      "name": "Ni-Cr çelikleri (örn. 2Ni-1Cr-0,5Mo)",
+      "desc": "Yüksek tokluk ve mukavemet, yapısal bileşenlerde kullanılır."
+    },
+    {
+      "name": "Takım çelikleri (örn. D2, AISI 52100)",
+      "desc": "Yüksek sertlik, aşınma direnci, ısı direnci."
+    },
+    {
+      "name": "Paslanmaz çelikler (örn. 18Cr-8Ni)",
+      "desc": "Mükemmel direnç ve görünüm."
+    }
+  ],
+  "notes": [
+    "Bir elementin etkisi, miktarına, mevcut diğer elementlere, ısıl işleme ve işleme yöntemine bağlıdır.",
+    "Aşırı ilave zararlı olabilir.",
+    "İstenen özellikleri elde etmek için elementlerin uygun kombinasyonu ve kontrolü gereklidir.",
+    "İyi tokluk ve süneklik için temiz çelik (düşük S ve P) esastır."
+  ]
+}

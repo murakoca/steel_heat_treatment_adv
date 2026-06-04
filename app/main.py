@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Isıl İşlem Simülasyon Platformu – v2.7 (Figure hatası düzeltildi)"""
+"""
+Isıl İşlem Simülasyon Platformu – v3.0 (Tüm Özellikler + Hata Modları)
+Çok dilli (TR/EN), 12+ sekme
+"""
 import sys, os, json
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -30,6 +33,9 @@ from reports.pdf_generator import generate_pdf_report
 from metallurgy.ttt_cct_plot import load_ttt_data, draw_ttt
 from mechanics.distortion_calc import estimate_residual_stress, distortion_risk
 from simulation.carburizing_sim import simulate_carburizing
+from metallurgy.alloy_guide import AlloyGuide
+from metallurgy.failure_modes import FailureModes
+from app.language_manager import LanguageManager
 
 def load_steel_list():
     with open(DB_PATH) as f:
@@ -118,7 +124,8 @@ class HardnessCanvas(FigureCanvasQTAgg):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Isıl İşlem Simülasyon Platformu")
+        self.lang_manager = LanguageManager()
+        self.setWindowTitle(self.lang_manager.tr("window_title"))
         self.setMinimumSize(1400, 900)
         self.steels = load_steel_list()
         self.pt = PeriodicTable()
@@ -141,46 +148,47 @@ class MainWindow(QMainWindow):
 
         # ===== SİMÜLASYON =====
         sim_tab = QWidget(); sim_layout = QVBoxLayout(sim_tab)
-        top = QGroupBox("Proses Tanımı"); form = QFormLayout(top)
+        top = QGroupBox(self.lang_manager.tr("process_group")); form = QFormLayout(top)
         h1 = QHBoxLayout()
         self.steel_cb = QComboBox(); self.steel_cb.addItems(self.steels)
         self.steel_cb.currentTextChanged.connect(self._show_steel_info)
-        h1.addWidget(QLabel("Çelik:")); h1.addWidget(self.steel_cb)
+        h1.addWidget(QLabel(self.lang_manager.tr("steel_label"))); h1.addWidget(self.steel_cb)
         self.steel_lbl = QLabel(); self.steel_lbl.setStyleSheet("color:#a6adc8;")
         h1.addWidget(self.steel_lbl)
         form.addRow(h1)
         h2 = QHBoxLayout()
-        self.proc_cb = QComboBox(); self.proc_cb.addItems(["Quenching","Tempering","Carburizing"])
+        self.proc_cb = QComboBox()
+        self.proc_cb.addItems([self.lang_manager.tr("quenching"), self.lang_manager.tr("tempering"), self.lang_manager.tr("carburizing")])
         self.proc_cb.currentTextChanged.connect(self._on_proc_changed)
-        h2.addWidget(QLabel("Proses:")); h2.addWidget(self.proc_cb)
+        h2.addWidget(QLabel(self.lang_manager.tr("process_label"))); h2.addWidget(self.proc_cb)
         form.addRow(h2)
         self.proc_params = QWidget(); self.proc_layout = QFormLayout(self.proc_params)
-        form.addRow("Parametreler:", self.proc_params)
-        self._on_proc_changed("Quenching")
-        self.run_btn = QPushButton("▶ Simülasyonu Çalıştır")
+        form.addRow(self.lang_manager.tr("params_label"), self.proc_params)
+        self._on_proc_changed(self.lang_manager.tr("quenching"))
+        self.run_btn = QPushButton(self.lang_manager.tr("run_btn"))
         self.run_btn.clicked.connect(self._start_sim); self.run_btn.setMinimumHeight(40)
         form.addRow(self.run_btn)
         sim_layout.addWidget(top)
         self.progress = QProgressBar(); self.progress.setVisible(False)
         sim_layout.addWidget(self.progress)
         self.res_tabs = QTabWidget()
-        self.cooling_canvas = CoolingCanvas(self); self.res_tabs.addTab(self.cooling_canvas, "Soğuma")
-        self.hardness_canvas = HardnessCanvas(self); self.res_tabs.addTab(self.hardness_canvas, "Sertlik")
+        self.cooling_canvas = CoolingCanvas(self); self.res_tabs.addTab(self.cooling_canvas, self.lang_manager.tr("cooling_tab"))
+        self.hardness_canvas = HardnessCanvas(self); self.res_tabs.addTab(self.hardness_canvas, self.lang_manager.tr("hardness_tab"))
         ms_tab = QWidget(); ms_lay = QVBoxLayout(ms_tab)
         self.ms_lbl = QLabel(""); ms_lay.addWidget(self.ms_lbl)
         self.ms_table = QTableWidget(0,4)
         self.ms_table.setHorizontalHeaderLabels(["Faz","Oran %","Sertlik HV","C %"])
         self.ms_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         ms_lay.addWidget(self.ms_table)
-        self.res_tabs.addTab(ms_tab, "Mikroyapı")
+        self.res_tabs.addTab(ms_tab, self.lang_manager.tr("micro_tab"))
         self.log_txt = QTextEdit(); self.log_txt.setReadOnly(True)
-        self.res_tabs.addTab(self.log_txt, "Log")
+        self.res_tabs.addTab(self.log_txt, self.lang_manager.tr("log_tab"))
         sim_layout.addWidget(self.res_tabs)
-        tabs.addTab(sim_tab, "🔥 Simülasyon")
+        tabs.addTab(sim_tab, self.lang_manager.tr("simulation_tab"))
 
-        # ===== MALZEME REHBERİ =====
+        # ===== REHBER =====
         guide_tab = QWidget(); guide_layout = QVBoxLayout(guide_tab)
-        guide_label = QLabel("Malzeme Seçim Rehberi")
+        guide_label = QLabel(self.lang_manager.tr("guide_tab"))
         guide_label.setFont(QFont("Segoe UI",14, QFont.Bold))
         guide_layout.addWidget(guide_label)
         for title, desc in MATERIAL_GUIDE.items():
@@ -190,7 +198,7 @@ class MainWindow(QMainWindow):
             grp_lay.addWidget(lbl)
             guide_layout.addWidget(grp)
         guide_layout.addStretch()
-        tabs.addTab(guide_tab, "📚 Rehber")
+        tabs.addTab(guide_tab, self.lang_manager.tr("guide_tab"))
 
         # ===== PERİYODİK TABLO =====
         periodic_tab = QWidget(); periodic_layout = QVBoxLayout(periodic_tab)
@@ -235,7 +243,7 @@ class MainWindow(QMainWindow):
         self.steel_info_text.setMaximumHeight(200)
         steel_layout.addWidget(self.steel_info_text)
         periodic_layout.addWidget(steel_panel)
-        tabs.addTab(periodic_tab, "🧪 Elementler")
+        tabs.addTab(periodic_tab, self.lang_manager.tr("periodic_tab"))
 
         # ===== LEVER RULE =====
         lever_tab = QWidget(); lever_layout = QVBoxLayout(lever_tab)
@@ -264,7 +272,7 @@ class MainWindow(QMainWindow):
         result_layout.addWidget(self.lever_result)
         lever_layout.addWidget(result_group)
         lever_layout.addStretch()
-        tabs.addTab(lever_tab, "⚖️ Lever Kuralı")
+        tabs.addTab(lever_tab, self.lang_manager.tr("lever_tab"))
 
         # ===== REE =====
         self.ree_db = REEDatabase()
@@ -304,7 +312,7 @@ class MainWindow(QMainWindow):
         mineral_layout.addStretch()
         ree_tabs.addTab(mineral_tab, "Mineraller & İşleme")
         ree_layout.addWidget(ree_tabs)
-        tabs.addTab(ree_tab, "🧪 REE")
+        tabs.addTab(ree_tab, self.lang_manager.tr("ree_tab"))
 
         # ===== İNTERAKTİF Fe–C DİYAGRAMI =====
         self.fec_engine = FeCDiagram()
@@ -364,16 +372,18 @@ class MainWindow(QMainWindow):
         right_layout.addStretch()
         fec_layout.addWidget(left_panel, 3)
         fec_layout.addWidget(right_panel, 1)
-        tabs.addTab(fec_tab, "🔬 Fe–C Diyagramı")
+        tabs.addTab(fec_tab, self.lang_manager.tr("fec_tab"))
         self._redraw_fec()
 
-        # ===== SATIN ALMA REHBERİ =====
+        # ===== SATIN ALMA =====
         proc_tab = QWidget(); proc_layout = QVBoxLayout(proc_tab)
         lang_layout = QHBoxLayout()
-        self.proc_lang = "tr"
-        self.proc_tr_btn = QPushButton("🇹🇷 Türkçe"); self.proc_tr_btn.setCheckable(True); self.proc_tr_btn.setChecked(True)
+        self.proc_lang = self.lang_manager.current_lang
+        self.proc_tr_btn = QPushButton(self.lang_manager.tr("lang_tr")); self.proc_tr_btn.setCheckable(True)
+        self.proc_tr_btn.setChecked(self.proc_lang == "tr")
         self.proc_tr_btn.clicked.connect(lambda: self._switch_proc_lang("tr"))
-        self.proc_en_btn = QPushButton("🇬🇧 English"); self.proc_en_btn.setCheckable(True)
+        self.proc_en_btn = QPushButton(self.lang_manager.tr("lang_en")); self.proc_en_btn.setCheckable(True)
+        self.proc_en_btn.setChecked(self.proc_lang == "en")
         self.proc_en_btn.clicked.connect(lambda: self._switch_proc_lang("en"))
         lang_layout.addWidget(self.proc_tr_btn); lang_layout.addWidget(self.proc_en_btn)
         lang_layout.addStretch()
@@ -388,19 +398,17 @@ class MainWindow(QMainWindow):
         with open(os.path.join(BASE_DIR, "..", "database", "procurement_guide.json"), encoding='utf-8') as f:
             self.proc_data = json.load(f)
         self._build_procurement_ui()
-        tabs.addTab(proc_tab, "📊 Satın Alma")
+        tabs.addTab(proc_tab, self.lang_manager.tr("procurement_tab"))
 
         # ===== PDF RAPOR =====
         pdf_tab = QWidget(); pdf_layout = QVBoxLayout(pdf_tab)
-        pdf_btn = QPushButton("📄 PDF Rapor Oluştur")
-        pdf_btn.clicked.connect(self._generate_pdf_report)
+        pdf_btn = QPushButton("📄 PDF Rapor Oluştur"); pdf_btn.clicked.connect(self._generate_pdf_report)
         pdf_layout.addWidget(pdf_btn)
-        self.pdf_status = QLabel("")
-        pdf_layout.addWidget(self.pdf_status)
+        self.pdf_status = QLabel(""); pdf_layout.addWidget(self.pdf_status)
         pdf_layout.addStretch()
-        tabs.addTab(pdf_tab, "📄 PDF Rapor")
+        tabs.addTab(pdf_tab, self.lang_manager.tr("pdf_tab"))
 
-        # ===== TTT/CCT DİYAGRAMI =====
+        # ===== TTT/CCT =====
         ttt_tab = QWidget(); ttt_layout = QVBoxLayout(ttt_tab)
         ttt_mat_layout = QHBoxLayout()
         ttt_mat_layout.addWidget(QLabel("Çelik:"))
@@ -414,7 +422,7 @@ class MainWindow(QMainWindow):
         self.ttt_ax.tick_params(colors='#cdd6f4')
         for sp in self.ttt_ax.spines.values(): sp.set_color('#45475a')
         ttt_layout.addWidget(self.ttt_canvas)
-        tabs.addTab(ttt_tab, "📈 TTT/CCT")
+        tabs.addTab(ttt_tab, self.lang_manager.tr("ttt_tab"))
 
         # ===== DİSTORSİYON =====
         distort_tab = QWidget(); distort_layout = QFormLayout(distort_tab)
@@ -425,7 +433,7 @@ class MainWindow(QMainWindow):
         self.distort_btn = QPushButton("Hesapla"); self.distort_btn.clicked.connect(self._calc_distortion)
         distort_layout.addRow(self.distort_btn)
         self.distort_result = QLabel(""); distort_layout.addRow("Sonuç:", self.distort_result)
-        tabs.addTab(distort_tab, "🔧 Distorsiyon")
+        tabs.addTab(distort_tab, self.lang_manager.tr("distortion_tab"))
 
         # ===== KARBON DİFÜZYONU =====
         diff_tab = QWidget(); diff_layout = QVBoxLayout(diff_tab)
@@ -444,9 +452,103 @@ class MainWindow(QMainWindow):
         self.diff_ax.tick_params(colors='#cdd6f4')
         for sp in self.diff_ax.spines.values(): sp.set_color('#45475a')
         diff_layout.addWidget(self.diff_canvas)
-        tabs.addTab(diff_tab, "🧪 Karbon Difüzyonu")
+        tabs.addTab(diff_tab, self.lang_manager.tr("diffusion_tab"))
 
-        self.statusBar().showMessage("Hazır")
+        # ===== ALAŞIM REHBERİ =====
+        self.alloy_guide = AlloyGuide()
+        alloy_data = self.alloy_guide.get_all()
+        alloy_tab = QWidget(); alloy_layout = QVBoxLayout(alloy_tab)
+        scroll_alloy = QScrollArea(); scroll_alloy.setWidgetResizable(True)
+        scroll_alloy_content = QWidget()
+        scroll_alloy_layout = QVBoxLayout(scroll_alloy_content)
+        scroll_alloy.setWidget(scroll_alloy_content)
+        alloy_layout.addWidget(scroll_alloy)
+        title_alloy = QLabel(f"<h2>🧪 {alloy_data['title']}</h2>")
+        title_alloy.setWordWrap(True)
+        scroll_alloy_layout.addWidget(title_alloy)
+        intro_alloy = QLabel(alloy_data['intro'])
+        intro_alloy.setWordWrap(True)
+        intro_alloy.setStyleSheet("font-size:13px; color:#cdd6f4; margin-bottom:10px;")
+        scroll_alloy_layout.addWidget(intro_alloy)
+        why_group = QGroupBox("❓ NEDEN ALAŞIM ÇELİĞİ?")
+        why_layout = QVBoxLayout(why_group)
+        for item in alloy_data['why_alloy']:
+            lbl = QLabel(f"• {item}"); lbl.setWordWrap(True)
+            why_layout.addWidget(lbl)
+        scroll_alloy_layout.addWidget(why_group)
+        scroll_alloy_layout.addStretch()
+        tabs.addTab(alloy_tab, self.lang_manager.tr("alloy_tab"))
+
+        # ===== HATA MODLARI =====
+        self.failure_db = FailureModes()
+        failure_data = self.failure_db.get_all()
+        failure_tab = QWidget(); failure_layout = QVBoxLayout(failure_tab)
+        scroll_fail = QScrollArea(); scroll_fail.setWidgetResizable(True)
+        scroll_fail_content = QWidget()
+        scroll_fail_layout = QVBoxLayout(scroll_fail_content)
+        scroll_fail.setWidget(scroll_fail_content)
+        failure_layout.addWidget(scroll_fail)
+        self.failure_title = QLabel()
+        self.failure_title.setStyleSheet("font-size:18px; font-weight:bold; color:#89b4fa;")
+        self.failure_title.setWordWrap(True)
+        scroll_fail_layout.addWidget(self.failure_title)
+        self.failure_intro = QTextEdit()
+        self.failure_intro.setReadOnly(True)
+        self.failure_intro.setMaximumHeight(120)
+        self.failure_intro.setStyleSheet("font-size:13px; color:#cdd6f4; background-color:#313244; border:1px solid #45475a; border-radius:4px; padding:8px;")
+        scroll_fail_layout.addWidget(self.failure_intro)
+        modes = failure_data["modes"]
+        modes_widget = QWidget()
+        modes_grid = QGridLayout(modes_widget)
+        modes_grid.setSpacing(10)
+        row = 0; col = 0
+        self.failure_card_widgets = {}
+        for key, mode_data in modes.items():
+            card = QGroupBox()
+            card_layout = QVBoxLayout(card)
+            title_label = QLabel()
+            title_label.setStyleSheet("font-weight:bold; color:#89b4fa; font-size:13px;")
+            title_label.setWordWrap(True)
+            card_layout.addWidget(title_label)
+            content_label = QLabel()
+            content_label.setWordWrap(True)
+            content_label.setStyleSheet("color:#cdd6f4; font-size:11px;")
+            card_layout.addWidget(content_label)
+            card.setStyleSheet("QGroupBox { background-color:#313244; border:1px solid #45475a; border-radius:6px; padding:10px; }")
+            modes_grid.addWidget(card, row, col)
+            self.failure_card_widgets[key] = (title_label, content_label)
+            col += 1
+            if col > 2:
+                col = 0
+                row += 1
+        scroll_fail_layout.addWidget(modes_widget)
+        self.failure_fractography_title = QLabel()
+        self.failure_fractography_title.setStyleSheet("font-size:14px; font-weight:bold; color:#89b4fa; margin-top:15px;")
+        self.failure_fractography_title.setWordWrap(True)
+        scroll_fail_layout.addWidget(self.failure_fractography_title)
+        self.failure_fractography_content = QLabel()
+        self.failure_fractography_content.setWordWrap(True)
+        self.failure_fractography_content.setStyleSheet("color:#cdd6f4; font-size:12px; padding:8px; background-color:#313244; border-radius:4px;")
+        scroll_fail_layout.addWidget(self.failure_fractography_content)
+        self.failure_prevention_title = QLabel()
+        self.failure_prevention_title.setStyleSheet("font-size:14px; font-weight:bold; color:#89b4fa; margin-top:15px;")
+        self.failure_prevention_title.setWordWrap(True)
+        scroll_fail_layout.addWidget(self.failure_prevention_title)
+        self.failure_prevention_list = QLabel()
+        self.failure_prevention_list.setWordWrap(True)
+        self.failure_prevention_list.setStyleSheet("color:#cdd6f4; font-size:12px; padding:8px; background-color:#313244; border-radius:4px;")
+        scroll_fail_layout.addWidget(self.failure_prevention_list)
+        scroll_fail_layout.addStretch()
+        tabs.addTab(failure_tab, "🔧 Hata Modları")
+
+        # Dil butonu
+        self.lang_btn = QPushButton("🇹🇷 TR")
+        self.lang_btn.setFixedSize(80, 28)
+        self.lang_btn.setStyleSheet("QPushButton { background-color: #313244; color: #cdd6f4; border: 1px solid #45475a; border-radius: 4px; font-weight: bold; } QPushButton:hover { background-color: #45475a; }")
+        self.lang_btn.clicked.connect(self._toggle_language)
+        self.statusBar().addPermanentWidget(self.lang_btn)
+        self.statusBar().showMessage(self.lang_manager.tr("ready"))
+        self._translate_failure_modes()
 
     # ===== PROCUREMENT METODLARI =====
     def _switch_proc_lang(self, lang):
@@ -536,16 +638,16 @@ class MainWindow(QMainWindow):
         while self.proc_layout.count():
             item = self.proc_layout.takeAt(0)
             if item.widget(): item.widget().deleteLater()
-        if proc == "Quenching":
-            self.aust_edit = QLineEdit("850"); self.proc_layout.addRow("Östenitleme Sıc. (°C):", self.aust_edit)
+        if proc == self.lang_manager.tr("quenching") or proc == "Quenching":
+            self.aust_edit = QLineEdit("850"); self.proc_layout.addRow(self.lang_manager.tr("aust_temp"), self.aust_edit)
             self.media_cb = QComboBox(); self.media_cb.addItems(["Oil","Water","Polymer","Brine"])
-            self.proc_layout.addRow("Ortam:", self.media_cb)
+            self.proc_layout.addRow(self.lang_manager.tr("media"), self.media_cb)
             self.ag_cb = QComboBox(); self.ag_cb.addItems(["moderate","still","vigorous"])
-            self.proc_layout.addRow("Ajitasyon:", self.ag_cb)
-        elif proc == "Tempering":
+            self.proc_layout.addRow(self.lang_manager.tr("agitation"), self.ag_cb)
+        elif proc == self.lang_manager.tr("tempering") or proc == "Tempering":
             self.temp_edit = QLineEdit("300"); self.proc_layout.addRow("Sıcaklık (°C):", self.temp_edit)
             self.time_edit = QLineEdit("3600"); self.proc_layout.addRow("Süre (s):", self.time_edit)
-        elif proc == "Carburizing":
+        elif proc == self.lang_manager.tr("carburizing") or proc == "Carburizing":
             self.ctemp_edit = QLineEdit("930"); self.proc_layout.addRow("Sıcaklık (°C):", self.ctemp_edit)
             self.ctime_edit = QLineEdit("7200"); self.proc_layout.addRow("Süre (s):", self.ctime_edit)
             self.cpot_edit = QLineEdit("0.8"); self.proc_layout.addRow("C Potansiyeli (%):", self.cpot_edit)
@@ -555,14 +657,14 @@ class MainWindow(QMainWindow):
         self.log_txt.clear()
         cfg = {"steel": self.steel_cb.currentText(), "process": self.proc_cb.currentText()}
         try:
-            if cfg["process"] == "Quenching":
+            if cfg["process"] in [self.lang_manager.tr("quenching"), "Quenching"]:
                 cfg["aust_temp"] = float(self.aust_edit.text())
                 cfg["media"] = self.media_cb.currentText()
                 cfg["agitation"] = self.ag_cb.currentText()
-            elif cfg["process"] == "Tempering":
+            elif cfg["process"] in [self.lang_manager.tr("tempering"), "Tempering"]:
                 cfg["temp_temp"] = float(self.temp_edit.text())
                 cfg["temp_time"] = float(self.time_edit.text())
-            elif cfg["process"] == "Carburizing":
+            elif cfg["process"] in [self.lang_manager.tr("carburizing"), "Carburizing"]:
                 cfg["carb_temp"] = float(self.ctemp_edit.text())
                 cfg["carb_time"] = float(self.ctime_edit.text())
                 cfg["carbon_pot"] = float(self.cpot_edit.text())
@@ -577,7 +679,7 @@ class MainWindow(QMainWindow):
         self.worker.start()
 
     def _sim_done(self, res):
-        self.current_result = res  # PDF rapor için sakla
+        self.current_result = res
         self.progress.setVisible(False); self.run_btn.setEnabled(True)
         if res.cooling_curve:
             mat = Material.from_database(self.steel_cb.currentText())
@@ -714,7 +816,6 @@ class MainWindow(QMainWindow):
         self.fec_temp_slider.setValue(727); self.fec_temp_lbl.setText("727°C")
         self._redraw_fec(); self._update_fec_phase_info()
 
-    # ===== YENİ METODLAR =====
     def _generate_pdf_report(self):
         if not self.current_result:
             self.pdf_status.setText("Önce simülasyon çalıştırın.")
@@ -764,6 +865,50 @@ class MainWindow(QMainWindow):
             self.diff_canvas.draw()
         except Exception as e:
             pass
+
+    def _toggle_language(self):
+        self.lang_manager.toggle()
+        lang = self.lang_manager.current_lang
+        self.lang_btn.setText("🇹🇷 TR" if lang == "tr" else "🇬🇧 EN")
+        self._retranslate_ui()
+
+    def _retranslate_ui(self):
+        self.setWindowTitle(self.lang_manager.tr("window_title"))
+        tab_keys = [
+            (0, "simulation_tab"), (1, "guide_tab"), (2, "periodic_tab"),
+            (3, "lever_tab"), (4, "fec_tab"), (5, "ree_tab"),
+            (6, "procurement_tab"), (7, "pdf_tab"), (8, "ttt_tab"),
+            (9, "distortion_tab"), (10, "diffusion_tab"), (11, "alloy_tab")
+        ]
+        tabs = self.findChild(QTabWidget)
+        if tabs:
+            for i, key in tab_keys:
+                if i < tabs.count():
+                    tabs.setTabText(i, self.lang_manager.tr(key))
+        self.statusBar().showMessage(self.lang_manager.tr("ready"))
+        self._translate_failure_modes()
+
+    def _translate_failure_modes(self):
+        lang = self.lang_manager.current_lang
+        data = self.failure_db.get_all()
+        self.failure_title.setText(data["title"][lang])
+        intro_html = "<ul>"
+        for item in data["intro"][lang]:
+            intro_html += f"<li>{item}</li>"
+        intro_html += "</ul>"
+        self.failure_intro.setHtml(intro_html)
+        for key, mode_data in data["modes"].items():
+            if key in self.failure_card_widgets:
+                title_label, content_label = self.failure_card_widgets[key]
+                icon = mode_data["icon"]
+                title_label.setText(f"{icon} {mode_data['title'][lang]}")
+                content_text = "\n".join([f"• {line}" for line in mode_data["content"][lang]])
+                content_label.setText(content_text)
+        self.failure_fractography_title.setText(data["fractography"]["title"][lang])
+        self.failure_fractography_content.setText(data["fractography"]["content"][lang])
+        self.failure_prevention_title.setText(data["prevention"]["title"][lang])
+        prevention_text = "\n".join([f"• {item}" for item in data["prevention"]["items"][lang]])
+        self.failure_prevention_list.setText(prevention_text)
 
 def main():
     app = QApplication(sys.argv)

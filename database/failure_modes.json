@@ -1,0 +1,162 @@
+{
+  "title": {
+    "tr": "Malzeme Hata Modlarına Giriş",
+    "en": "Introduction to Material Failure Modes"
+  },
+  "intro": {
+    "tr": [
+      "Her mühendislik malzemesinin sınırları vardır.",
+      "Bu sınırlar şunlardan kaynaklanabilir: Aşırı gerilim, uzun süreli ısıya maruz kalma, kimyasal saldırı.",
+      "Malzemelerin neden ve nasıl hasara uğradığını anlamak şunları önlememizi sağlar: Tehlikeli arızalar, hizmet ömrünü uzatma."
+    ],
+    "en": [
+      "Every engineering material has its limits.",
+      "These limits can arise from: Excessive stress, prolonged heat exposure, chemical attack.",
+      "Understanding why and how materials fail allows us to prevent: Dangerous failures, extend service life."
+    ]
+  },
+  "modes": {
+    "fracture": {
+      "icon": "💥",
+      "title": {
+        "tr": "Kırılma: Uyarılı veya Uyarısız",
+        "en": "Fracture: With or Without Warning"
+      },
+      "content": {
+        "tr": [
+          "Gerilme, malzemenin dayanımını aştığında oluşur.",
+          "Gevrek: Çatlaklar çok az uyarı ile hızla ilerler.",
+          "Sünek: Malzeme kırılmadan önce şekil değiştirir (boyun verme)."
+        ],
+        "en": [
+          "Occurs when stress exceeds material strength.",
+          "Brittle: Cracks propagate rapidly with little warning.",
+          "Ductile: Material deforms (necking) before fracture."
+        ]
+      }
+    },
+    "fatigue": {
+      "icon": "🔄",
+      "title": {
+        "tr": "Yorulma: Tekrarlı Gerilme",
+        "en": "Fatigue: Repeated Stress"
+      },
+      "content": {
+        "tr": [
+          "Çevrimsel yükleme altında, genellikle akma dayanımının altında çatlaklar oluşur.",
+          "Gerilme yükseltici bölgelerde başlar ve ani kırılmaya kadar yavaşça büyür.",
+          "Köprülerde, uçak kanatlarında yaygındır."
+        ],
+        "en": [
+          "Cracks form under cyclic loading, usually below yield strength.",
+          "Starts at stress concentration areas and slowly grows until sudden fracture.",
+          "Common in bridges, aircraft wings."
+        ]
+      }
+    },
+    "creep": {
+      "icon": "⏳",
+      "title": {
+        "tr": "Sürünme: Zamana Bağlı Şekil Değiştirme",
+        "en": "Creep: Time-Dependent Deformation"
+      },
+      "content": {
+        "tr": [
+          "Yüksek sıcaklıkta sabit yük altında kademeli, kalıcı deformasyon.",
+          "Türbin kanatlarında, buhar hatlarında görülür.",
+          "Üç aşamalıdır: Birincil, ikincil (kararlı), üçüncül (hızlanan)."
+        ],
+        "en": [
+          "Gradual, permanent deformation under constant load at high temperature.",
+          "Seen in turbine blades, steam lines.",
+          "Three stages: Primary, secondary (steady-state), tertiary (accelerating)."
+        ]
+      }
+    },
+    "corrosion": {
+      "icon": "🧪",
+      "title": {
+        "tr": "Korozyonla İlişkili Hatalar",
+        "en": "Corrosion-Related Failures"
+      },
+      "content": {
+        "tr": [
+          "Gerilmeli korozyon çatlaması (SCC) ve korozyon yorulması, kimyasal ve mekanik gerilmeyi birleştirir.",
+          "SCC: Çekme gerilimi altındaki metallerde aşındırıcı ortamlara maruz kalındığında çatlaklar oluşur.",
+          "Korozyon Yorulması: Yorulma, aşındırıcı koşullar nedeniyle kötüleşir."
+        ],
+        "en": [
+          "Stress corrosion cracking (SCC) and corrosion fatigue combine chemical and mechanical stress.",
+          "SCC: Cracks form in metals under tensile stress when exposed to corrosive environments.",
+          "Corrosion Fatigue: Fatigue worsened by corrosive conditions."
+        ]
+      }
+    },
+    "impact": {
+      "icon": "💢",
+      "title": {
+        "tr": "Şok Yükleme Nedeniyle Darbe Hatası",
+        "en": "Impact Failure from Shock Loading"
+      },
+      "content": {
+        "tr": [
+          "Ani kuvvetler (örneğin düşme, çarpışma) hızlı kırılmaya neden olabilir.",
+          "Tokluk, bu tür hasarlara direnmek için kritiktir."
+        ],
+        "en": [
+          "Sudden forces (e.g., drops, collisions) can cause rapid fracture.",
+          "Toughness is critical to resist such failures."
+        ]
+      }
+    },
+    "wear": {
+      "icon": "🔧",
+      "title": {
+        "tr": "Aşınma: Yüzey Hasarı",
+        "en": "Wear: Surface Damage"
+      },
+      "content": {
+        "tr": [
+          "Sürtünme, kayma veya aşındırma nedeniyle kademeli malzeme kaybı.",
+          "Yapışmalı (Adhesive): Malzeme bir yüzeyden diğerine aktarılır.",
+          "Aşındırıcı (Abrasive): Sert parçacıklar daha yumuşak yüzeyleri aşındırır."
+        ],
+        "en": [
+          "Gradual material loss due to friction, sliding, or abrasion.",
+          "Adhesive: Material transfers from one surface to another.",
+          "Abrasive: Hard particles wear away softer surfaces."
+        ]
+      }
+    }
+  },
+  "fractography": {
+    "title": {
+      "tr": "Kırık Yüzeyi Analiz Araçları (Fraktografi)",
+      "en": "Fracture Surface Analysis Tools (Fractography)"
+    },
+    "content": {
+      "tr": "Kırık yüzeyleri, hasarın kök nedenlerini belirlemek için SEM, optik mikroskopi ve görsel inceleme kullanılarak analiz edilir.",
+      "en": "Fracture surfaces are analyzed using SEM, optical microscopy, and visual inspection to determine root causes of failure."
+    }
+  },
+  "prevention": {
+    "title": {
+      "tr": "Önleme Stratejileri",
+      "en": "Prevention Strategies"
+    },
+    "items": {
+      "tr": [
+        "Daha iyi yorulma veya sürünme direncine sahip malzemeler kullanın.",
+        "Koruyucu kaplamalar uygulayın.",
+        "Gerilme yoğunlaşmasını azaltmak için yeniden tasarım yapın.",
+        "Doğru üretim ve muayeneyi sağlayın."
+      ],
+      "en": [
+        "Use materials with better fatigue or creep resistance.",
+        "Apply protective coatings.",
+        "Redesign to reduce stress concentration.",
+        "Ensure proper manufacturing and inspection."
+      ]
+    }
+  }
+}

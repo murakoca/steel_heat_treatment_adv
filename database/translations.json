@@ -1,0 +1,122 @@
+{
+  "window_title": {
+    "tr": "Isıl İşlem Simülasyon Platformu",
+    "en": "Heat Treatment Simulation Platform"
+  },
+  "simulation_tab": {
+    "tr": "🔥 Simülasyon",
+    "en": "🔥 Simulation"
+  },
+  "guide_tab": {
+    "tr": "📚 Rehber",
+    "en": "📚 Guide"
+  },
+  "periodic_tab": {
+    "tr": "🧪 Elementler",
+    "en": "🧪 Elements"
+  },
+  "lever_tab": {
+    "tr": "⚖️ Lever Kuralı",
+    "en": "⚖️ Lever Rule"
+  },
+  "fec_tab": {
+    "tr": "🔬 Fe–C Diyagramı",
+    "en": "🔬 Fe–C Diagram"
+  },
+  "ree_tab": {
+    "tr": "🧪 REE",
+    "en": "🧪 REE"
+  },
+  "procurement_tab": {
+    "tr": "📊 Satın Alma",
+    "en": "📊 Procurement"
+  },
+  "pdf_tab": {
+    "tr": "📄 PDF Rapor",
+    "en": "📄 PDF Report"
+  },
+  "ttt_tab": {
+    "tr": "📈 TTT/CCT",
+    "en": "📈 TTT/CCT"
+  },
+  "distortion_tab": {
+    "tr": "🔧 Distorsiyon",
+    "en": "🔧 Distortion"
+  },
+  "diffusion_tab": {
+    "tr": "🧪 Karbon Difüzyonu",
+    "en": "🧪 Carbon Diffusion"
+  },
+  "alloy_tab": {
+    "tr": "🧪 Alaşım Rehberi",
+    "en": "🧪 Alloy Guide"
+  },
+  "failure_modes_tab": {
+    "tr": "🔧 Hata Modları",
+    "en": "🔧 Failure Modes"
+  },
+  "process_group": {
+    "tr": "Proses Tanımı",
+    "en": "Process Definition"
+  },
+  "steel_label": {
+    "tr": "Çelik:",
+    "en": "Steel:"
+  },
+  "process_label": {
+    "tr": "Proses:",
+    "en": "Process:"
+  },
+  "params_label": {
+    "tr": "Parametreler:",
+    "en": "Parameters:"
+  },
+  "quenching": {
+    "tr": "Su Verme",
+    "en": "Quenching"
+  },
+  "tempering": {
+    "tr": "Temperleme",
+    "en": "Tempering"
+  },
+  "carburizing": {
+    "tr": "Sementasyon",
+    "en": "Carburizing"
+  },
+  "aust_temp": {
+    "tr": "Östenitleme Sıc. (°C):",
+    "en": "Aust. Temp (°C):"
+  },
+  "media": {
+    "tr": "Ortam:",
+    "en": "Media:"
+  },
+  "agitation": {
+    "tr": "Ajitasyon:",
+    "en": "Agitation:"
+  },
+  "run_btn": {
+    "tr": "▶ Simülasyonu Çalıştır",
+    "en": "▶ Run Simulation"
+  },
+  "ready": {
+    "tr": "Hazır",
+    "en": "Ready"
+  },
+  "cooling_tab": {
+    "tr": "Soğuma",
+    "en": "Cooling"
+  },
+  "hardness_tab": {
+    "tr": "Sertlik",
+    "en": "Hardness"
+  },
+  "micro_tab": {
+    "tr": "Mikroyapı",
+    "en": "Microstructure"
+  },
+  "log_tab": {
+    "tr": "Log",
+    "en": "Log"
+  }
+}
