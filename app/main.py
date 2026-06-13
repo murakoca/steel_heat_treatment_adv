@@ -36,6 +36,16 @@ from simulation.carburizing_sim import simulate_carburizing
 from metallurgy.alloy_guide import AlloyGuide
 from metallurgy.failure_modes import FailureModes
 from tools.clemex_window import ClemexWindow
+from tools.failure_window import FailureWindow
+from tools.alloy_window import AlloyWindow
+from tools.diffusion_window import DiffusionWindow
+from tools.distortion_window import DistortionWindow
+from tools.ttt_window import TTTWindow
+from tools.pdf_window import PDFWindow
+from tools.procurement_window import ProcurementWindow
+from tools.ree_window import REEWindow
+from tools.lever_window import LeverWindow
+from tools.guide_window import GuideWindow
 from tools.vesta_window import VestaWindow
 from tools.comsol_window import ComsolWindow
 from tools.mipar_window import MiparWindow
@@ -216,7 +226,7 @@ class MainWindow(QMainWindow):
             grp_lay.addWidget(lbl)
             guide_layout.addWidget(grp)
         guide_layout.addStretch()
-        self.tabs.addTab(guide_tab, self.lang_manager.tr("guide_tab"))
+        # self.tabs.addTab(guide_tab, self.lang_manager.tr("guide_tab"))  # ARAÇLAR'a taşındı
 
         # ===== PERİYODİK TABLO =====
         periodic_tab = QWidget(); periodic_layout = QVBoxLayout(periodic_tab)
@@ -290,7 +300,7 @@ class MainWindow(QMainWindow):
         result_layout.addWidget(self.lever_result)
         lever_layout.addWidget(result_group)
         lever_layout.addStretch()
-        self.tabs.addTab(lever_tab, self.lang_manager.tr("lever_tab"))
+        # self.tabs.addTab(lever_tab, self.lang_manager.tr("lever_tab"))  # ARAÇLAR'a taşındı
 
         # ===== REE =====
         self.ree_db = REEDatabase()
@@ -311,14 +321,14 @@ class MainWindow(QMainWindow):
             grp_lay.addWidget(lbl)
             app_layout.addWidget(grp)
         app_layout.addStretch()
-        ree_tabs.addTab(app_tab, self.lang_manager.tr("ree_applications_tab"))
+        # ree_tabs.addTab(app_tab, self.lang_manager.tr("ree_applications_tab"))  # ARAÇLAR'a taşındı
         usage_tab = QWidget(); usage_layout = QVBoxLayout(usage_tab)
         usage_lbl = QLabel(self.lang_manager.tr("ree_usage_title")); usage_layout.addWidget(usage_lbl)
         for sector, pct in ree_data["usage_distribution"].items():
             bar = QProgressBar(); bar.setValue(pct); bar.setFormat(f"{sector}: %{pct}")
             usage_layout.addWidget(QLabel(sector)); usage_layout.addWidget(bar)
         usage_layout.addStretch()
-        ree_tabs.addTab(usage_tab, self.lang_manager.tr("ree_usage_tab"))
+        # ree_tabs.addTab(usage_tab, self.lang_manager.tr("ree_usage_tab"))  # ARAÇLAR'a taşındı
         mineral_tab = QWidget(); mineral_layout = QVBoxLayout(mineral_tab)
         mineral_layout.addWidget(QLabel(self.lang_manager.tr("ree_minerals_title")))
         for m in ree_data["minerals"]:
@@ -328,9 +338,9 @@ class MainWindow(QMainWindow):
             mineral_layout.addWidget(QLabel(f"  {i}. {step}"))
         mineral_layout.addWidget(QLabel(f"{self.lang_manager.tr('ree_separation_note')} {ree_data['separation_challenge']}"))
         mineral_layout.addStretch()
-        ree_tabs.addTab(mineral_tab, self.lang_manager.tr("ree_minerals_tab"))
+        # ree_tabs.addTab(mineral_tab, self.lang_manager.tr("ree_minerals_tab"))  # ARAÇLAR'a taşındı
         ree_layout.addWidget(ree_tabs)
-        self.tabs.addTab(ree_tab, self.lang_manager.tr("ree_tab"))
+        # self.tabs.addTab(ree_tab, self.lang_manager.tr("ree_tab"))  # ARAÇLAR'a taşındı
 
         # ===== İNTERAKTİF Fe–C DİYAGRAMI =====
         self.fec_engine = FeCDiagram()
@@ -416,7 +426,7 @@ class MainWindow(QMainWindow):
         with open(os.path.join(BASE_DIR, "..", "database", "procurement_guide.json"), encoding='utf-8') as f:
             self.proc_data = json.load(f)
         self._build_procurement_ui()
-        self.tabs.addTab(proc_tab, self.lang_manager.tr("procurement_tab"))
+        # self.tabs.addTab(proc_tab, self.lang_manager.tr("procurement_tab"))  # ARAÇLAR'a taşındı
 
         # ===== PDF RAPOR =====
         pdf_tab = QWidget(); pdf_layout = QVBoxLayout(pdf_tab)
@@ -424,7 +434,7 @@ class MainWindow(QMainWindow):
         pdf_layout.addWidget(pdf_btn)
         self.pdf_status = QLabel(""); pdf_layout.addWidget(self.pdf_status)
         pdf_layout.addStretch()
-        self.tabs.addTab(pdf_tab, self.lang_manager.tr("pdf_tab"))
+        # self.tabs.addTab(pdf_tab, self.lang_manager.tr("pdf_tab"))  # ARAÇLAR'a taşındı
 
         # ===== TTT/CCT =====
         ttt_tab = QWidget(); ttt_layout = QVBoxLayout(ttt_tab)
@@ -439,7 +449,7 @@ class MainWindow(QMainWindow):
         self.ttt_ax = ttt_fig.add_subplot(111, facecolor='#1e1e2e')
         self.ttt_ax.tick_params(colors='#cdd6f4')
         ttt_layout.addWidget(self.ttt_canvas)
-        self.tabs.addTab(ttt_tab, self.lang_manager.tr("ttt_tab"))
+        # self.tabs.addTab(ttt_tab, self.lang_manager.tr("ttt_tab"))  # ARAÇLAR'a taşındı
 
         # ===== DİSTORSİYON =====
         distort_tab = QWidget(); distort_layout = QFormLayout(distort_tab)
@@ -450,7 +460,7 @@ class MainWindow(QMainWindow):
         self.distort_btn = QPushButton(self.lang_manager.tr("distortion_calculate")); self.distort_btn.clicked.connect(self._calc_distortion)
         distort_layout.addRow(self.distort_btn)
         self.distort_result = QLabel(""); distort_layout.addRow(self.lang_manager.tr("distortion_result_label"), self.distort_result)
-        self.tabs.addTab(distort_tab, self.lang_manager.tr("distortion_tab"))
+        # self.tabs.addTab(distort_tab, self.lang_manager.tr("distortion_tab"))  # ARAÇLAR'a taşındı
 
 
 
@@ -477,7 +487,7 @@ class MainWindow(QMainWindow):
             why_layout.addWidget(lbl)
         scroll_alloy_layout.addWidget(why_group)
         scroll_alloy_layout.addStretch()
-        self.tabs.addTab(alloy_tab, self.lang_manager.tr("alloy_tab"))
+        # # self.tabs.addTab(alloy_tab, self.lang_manager.tr("alloy_tab")  # → Araçlar sekmesine taşındı)  # ARAÇLAR'a taşındı
 
         # ===== HATA MODLARI =====
         self.failure_db = FailureModes()
@@ -550,7 +560,7 @@ class MainWindow(QMainWindow):
         self.failure_prevention_list.setStyleSheet("color:#cdd6f4; font-size:12px; padding:8px; background-color:#313244; border-radius:4px;")
         scroll_fail_layout.addWidget(self.failure_prevention_list)
         scroll_fail_layout.addStretch()
-        self.tabs.addTab(failure_tab, self.lang_manager.tr("failure_modes_tab"))
+        # self.tabs.addTab(failure_tab, self.lang_manager.tr("failure_modes_tab"))  # ARAÇLAR'a taşındı
 
         # ===== MOLEKÜLER DİNAMİK (LAMMPS) =====
         md_tab = QWidget()
@@ -578,7 +588,7 @@ class MainWindow(QMainWindow):
         md_layout.addWidget(self.md_canvas)
         self.md_status = QLabel("Hazır")
         md_layout.addWidget(self.md_status)
-        self.tabs.addTab(md_tab, "⚛️ Mol. Dinamik")
+        # self.tabs.addTab(md_tab, "⚛️ Mol. Dinamik")  # → Araçlar sekmesine taşındı
 
         # ===== VERİ ANALİZİ (Origin) =====
         data_tab = QWidget()
@@ -607,7 +617,7 @@ class MainWindow(QMainWindow):
         self.fit_result = QTextEdit(); self.fit_result.setReadOnly(True); self.fit_result.setMaximumHeight(100)
         self.fit_result.setStyleSheet("color:#cdd6f4; background:#313244;")
         data_layout.addWidget(self.fit_result)
-        self.tabs.addTab(data_tab, "📊 Veri Analizi")
+        # self.tabs.addTab(data_tab, "📊 Veri Analizi")  # → Araçlar sekmesine taşındı
 
         # ===== TERMODİNAMİK (Thermo-Calc) =====
         thermo_tab = QWidget()
@@ -619,7 +629,7 @@ class MainWindow(QMainWindow):
         self.thermo_btn.clicked.connect(self._calc_equilibrium)
         thermo_layout.addRow(self.thermo_btn)
         self.thermo_result = QLabel(""); thermo_layout.addRow("Sonuç:", self.thermo_result)
-        self.tabs.addTab(thermo_tab, "🧪 Termodinamik")
+        # self.tabs.addTab(thermo_tab, "🧪 Termodinamik")  # → Araçlar sekmesine taşındı
 
         # ===== ALAŞIM TERMODİNAMİĞİ (FactSage) =====
         alloy_tab = QWidget()
@@ -631,7 +641,7 @@ class MainWindow(QMainWindow):
         self.alloy_btn.clicked.connect(self._calc_activity)
         alloy_layout.addRow(self.alloy_btn)
         self.alloy_result = QLabel(""); alloy_layout.addRow("Sonuç:", self.alloy_result)
-        self.tabs.addTab(alloy_tab, "🏗️ Alaşım Termo.")
+        # # self.tabs.addTab(alloy_tab, "🏗️ Alaşım Termo.")  # → Araçlar sekmesine taşındı  # ARAÇLAR'a taşındı
 
         # ===== KATILAŞMA / DÖKÜM (Click2Cast) =====
         cast_tab = QWidget()
@@ -643,7 +653,7 @@ class MainWindow(QMainWindow):
         self.cast_btn.clicked.connect(self._calc_solidification)
         cast_layout.addRow(self.cast_btn)
         self.cast_result = QLabel(""); cast_layout.addRow("Sonuç:", self.cast_result)
-        self.tabs.addTab(cast_tab, "🏭 Katılaşma")
+        # self.tabs.addTab(cast_tab, "🏭 Katılaşma")  # → Araçlar sekmesine taşındı
 
         # ===== KRİSTAL YAPI (Crystal Maker) =====
         crystal_tab = QWidget()
@@ -666,7 +676,7 @@ class MainWindow(QMainWindow):
         self.xtal_ax.tick_params(colors='#cdd6f4')
         for s in self.xtal_ax.spines.values(): s.set_color('#45475a')
         crystal_layout.addWidget(self.xtal_canvas)
-        self.tabs.addTab(crystal_tab, "🔬 Kristal Yapı")
+        # self.tabs.addTab(crystal_tab, "🔬 Kristal Yapı")  # → Araçlar sekmesine taşındı
         self._draw_crystal()
 
         # ===== DİFÜZYON (Dictra) =====
@@ -693,7 +703,7 @@ class MainWindow(QMainWindow):
         img_layout.addWidget(self.img_canvas)
         self.img_status = QLabel("Görüntü yüklenmedi")
         img_layout.addWidget(self.img_status)
-        self.tabs.addTab(img_tab, "🖼️ Görüntü Analizi")
+        # self.tabs.addTab(img_tab, "🖼️ Görüntü Analizi")  # → Araçlar sekmesine taşındı
 
         # ===== JMatPro =====
         jmatpro_tab = QWidget()
@@ -705,7 +715,7 @@ class MainWindow(QMainWindow):
         self.jmatpro_btn.clicked.connect(self._calc_jmatpro)
         jmatpro_layout.addRow(self.jmatpro_btn)
         self.jmatpro_result = QLabel(""); jmatpro_layout.addRow("Sonuç:", self.jmatpro_result)
-        self.tabs.addTab(jmatpro_tab, "📈 JMatPro")
+        # self.tabs.addTab(jmatpro_tab, "📈 JMatPro")  # → Araçlar sekmesine taşındı
 
         
 
@@ -1427,6 +1437,88 @@ class MainWindow(QMainWindow):
             profile_pct = profile * 100
         except Exception as e:
             QMessageBox.warning(self, 'Difüzyon Hatası', str(e))
+
+    def _show_guide(self):
+        """Malzeme Rehberi'ni göster"""
+        for i in range(self.tabs.count()):
+            if 'Rehber' in self.tabs.tabText(i) or 'Guide' in self.tabs.tabText(i):
+                self.tabs.setCurrentIndex(i)
+                return
+
+    def _show_lever(self):
+        for i in range(self.tabs.count()):
+            if 'Lever' in self.tabs.tabText(i):
+                self.tabs.setCurrentIndex(i)
+                return
+
+    def _show_ree(self):
+        for i in range(self.tabs.count()):
+            if 'REE' in self.tabs.tabText(i):
+                self.tabs.setCurrentIndex(i)
+                return
+
+    def _show_procurement(self):
+        for i in range(self.tabs.count()):
+            if 'Satın Alma' in self.tabs.tabText(i) or 'Procurement' in self.tabs.tabText(i):
+                self.tabs.setCurrentIndex(i)
+                return
+
+    def _show_pdf(self):
+        for i in range(self.tabs.count()):
+            if 'PDF' in self.tabs.tabText(i):
+                self.tabs.setCurrentIndex(i)
+                return
+
+    def _show_ttt(self):
+        for i in range(self.tabs.count()):
+            if 'TTT' in self.tabs.tabText(i):
+                self.tabs.setCurrentIndex(i)
+                return
+
+    def _show_distortion(self):
+        for i in range(self.tabs.count()):
+            if 'Distorsiyon' in self.tabs.tabText(i) or 'Distortion' in self.tabs.tabText(i):
+                self.tabs.setCurrentIndex(i)
+                return
+
+    def _show_diffusion(self):
+        for i in range(self.tabs.count()):
+            if 'Difüzyon' in self.tabs.tabText(i) or 'Diffusion' in self.tabs.tabText(i):
+                self.tabs.setCurrentIndex(i)
+                return
+
+    def _show_alloy(self):
+        for i in range(self.tabs.count()):
+            if 'Alaşım' in self.tabs.tabText(i) or 'Alloy' in self.tabs.tabText(i):
+                self.tabs.setCurrentIndex(i)
+                return
+
+    def _show_failure(self):
+        for i in range(self.tabs.count()):
+            if 'Hata' in self.tabs.tabText(i) or 'Failure' in self.tabs.tabText(i):
+                self.tabs.setCurrentIndex(i)
+                return
+
+
+    def _show_tab(self, tab_id):
+        """Belirtilen sekmeyi göster (varsa)"""
+        tab_map = {
+            "thermo": "Termodinamik",
+            "alloy_thermo": "Alaşım",
+            "cast": "Katılaşma",
+            "jmatpro": "JMatPro",
+            "md": "Mol. Dinamik",
+            "data": "Veri Analizi",
+            "crystal": "Kristal",
+            "diffusion": "Difüzyon",
+            "image": "Görüntü",
+        }
+        target = tab_map.get(tab_id, "")
+        for i in range(self.tabs.count()):
+            if target in self.tabs.tabText(i):
+                self.tabs.setCurrentIndex(i)
+                return
+
 
 def main():
         app = QApplication(sys.argv)
