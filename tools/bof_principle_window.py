@@ -1,27 +1,4 @@
-#!/usr/bin/env python3
-"""
-BOF Çalışma Prensibi Görselleştirme Modülü
-- Konvertör yapısı, reaksiyonlar, cüruf, akış şeması
-"""
-import os, sys
 
-BASE = os.path.dirname(os.path.abspath(__file__))
-os.chdir(BASE)
-
-def write_file(path, content):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, 'w', encoding='utf-8') as f:
-        f.write(content)
-    print(f"  ✅ {path}")
-
-print("=" * 60)
-print("🏭 BOF ÇALIŞMA PRENSİBİ MODÜLÜ")
-print("=" * 60)
-
-# =====================================================================
-# 1. BOF PENCERESİ
-# =====================================================================
-write_file("tools/bof_principle_window.py", r'''
 """BOF Çalışma Prensibi – Görsel Anlatım"""
 import numpy as np
 from PyQt5.QtWidgets import *
@@ -266,49 +243,3 @@ class BOFPrincipleWindow(QMainWindow):
         """)
         layout.addWidget(text)
         self.tabs.addTab(tab, "🏗️ Yapısal Detay")
-''')
-
-# =====================================================================
-# 2. app/main.py GÜNCELLEMESİ
-# =====================================================================
-main_py = os.path.join(BASE, "app", "main.py")
-if not os.path.exists(main_py):
-    print("❌ app/main.py bulunamadı!")
-    sys.exit(1)
-
-with open(main_py, 'r', encoding='utf-8') as f:
-    content = f.read()
-
-# Import ekle
-import_line = "from tools.bof_principle_window import BOFPrincipleWindow"
-if import_line not in content:
-    old = "from tools.steelmaking_bof_window import BOFSteelmakingWindow"
-    new = f"{old}\n{import_line}"
-    if old in content:
-        content = content.replace(old, new)
-        print("✅ BOFPrincipleWindow import eklendi")
-
-# _open_tool metoduna ekle
-old_tool = '"bof": BOFSteelmakingWindow,'
-new_tool = '"bof": BOFSteelmakingWindow,\n            "bof_principle": BOFPrincipleWindow,'
-if old_tool in content and 'bof_principle' not in content:
-    content = content.replace(old_tool, new_tool)
-    print("✅ _open_tool güncellendi")
-
-# Araçlar buton listesine ekle
-old_btn = '("🏗️ BOF Çelik Üretimi", lambda: self._open_tool("bof")),'
-new_btn = '("🏗️ BOF Çelik Üretimi", lambda: self._open_tool("bof")),\n            ("📖 BOF Çalışma Prensibi", lambda: self._open_tool("bof_principle")),'
-if old_btn in content and 'BOF Çalışma Prensibi' not in content:
-    content = content.replace(old_btn, new_btn)
-    print("✅ BOF Prensip butonu eklendi")
-
-with open(main_py, 'w', encoding='utf-8') as f:
-    f.write(content)
-
-print("\n" + "=" * 60)
-print("🎉 BOF ÇALIŞMA PRENSİBİ MODÜLÜ BAŞARIYLA EKLENDİ!")
-print("=" * 60)
-print("\nYeni dosya:")
-print("  ✅ tools/bof_principle_window.py")
-print("\n🔗 Araçlar sekmesinde '📖 BOF Çalışma Prensibi' butonu")
-print("\nÇalıştır: python main.py")
