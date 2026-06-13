@@ -1,24 +1,28 @@
-"""Real quench heat transfer"""
+
+"""Gerçek Isı Transferi Modülü (Fourier Denklemi + Taşınım)"""
 import numpy as np
 
 class QuenchHeatTransfer:
     def __init__(self, media="Oil", agitation="moderate"):
         self.media = media
         self.agitation = agitation
-        af = {"still":0.7, "moderate":1.0, "vigorous":1.5}.get(agitation,1.0)
-        if media=="Water":
-            self.htc_film=200*af; self.htc_nucleate=4000*af; self.htc_convection=800*af
-            self.T_leid=400; self.T_nucl_end=150
-        elif media=="Oil":
-            self.htc_film=100*af; self.htc_nucleate=1500*af; self.htc_convection=300*af
-            self.T_leid=600; self.T_nucl_end=350
-        elif media=="Polymer":
-            self.htc_film=150*af; self.htc_nucleate=2500*af; self.htc_convection=600*af
-            self.T_leid=500; self.T_nucl_end=200
-        else: # Brine
-            self.htc_film=300*af; self.htc_nucleate=6000*af; self.htc_convection=1200*af
-            self.T_leid=350; self.T_nucl_end=120
-        self.T_ambient=25
+        self._set_parameters()
+
+    def _set_parameters(self):
+        af = {"still": 0.7, "moderate": 1.0, "vigorous": 1.5}.get(self.agitation, 1.0)
+        if self.media == "Water":
+            self.htc_film, self.htc_nucleate, self.htc_convection = 200*af, 4000*af, 800*af
+            self.T_leid, self.T_nucl_end = 400, 150
+        elif self.media == "Oil":
+            self.htc_film, self.htc_nucleate, self.htc_convection = 100*af, 1500*af, 300*af
+            self.T_leid, self.T_nucl_end = 600, 350
+        elif self.media == "Polymer":
+            self.htc_film, self.htc_nucleate, self.htc_convection = 150*af, 2500*af, 600*af
+            self.T_leid, self.T_nucl_end = 500, 200
+        else:  # Brine
+            self.htc_film, self.htc_nucleate, self.htc_convection = 300*af, 6000*af, 1200*af
+            self.T_leid, self.T_nucl_end = 350, 120
+        self.T_ambient = 25
 
     def get_htc(self, T):
         if T > self.T_leid: return self.htc_film
@@ -29,6 +33,4 @@ class QuenchHeatTransfer:
 
     def cooling_rate(self, T):
         htc = self.get_htc(T)
-        rho, cp = 7850, 475
-        heat_loss = htc * 6e-4 * (T - self.T_ambient)
-        return -heat_loss / (rho * cp * 1e-6)
+        return -htc * 6e-4 * (T - self.T_ambient) / (7850 * 475 * 1e-6)

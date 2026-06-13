@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Isıl İşlem Simülasyon Platformu – v3.6 FULL I18N"""
-import sys, os, json,webbrowser
+import sys, os, json
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -13,7 +13,6 @@ import numpy as np
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "..", "database", "steels.json")
 
-from tools.ironmaking_window import IronmakingWindow
 from models.steel_model import Material
 from models.phase_state import SimulationResult, PhaseResult, HardnessResult
 from heat_treatment.quenching import Quenching
@@ -436,6 +435,7 @@ class MainWindow(QMainWindow):
         self.ttt_canvas = FigureCanvasQTAgg(ttt_fig)
         self.ttt_ax = ttt_fig.add_subplot(111, facecolor='#1e1e2e')
         self.ttt_ax.tick_params(colors='#cdd6f4')
+        for sp in self.ttt_ax.spines.values(): sp.set_color('#45475a')
         ttt_layout.addWidget(self.ttt_canvas)
         self.tabs.addTab(ttt_tab, self.lang_manager.tr("ttt_tab"))
 
@@ -450,7 +450,24 @@ class MainWindow(QMainWindow):
         self.distort_result = QLabel(""); distort_layout.addRow(self.lang_manager.tr("distortion_result_label"), self.distort_result)
         self.tabs.addTab(distort_tab, self.lang_manager.tr("distortion_tab"))
 
-
+        # ===== KARBON DİFÜZYONU =====
+        diff_tab = QWidget(); diff_layout = QVBoxLayout(diff_tab)
+        diff_form = QFormLayout()
+        self.diff_temp = QLineEdit("930"); diff_form.addRow(self.lang_manager.tr("diffusion_temperature"), self.diff_temp)
+        self.diff_time = QLineEdit("2"); diff_form.addRow(self.lang_manager.tr("diffusion_time"), self.diff_time)
+        self.diff_cs = QLineEdit("0.8"); diff_form.addRow(self.lang_manager.tr("diffusion_cs"), self.diff_cs)
+        self.diff_c0 = QLineEdit("0.2"); diff_form.addRow(self.lang_manager.tr("diffusion_c0"), self.diff_c0)
+        self.diff_depth = QLineEdit("5"); diff_form.addRow(self.lang_manager.tr("diffusion_depth"), self.diff_depth)
+        diff_btn = QPushButton(self.lang_manager.tr("diffusion_simulate")); diff_btn.clicked.connect(self._simulate_diffusion)
+        diff_form.addRow(diff_btn)
+        diff_layout.addLayout(diff_form)
+        diff_fig = Figure(figsize=(8,4), facecolor='#1e1e2e')
+        self.diff_canvas = FigureCanvasQTAgg(diff_fig)
+        self.diff_ax = diff_fig.add_subplot(111, facecolor='#1e1e2e')
+        self.diff_ax.tick_params(colors='#cdd6f4')
+        for sp in self.diff_ax.spines.values(): sp.set_color('#45475a')
+        diff_layout.addWidget(self.diff_canvas)
+        self.tabs.addTab(diff_tab, self.lang_manager.tr("diffusion_tab"))
 
         # ===== ALAŞIM REHBERİ =====
         self.alloy_guide = AlloyGuide()
@@ -668,6 +685,23 @@ class MainWindow(QMainWindow):
         self._draw_crystal()
 
         # ===== DİFÜZYON (Dictra) =====
+        diff_tab = QWidget()
+        diff_layout = QFormLayout(diff_tab)
+        self.diff_C0 = QLineEdit("0.2"); diff_layout.addRow("C0 (%):", self.diff_C0)
+        self.diff_Cs = QLineEdit("0.8"); diff_layout.addRow("Cs (%):", self.diff_Cs)
+        self.diff_D = QLineEdit("1e-9"); diff_layout.addRow("D (m²/s):", self.diff_D)
+        self.diff_L = QLineEdit("0.01"); diff_layout.addRow("Uzunluk (m):", self.diff_L)
+        self.diff_t = QLineEdit("3600"); diff_layout.addRow("Süre (s):", self.diff_t)
+        self.diff_btn = QPushButton("Profili Çiz")
+        self.diff_btn.clicked.connect(self._plot_diffusion)
+        diff_layout.addRow(self.diff_btn)
+        self.diff_fig = Figure(figsize=(8, 4), facecolor='#1e1e2e')
+        self.diff_canvas = FigureCanvasQTAgg(self.diff_fig)
+        self.diff_ax = self.diff_fig.add_subplot(111, facecolor='#1e1e2e')
+        self.diff_ax.tick_params(colors='#cdd6f4')
+        for s in self.diff_ax.spines.values(): s.set_color('#45475a')
+        diff_layout.addRow(self.diff_canvas)
+        self.tabs.addTab(diff_tab, "🧪 Difüzyon")
 
         # ===== GÖRÜNTÜ ANALİZİ (ImageJ) =====
         img_tab = QWidget()
@@ -704,16 +738,6 @@ class MainWindow(QMainWindow):
         jmatpro_layout.addRow(self.jmatpro_btn)
         self.jmatpro_result = QLabel(""); jmatpro_layout.addRow("Sonuç:", self.jmatpro_result)
         self.tabs.addTab(jmatpro_tab, "📈 JMatPro")
-
-        
-
-        # ===== KARBON DİFÜZYONU (YENİ) =====
-        
-        form = QFormLayout()
-        
-    
-        
-
 
         # ===== ARAÇLAR SEKMESİ (Profesyonel Araçlar) =====
         tools_tab = QWidget(); tools_layout = QVBoxLayout(tools_tab)
@@ -760,7 +784,6 @@ class MainWindow(QMainWindow):
         tools_list = [
             ("📏 Metrical", "Tane boyutu, porozite, dekarbürizasyon analizi", lambda: self._open_tool("metrical")),
             ("🔬 Pandat", "CALPHAD termodinamik ve faz diyagramı", lambda: self._open_tool("pandat")),
-            ("🏭 Ironmaking", "Demir üretimi süreci modelleme", lambda: self._open_tool("ironmaking")),
             ("🏭 Steelmaking", "Çelik üretim süreci modelleme", lambda: self._open_tool("steelmaking")),
             ("🔨 Simufact", "Metal şekillendirme simülasyonu", lambda: self._open_tool("simufact")),
             ("🎓 Steeluniversity", "3D eğitim modelleri ve simülatörler", lambda: self._open_tool("steeluni")),
@@ -1099,6 +1122,7 @@ class MainWindow(QMainWindow):
         ttt_data = load_ttt_data(steel)
         self.ttt_ax.clear()
         self.ttt_ax.tick_params(colors='#cdd6f4')
+        for sp in self.ttt_ax.spines.values(): sp.set_color('#45475a')
         draw_ttt(self.ttt_ax, ttt_data)
         self.ttt_canvas.draw()
 
@@ -1114,6 +1138,23 @@ class MainWindow(QMainWindow):
         except ValueError:
             self.distort_result.setText("Geçersiz giriş.")
 
+    def _simulate_diffusion(self):
+        try:
+            T = float(self.diff_temp.text())
+            t_h = float(self.diff_time.text())
+            Cs = float(self.diff_cs.text())
+            C0 = float(self.diff_c0.text())
+            depth = float(self.diff_depth.text())
+            x_mm, profile = simulate_carburizing(T, t_h, Cs, C0, depth)
+            self.diff_ax.clear()
+            self.diff_ax.plot(x_mm, profile, 'c-', lw=2)
+            self.diff_ax.set_xlabel("Derinlik (mm)")
+            self.diff_ax.set_ylabel("Karbon (%)")
+            self.diff_ax.set_title("Karbon Profili")
+            self.diff_ax.grid(True, alpha=0.3)
+            self.diff_canvas.draw()
+        except Exception as e:
+            pass
 
     def _on_lang_changed(self, index):
         lang = "tr" if index == 0 else "en"
@@ -1234,7 +1275,6 @@ class MainWindow(QMainWindow):
             "comsol": ComsolWindow,
             "vesta": VestaWindow,
             "clemex": ClemexWindow,
-            "ironmaking": IronmakingWindow,
         }
         if tool_name in windows:
             self._tool_window = windows[tool_name](self)
@@ -1259,8 +1299,7 @@ class MainWindow(QMainWindow):
             n = self.md_n.value()
             temp = self.md_temp.value()
             pot = 'LJ' if 'LJ' in self.md_pot.currentText() else 'EAM'
-            # Pozisyonları güvenli şekilde oluştur [0.5, 9.5] aralığında
-            pos = np.random.rand(n, 2) * 9.0 + 0.5
+            pos = np.random.rand(n, 2) * 10.0
             md = MolecularDynamics(pos, 10.0, potential=pot, temperature=temp, dt=0.005)
             self.md_status.setText(f"Simülasyon çalışıyor... ({n} atom)")
             QApplication.processEvents()
@@ -1372,7 +1411,23 @@ class MainWindow(QMainWindow):
             pass
 
     # --- Difüzyon (Dictra) ---
+    def _plot_diffusion(self):
+        try:
+            C0 = float(self.diff_C0.text())/100
+            Cs = float(self.diff_Cs.text())/100
+            D = float(self.diff_D.text())
+            L = float(self.diff_L.text())
+            t = float(self.diff_t.text())
+            x, C = solve_diffusion_1d(C0, Cs, D, L, t)
+            self.diff_ax.clear()
+            self.diff_ax.plot(x*1000, C*100, 'c-', lw=2)
+            self.diff_ax.set_xlabel("Mesafe (mm)"); self.diff_ax.set_ylabel("Konsantrasyon (%)")
+            self.diff_ax.set_title("Difüzyon Profili")
+            self.diff_canvas.draw()
+        except Exception as e:
+            pass
 
+    # --- Görüntü Analizi (ImageJ) ---
     def _load_image(self):
         path, _ = QFileDialog.getOpenFileName(None, "Görüntü Seç", "", "Images (*.png *.jpg *.bmp)")
         if path:
@@ -1410,29 +1465,14 @@ class MainWindow(QMainWindow):
         except Exception as e:
             self.jmatpro_result.setText(f"Hata: {e}")
 
-    def _simulate_diffusion(self):
-        """Karbon difüzyon profilini hesapla ve çiz"""
-        from simulation.carburizing_sim import simulate_carburizing
-        try:
-            x_mm, profile = simulate_carburizing(T, t_h, Cs, C0)
-        except Exception as e:
-            QMessageBox.warning(self, "Difüzyon Hatası", str(e))
-    
-        import numpy as np
-        try:
-            x_m = np.linspace(0, L, 200)
-            profile = C0 + (Cs - C0) * np.exp(-x_m**2 / (4 * D * t + 1e-20))
-            profile_pct = profile * 100
-        except Exception as e:
-            QMessageBox.warning(self, 'Difüzyon Hatası', str(e))
 
 def main():
-        app = QApplication(sys.argv)
-        app.setStyle("Fusion")
-        app.setFont(QFont("Segoe UI", 9))
-        win = MainWindow()
-        win.show()
-        sys.exit(app.exec_())
+    app = QApplication(sys.argv)
+    app.setStyle("Fusion")
+    app.setFont(QFont("Segoe UI", 9))
+    win = MainWindow()
+    win.show()
+    sys.exit(app.exec_())
 
 if __name__ == "__main__":
-        main()
+    main()

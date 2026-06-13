@@ -118,5 +118,225 @@
   "log_tab": {
     "tr": "Log",
     "en": "Log"
+  },
+  "lang_tr": {
+    "tr": "🇹🇷 Türkçe",
+    "en": "🇹🇷 Turkish"
+  },
+  "lang_en": {
+    "tr": "🇬🇧 English",
+    "en": "🇬🇧 English"
+  },
+  "tempering_time": {
+    "tr": "Süre (s):",
+    "en": "Time (s):"
+  },
+  "carbon_potential": {
+    "tr": "C Potansiyeli (%):",
+    "en": "C Potential (%):"
+  },
+  "element_info": {
+    "tr": "Element Bilgisi",
+    "en": "Element Info"
+  },
+  "alloy_effects": {
+    "tr": "Alaşım Etkileri",
+    "en": "Alloy Effects"
+  },
+  "lever_composition": {
+    "tr": "Kompozisyon Değerleri",
+    "en": "Composition Values"
+  },
+  "lever_result": {
+    "tr": "Sonuç",
+    "en": "Result"
+  },
+  "lever_ca": {
+    "tr": "Cα (α fazı %):",
+    "en": "Cα (α phase %):"
+  },
+  "lever_cb": {
+    "tr": "Cβ (β fazı %):",
+    "en": "Cβ (β phase %):"
+  },
+  "lever_co": {
+    "tr": "Co (Genel %):",
+    "en": "Co (Overall %):"
+  },
+  "lever_calculate": {
+    "tr": "Hesapla",
+    "en": "Calculate"
+  },
+  "lever_examples": {
+    "tr": "--- Örnekler ---",
+    "en": "--- Examples ---"
+  },
+  "lever_info": {
+    "tr": "<h2>⚖️ Kaldıraç Kuralı (Lever Rule)</h2>İki fazlı bölgede faz oranlarını hesaplayın.",
+    "en": "<h2>⚖️ Lever Rule</h2>Calculate phase fractions in two-phase regions."
+  },
+  "lever_initial_result": {
+    "tr": "<i>Değerleri girin ve Hesapla'ya basın...</i>",
+    "en": "<i>Enter values and press Calculate...</i>"
+  },
+  "fec_ready_material": {
+    "tr": "📋 Hazır Malzeme Seç",
+    "en": "📋 Select Material"
+  },
+  "fec_element_composition": {
+    "tr": "🧪 Element Bileşimi (%)",
+    "en": "🧪 Element Composition (%)"
+  },
+  "fec_temperature": {
+    "tr": "🌡️ Sıcaklık (°C)",
+    "en": "🌡️ Temperature (°C)"
+  },
+  "fec_phase_analysis": {
+    "tr": "📊 Faz Analizi",
+    "en": "📊 Phase Analysis"
+  },
+  "fec_reset": {
+    "tr": "🔄 Varsayılana Dön",
+    "en": "🔄 Reset to Default"
+  },
+  "fec_custom": {
+    "tr": "--- Özel Bileşim ---",
+    "en": "--- Custom Composition ---"
+  },
+  "ttt_steel": {
+    "tr": "Çelik:",
+    "en": "Steel:"
+  },
+  "distortion_cooling_rate": {
+    "tr": "Soğuma Hızı (°C/s):",
+    "en": "Cooling Rate (°C/s):"
+  },
+  "distortion_martensite": {
+    "tr": "Martensit Oranı (0-1):",
+    "en": "Martensite Fraction (0-1):"
+  },
+  "distortion_carbon": {
+    "tr": "Karbon (%)",
+    "en": "Carbon (%)"
+  },
+  "distortion_yield": {
+    "tr": "Akma Dayanımı (MPa):",
+    "en": "Yield Strength (MPa):"
+  },
+  "distortion_calculate": {
+    "tr": "Hesapla",
+    "en": "Calculate"
+  },
+  "distortion_result_label": {
+    "tr": "Sonuç:",
+    "en": "Result:"
+  },
+  "diffusion_temperature": {
+    "tr": "Sıcaklık (°C):",
+    "en": "Temperature (°C):"
+  },
+  "diffusion_time": {
+    "tr": "Süre (saat):",
+    "en": "Time (hours):"
+  },
+  "diffusion_cs": {
+    "tr": "Yüzey C pot. (%):",
+    "en": "Surface C pot. (%):"
+  },
+  "diffusion_c0": {
+    "tr": "Başlangıç C (%):",
+    "en": "Initial C (%):"
+  },
+  "diffusion_depth": {
+    "tr": "Maks. derinlik (mm):",
+    "en": "Max. depth (mm):"
+  },
+  "diffusion_simulate": {
+    "tr": "Simüle Et",
+    "en": "Simulate"
+  },
+  "pdf_generate": {
+    "tr": "📄 PDF Rapor Oluştur",
+    "en": "📄 Generate PDF Report"
+  },
+  "why_alloy": {
+    "tr": "❓ NEDEN ALAŞIM ÇELİĞİ?",
+    "en": "❓ WHY ALLOY STEEL?"
+  },
+  "click_element": {
+    "tr": "Bir elemente tıklayın...",
+    "en": "Click an element..."
+  },
+  "ree_title": {
+    "tr": "<h2>🧪 Nadir Toprak Elementleri (REE)</h2>",
+    "en": "<h2>🧪 Rare Earth Elements (REE)</h2>"
+  },
+  "ree_applications_tab": {
+    "tr": "Uygulamalar",
+    "en": "Applications"
+  },
+  "ree_usage_tab": {
+    "tr": "Kullanım Dağılımı",
+    "en": "Usage Distribution"
+  },
+  "ree_minerals_tab": {
+    "tr": "Mineraller & İşleme",
+    "en": "Minerals & Processing"
+  },
+  "ree_usage_title": {
+    "tr": "<h3>ABD Nadir Toprak Kullanımı</h3>",
+    "en": "<h3>US Rare Earth Usage</h3>"
+  },
+  "ree_minerals_title": {
+    "tr": "<h3>REE Mineralleri</h3>",
+    "en": "<h3>REE Minerals</h3>"
+  },
+  "ree_extraction_title": {
+    "tr": "<br><h3>Ekstraksiyon Aşamaları</h3>",
+    "en": "<br><h3>Extraction Steps</h3>"
+  },
+  "ree_separation_note": {
+    "tr": "<br><b>⚠️ Zorluk:</b>",
+    "en": "<br><b>⚠️ Challenge:</b>"
+  },
+  "failure_title": {
+    "tr": "Malzeme Hata Modlarına Giriş",
+    "en": "Introduction to Material Failure Modes"
+  },
+  "failure_intro": {
+    "tr": "Her mühendislik malzemesinin sınırları vardır.",
+    "en": "Every engineering material has its limits."
+  },
+  "failure_fractography_title": {
+    "tr": "Kırık Yüzeyi Analiz Araçları (Fraktografi)",
+    "en": "Fracture Surface Analysis Tools (Fractography)"
+  },
+  "failure_prevention_title": {
+    "tr": "Önleme Stratejileri",
+    "en": "Prevention Strategies"
+  },
+  "failure_modes_fracture_title": {
+    "tr": "💥 Kırılma: Uyarılı veya Uyarısız",
+    "en": "💥 Fracture: With or Without Warning"
+  },
+  "failure_modes_fatigue_title": {
+    "tr": "🔄 Yorulma: Tekrarlı Gerilme",
+    "en": "🔄 Fatigue: Repeated Stress"
+  },
+  "failure_modes_creep_title": {
+    "tr": "⏳ Sürünme: Zamana Bağlı Şekil Değiştirme",
+    "en": "⏳ Creep: Time-Dependent Deformation"
+  },
+  "failure_modes_corrosion_title": {
+    "tr": "🧪 Korozyonla İlişkili Hatalar",
+    "en": "🧪 Corrosion-Related Failures"
+  },
+  "failure_modes_impact_title": {
+    "tr": "💢 Şok Yükleme Nedeniyle Darbe Hatası",
+    "en": "💢 Impact Failure from Shock Loading"
+  },
+  "failure_modes_wear_title": {
+    "tr": "🔧 Aşınma: Yüzey Hasarı",
+    "en": "🔧 Wear: Surface Damage"
   }
 }

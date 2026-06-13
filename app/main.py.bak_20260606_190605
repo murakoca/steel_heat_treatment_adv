@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Isıl İşlem Simülasyon Platformu – v3.6 FULL I18N"""
-import sys, os, json,webbrowser
+import sys, os, json
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -13,7 +13,6 @@ import numpy as np
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "..", "database", "steels.json")
 
-from tools.ironmaking_window import IronmakingWindow
 from models.steel_model import Material
 from models.phase_state import SimulationResult, PhaseResult, HardnessResult
 from heat_treatment.quenching import Quenching
@@ -33,25 +32,7 @@ from mechanics.distortion_calc import estimate_residual_stress, distortion_risk
 from simulation.carburizing_sim import simulate_carburizing
 from metallurgy.alloy_guide import AlloyGuide
 from metallurgy.failure_modes import FailureModes
-from tools.clemex_window import ClemexWindow
-from tools.vesta_window import VestaWindow
-from tools.comsol_window import ComsolWindow
-from tools.mipar_window import MiparWindow
-from tools.steeluniversity_window import SteeluniversityWindow
-from tools.simufact_window import SimufactWindow
-from tools.steelmaking_window import SteelmakingWindow
-from tools.pandat_window import PandatWindow
-from tools.metrical_window import MetricalWindow
 from app.language_manager import LanguageManager
-from metallurgy.ttt_cct_plot import calculate_ttt, cct_from_ttt, hardness_from_cct
-from metallurgy.image_analyzer import threshold as img_threshold, auto_threshold_otsu, particle_analysis, grain_size_distribution, phase_fraction
-from simulation.diffusion_sim import solve_diffusion_1d, matano_plane
-from metallurgy.crystal_viewer import generate_lattice, simulate_xrd, CRYSTAL_SYSTEMS
-from simulation.casting_sim import chvorinov_rule, solidification_microstructure, cooling_curve as casting_cooling_curve
-from metallurgy.alloy_thermodynamics import redlich_kister_excess_gibbs, activity_coefficient, calculate_eutectic
-from physics.thermodynamics_advanced import regular_solution_gibbs, equilibrium_composition
-from metallurgy.data_analyzer import linear_fit, poly_fit, exp_fit, gaussian_fit, descriptive_stats
-from simulation.molecular_dynamics import MolecularDynamics
 
 def load_steel_list():
     with open(DB_PATH) as f:
@@ -436,6 +417,7 @@ class MainWindow(QMainWindow):
         self.ttt_canvas = FigureCanvasQTAgg(ttt_fig)
         self.ttt_ax = ttt_fig.add_subplot(111, facecolor='#1e1e2e')
         self.ttt_ax.tick_params(colors='#cdd6f4')
+        for sp in self.ttt_ax.spines.values(): sp.set_color('#45475a')
         ttt_layout.addWidget(self.ttt_canvas)
         self.tabs.addTab(ttt_tab, self.lang_manager.tr("ttt_tab"))
 
@@ -450,7 +432,24 @@ class MainWindow(QMainWindow):
         self.distort_result = QLabel(""); distort_layout.addRow(self.lang_manager.tr("distortion_result_label"), self.distort_result)
         self.tabs.addTab(distort_tab, self.lang_manager.tr("distortion_tab"))
 
-
+        # ===== KARBON DİFÜZYONU =====
+        diff_tab = QWidget(); diff_layout = QVBoxLayout(diff_tab)
+        diff_form = QFormLayout()
+        self.diff_temp = QLineEdit("930"); diff_form.addRow(self.lang_manager.tr("diffusion_temperature"), self.diff_temp)
+        self.diff_time = QLineEdit("2"); diff_form.addRow(self.lang_manager.tr("diffusion_time"), self.diff_time)
+        self.diff_cs = QLineEdit("0.8"); diff_form.addRow(self.lang_manager.tr("diffusion_cs"), self.diff_cs)
+        self.diff_c0 = QLineEdit("0.2"); diff_form.addRow(self.lang_manager.tr("diffusion_c0"), self.diff_c0)
+        self.diff_depth = QLineEdit("5"); diff_form.addRow(self.lang_manager.tr("diffusion_depth"), self.diff_depth)
+        diff_btn = QPushButton(self.lang_manager.tr("diffusion_simulate")); diff_btn.clicked.connect(self._simulate_diffusion)
+        diff_form.addRow(diff_btn)
+        diff_layout.addLayout(diff_form)
+        diff_fig = Figure(figsize=(8,4), facecolor='#1e1e2e')
+        self.diff_canvas = FigureCanvasQTAgg(diff_fig)
+        self.diff_ax = diff_fig.add_subplot(111, facecolor='#1e1e2e')
+        self.diff_ax.tick_params(colors='#cdd6f4')
+        for sp in self.diff_ax.spines.values(): sp.set_color('#45475a')
+        diff_layout.addWidget(self.diff_canvas)
+        self.tabs.addTab(diff_tab, self.lang_manager.tr("diffusion_tab"))
 
         # ===== ALAŞIM REHBERİ =====
         self.alloy_guide = AlloyGuide()
@@ -549,246 +548,6 @@ class MainWindow(QMainWindow):
         scroll_fail_layout.addWidget(self.failure_prevention_list)
         scroll_fail_layout.addStretch()
         self.tabs.addTab(failure_tab, self.lang_manager.tr("failure_modes_tab"))
-
-        # ===== MOLEKÜLER DİNAMİK (LAMMPS) =====
-        md_tab = QWidget()
-        md_layout = QVBoxLayout(md_tab)
-        ctrl = QHBoxLayout()
-        ctrl.addWidget(QLabel("Atom Sayısı:"))
-        self.md_n = QSpinBox(); self.md_n.setRange(10, 500); self.md_n.setValue(50)
-        ctrl.addWidget(self.md_n)
-        ctrl.addWidget(QLabel("Sıcaklık (K):"))
-        self.md_temp = QDoubleSpinBox(); self.md_temp.setRange(1, 1000); self.md_temp.setValue(300)
-        ctrl.addWidget(self.md_temp)
-        ctrl.addWidget(QLabel("Potansiyel:"))
-        self.md_pot = QComboBox(); self.md_pot.addItems(["LJ (Lennard-Jones)", "EAM (Gömülü Atom)"])
-        ctrl.addWidget(self.md_pot)
-        self.md_btn = QPushButton("Simülasyonu Başlat")
-        self.md_btn.clicked.connect(self._run_md)
-        ctrl.addWidget(self.md_btn)
-        ctrl.addStretch()
-        md_layout.addLayout(ctrl)
-        self.md_fig = Figure(figsize=(8, 6), facecolor='#1e1e2e')
-        self.md_canvas = FigureCanvasQTAgg(self.md_fig)
-        self.md_ax = self.md_fig.add_subplot(111, facecolor='#1e1e2e')
-        self.md_ax.tick_params(colors='#cdd6f4')
-        for s in self.md_ax.spines.values(): s.set_color('#45475a')
-        md_layout.addWidget(self.md_canvas)
-        self.md_status = QLabel("Hazır")
-        md_layout.addWidget(self.md_status)
-        self.tabs.addTab(md_tab, "⚛️ Mol. Dinamik")
-
-        # ===== VERİ ANALİZİ (Origin) =====
-        data_tab = QWidget()
-        data_layout = QVBoxLayout(data_tab)
-        ctrl = QHBoxLayout()
-        ctrl.addWidget(QLabel("X (virgülle):"))
-        self.fit_x = QLineEdit("1,2,3,4,5,6,7,8,9,10")
-        ctrl.addWidget(self.fit_x)
-        ctrl.addWidget(QLabel("Y (virgülle):"))
-        self.fit_y = QLineEdit("2.1,4.0,5.9,8.1,10.0,12.2,14.0,16.1,18.0,20.2")
-        ctrl.addWidget(self.fit_y)
-        data_layout.addLayout(ctrl)
-        btn = QHBoxLayout()
-        for name, func in [("Doğrusal", "_linear_fit"), ("Polinom 2°", "_poly_fit"), ("Üstel", "_exp_fit"), ("Gaussian", "_gauss_fit"), ("İstatistik", "_calc_stats")]:
-            b = QPushButton(name)
-            b.clicked.connect(getattr(self, func))
-            btn.addWidget(b)
-        btn.addStretch()
-        data_layout.addLayout(btn)
-        self.fit_fig = Figure(figsize=(8, 5), facecolor='#1e1e2e')
-        self.fit_canvas = FigureCanvasQTAgg(self.fit_fig)
-        self.fit_ax = self.fit_fig.add_subplot(111, facecolor='#1e1e2e')
-        self.fit_ax.tick_params(colors='#cdd6f4')
-        for s in self.fit_ax.spines.values(): s.set_color('#45475a')
-        data_layout.addWidget(self.fit_canvas)
-        self.fit_result = QTextEdit(); self.fit_result.setReadOnly(True); self.fit_result.setMaximumHeight(100)
-        self.fit_result.setStyleSheet("color:#cdd6f4; background:#313244;")
-        data_layout.addWidget(self.fit_result)
-        self.tabs.addTab(data_tab, "📊 Veri Analizi")
-
-        # ===== TERMODİNAMİK (Thermo-Calc) =====
-        thermo_tab = QWidget()
-        thermo_layout = QFormLayout(thermo_tab)
-        self.thermo_T = QLineEdit("1000"); thermo_layout.addRow("Sıcaklık (K):", self.thermo_T)
-        self.thermo_omega = QLineEdit("5000"); thermo_layout.addRow("Omega (J/mol):", self.thermo_omega)
-        self.thermo_x0 = QLineEdit("0.5"); thermo_layout.addRow("Başlangıç x:", self.thermo_x0)
-        self.thermo_btn = QPushButton("Denge Kompozisyonu Hesapla")
-        self.thermo_btn.clicked.connect(self._calc_equilibrium)
-        thermo_layout.addRow(self.thermo_btn)
-        self.thermo_result = QLabel(""); thermo_layout.addRow("Sonuç:", self.thermo_result)
-        self.tabs.addTab(thermo_tab, "🧪 Termodinamik")
-
-        # ===== ALAŞIM TERMODİNAMİĞİ (FactSage) =====
-        alloy_tab = QWidget()
-        alloy_layout = QFormLayout(alloy_tab)
-        self.alloy_x = QLineEdit("0.3"); alloy_layout.addRow("x (mol kesri):", self.alloy_x)
-        self.alloy_T = QLineEdit("1000"); alloy_layout.addRow("Sıcaklık (K):", self.alloy_T)
-        self.alloy_params = QLineEdit("5000, -2000, 1000"); alloy_layout.addRow("RK parametreleri:", self.alloy_params)
-        self.alloy_btn = QPushButton("Aktivite Katsayısı Hesapla")
-        self.alloy_btn.clicked.connect(self._calc_activity)
-        alloy_layout.addRow(self.alloy_btn)
-        self.alloy_result = QLabel(""); alloy_layout.addRow("Sonuç:", self.alloy_result)
-        self.tabs.addTab(alloy_tab, "🏗️ Alaşım Termo.")
-
-        # ===== KATILAŞMA / DÖKÜM (Click2Cast) =====
-        cast_tab = QWidget()
-        cast_layout = QFormLayout(cast_tab)
-        self.cast_V = QLineEdit("0.001"); cast_layout.addRow("Hacim (m³):", self.cast_V)
-        self.cast_A = QLineEdit("0.06"); cast_layout.addRow("Yüzey Alanı (m²):", self.cast_A)
-        self.cast_Cm = QLineEdit("1.0"); cast_layout.addRow("Kalıp Sabiti:", self.cast_Cm)
-        self.cast_btn = QPushButton("Katılaşma Süresi Hesapla")
-        self.cast_btn.clicked.connect(self._calc_solidification)
-        cast_layout.addRow(self.cast_btn)
-        self.cast_result = QLabel(""); cast_layout.addRow("Sonuç:", self.cast_result)
-        self.tabs.addTab(cast_tab, "🏭 Katılaşma")
-
-        # ===== KRİSTAL YAPI (Crystal Maker) =====
-        crystal_tab = QWidget()
-        crystal_layout = QVBoxLayout(crystal_tab)
-        ctrl = QHBoxLayout()
-        ctrl.addWidget(QLabel("Sistem:"))
-        self.xtal_system = QComboBox(); self.xtal_system.addItems(list(CRYSTAL_SYSTEMS.keys()))
-        ctrl.addWidget(self.xtal_system)
-        ctrl.addWidget(QLabel("Boyut:"))
-        self.xtal_size = QSpinBox(); self.xtal_size.setRange(1, 5); self.xtal_size.setValue(2)
-        ctrl.addWidget(self.xtal_size)
-        self.xtal_btn = QPushButton("Çiz")
-        self.xtal_btn.clicked.connect(self._draw_crystal)
-        ctrl.addWidget(self.xtal_btn)
-        ctrl.addStretch()
-        crystal_layout.addLayout(ctrl)
-        self.xtal_fig = Figure(figsize=(8, 6), facecolor='#1e1e2e')
-        self.xtal_canvas = FigureCanvasQTAgg(self.xtal_fig)
-        self.xtal_ax = self.xtal_fig.add_subplot(111, projection='3d', facecolor='#1e1e2e')
-        self.xtal_ax.tick_params(colors='#cdd6f4')
-        for s in self.xtal_ax.spines.values(): s.set_color('#45475a')
-        crystal_layout.addWidget(self.xtal_canvas)
-        self.tabs.addTab(crystal_tab, "🔬 Kristal Yapı")
-        self._draw_crystal()
-
-        # ===== DİFÜZYON (Dictra) =====
-
-        # ===== GÖRÜNTÜ ANALİZİ (ImageJ) =====
-        img_tab = QWidget()
-        img_layout = QVBoxLayout(img_tab)
-        btn = QHBoxLayout()
-        self.img_load_btn = QPushButton("Görüntü Yükle")
-        self.img_load_btn.clicked.connect(self._load_image)
-        btn.addWidget(self.img_load_btn)
-        self.img_otsu_btn = QPushButton("Otsu Eşikleme")
-        self.img_otsu_btn.clicked.connect(self._apply_otsu)
-        btn.addWidget(self.img_otsu_btn)
-        self.img_particle_btn = QPushButton("Parçacık Analizi")
-        self.img_particle_btn.clicked.connect(self._analyze_particles)
-        btn.addWidget(self.img_particle_btn)
-        btn.addStretch()
-        img_layout.addLayout(btn)
-        self.img_fig = Figure(figsize=(8, 6), facecolor='#1e1e2e')
-        self.img_canvas = FigureCanvasQTAgg(self.img_fig)
-        self.img_ax = self.img_fig.add_subplot(111, facecolor='#1e1e2e')
-        self.img_ax.tick_params(colors='#cdd6f4')
-        img_layout.addWidget(self.img_canvas)
-        self.img_status = QLabel("Görüntü yüklenmedi")
-        img_layout.addWidget(self.img_status)
-        self.tabs.addTab(img_tab, "🖼️ Görüntü Analizi")
-
-        # ===== JMatPro =====
-        jmatpro_tab = QWidget()
-        jmatpro_layout = QFormLayout(jmatpro_tab)
-        self.jmatpro_C = QLineEdit("0.4"); jmatpro_layout.addRow("Karbon (%):", self.jmatpro_C)
-        self.jmatpro_Mn = QLineEdit("0.8"); jmatpro_layout.addRow("Mangan (%):", self.jmatpro_Mn)
-        self.jmatpro_Cr = QLineEdit("1.0"); jmatpro_layout.addRow("Krom (%):", self.jmatpro_Cr)
-        self.jmatpro_btn = QPushButton("TTT ve Sertlik Hesapla")
-        self.jmatpro_btn.clicked.connect(self._calc_jmatpro)
-        jmatpro_layout.addRow(self.jmatpro_btn)
-        self.jmatpro_result = QLabel(""); jmatpro_layout.addRow("Sonuç:", self.jmatpro_result)
-        self.tabs.addTab(jmatpro_tab, "📈 JMatPro")
-
-        
-
-        # ===== KARBON DİFÜZYONU (YENİ) =====
-        
-        form = QFormLayout()
-        
-    
-        
-
-
-        # ===== ARAÇLAR SEKMESİ (Profesyonel Araçlar) =====
-        tools_tab = QWidget(); tools_layout = QVBoxLayout(tools_tab)
-        scroll_tools = QScrollArea(); scroll_tools.setWidgetResizable(True)
-        scroll_tools_content = QWidget()
-        scroll_layout = QVBoxLayout(scroll_tools_content)
-        scroll_tools.setWidget(scroll_tools_content)
-        tools_layout.addWidget(scroll_tools)
-
-        with open(os.path.join(BASE_DIR, "..", "database", "tools_resources.json"), encoding='utf-8') as f:
-            tools_data = json.load(f)
-
-        self.tools_title = QLabel()
-        self.tools_title.setStyleSheet("font-size:18px; font-weight:bold; color:#89b4fa;")
-        self.tools_title.setWordWrap(True)
-        scroll_layout.addWidget(self.tools_title)
-
-        self.tools_intro = QLabel()
-        self.tools_intro.setWordWrap(True)
-        self.tools_intro.setStyleSheet("font-size:13px; color:#cdd6f4; margin-bottom:15px;")
-        scroll_layout.addWidget(self.tools_intro)
-
-        self.tools_widgets = []
-        for tool in tools_data["tools"]:
-            card = QGroupBox()
-            card_layout = QVBoxLayout(card)
-            name_lbl = QLabel(tool["name"])
-            name_lbl.setStyleSheet("font-weight:bold; font-size:14px; color:#89b4fa;")
-            card_layout.addWidget(name_lbl)
-            desc_lbl = QLabel()
-            desc_lbl.setWordWrap(True)
-            desc_lbl.setStyleSheet("font-size:12px; color:#cdd6f4;")
-            card_layout.addWidget(desc_lbl)
-            link_btn = QPushButton(f"🔗 {tool['url']}")
-            link_btn.setStyleSheet("QPushButton { background-color:transparent; color:#a6e3a1; border:none; text-decoration:underline; font-size:11px; text-align:left; } QPushButton:hover { color:#89b4fa; }")
-            link_btn.setCursor(QCursor(Qt.PointingHandCursor))
-            link_btn.clicked.connect(lambda checked, url=tool["url"]: webbrowser.open(url))
-            card_layout.addWidget(link_btn)
-            card.setStyleSheet("QGroupBox { background-color:#313244; border:1px solid #45475a; border-radius:6px; padding:10px; }")
-            scroll_layout.addWidget(card)
-            self.tools_widgets.append((name_lbl, desc_lbl))
-
-        # --- Profesyonel Araç Butonları ---
-        tools_list = [
-            ("📏 Metrical", "Tane boyutu, porozite, dekarbürizasyon analizi", lambda: self._open_tool("metrical")),
-            ("🔬 Pandat", "CALPHAD termodinamik ve faz diyagramı", lambda: self._open_tool("pandat")),
-            ("🏭 Ironmaking", "Demir üretimi süreci modelleme", lambda: self._open_tool("ironmaking")),
-            ("🏭 Steelmaking", "Çelik üretim süreci modelleme", lambda: self._open_tool("steelmaking")),
-            ("🔨 Simufact", "Metal şekillendirme simülasyonu", lambda: self._open_tool("simufact")),
-            ("🎓 Steeluniversity", "3D eğitim modelleri ve simülatörler", lambda: self._open_tool("steeluni")),
-            ("🤖 Mipar", "ML ile otomatik mikroyapı analizi", lambda: self._open_tool("mipar")),
-            ("🧪 Comsol", "Korozyon ve SCC modelleme", lambda: self._open_tool("comsol")),
-            ("💎 Vesta", "3D kristal yapı görselleştirici", lambda: self._open_tool("vesta")),
-            ("📊 Clemex", "AI destekli tane boyutu analizi", lambda: self._open_tool("clemex")),
-        ]
-        for name, desc, callback in tools_list:
-            card = QGroupBox()
-            card_layout = QVBoxLayout(card)
-            name_lbl = QLabel(name)
-            name_lbl.setStyleSheet("font-weight:bold; font-size:14px; color:#89b4fa;")
-            card_layout.addWidget(name_lbl)
-            desc_lbl = QLabel(desc)
-            desc_lbl.setWordWrap(True)
-            desc_lbl.setStyleSheet("font-size:11px; color:#a6adc8;")
-            card_layout.addWidget(desc_lbl)
-            btn = QPushButton("🔗 Aç")
-            btn.setStyleSheet("QPushButton{background:#45475a;color:#cdd6f4;border-radius:4px;padding:4px 12px;}QPushButton:hover{background:#89b4fa;color:#1e1e2e;}")
-            btn.clicked.connect(callback)
-            card_layout.addWidget(btn)
-            card.setStyleSheet("QGroupBox{background:#313244;border:1px solid #45475a;border-radius:6px;padding:8px;}")
-            scroll_layout.addWidget(card)
-
-        scroll_layout.addStretch()
-        self.tabs.addTab(tools_tab, "🔗 Araçlar")
-        self._translate_tools()
 
         # Dil butonu
         self.lang_combo = QComboBox()
@@ -1099,6 +858,7 @@ class MainWindow(QMainWindow):
         ttt_data = load_ttt_data(steel)
         self.ttt_ax.clear()
         self.ttt_ax.tick_params(colors='#cdd6f4')
+        for sp in self.ttt_ax.spines.values(): sp.set_color('#45475a')
         draw_ttt(self.ttt_ax, ttt_data)
         self.ttt_canvas.draw()
 
@@ -1114,6 +874,23 @@ class MainWindow(QMainWindow):
         except ValueError:
             self.distort_result.setText("Geçersiz giriş.")
 
+    def _simulate_diffusion(self):
+        try:
+            T = float(self.diff_temp.text())
+            t_h = float(self.diff_time.text())
+            Cs = float(self.diff_cs.text())
+            C0 = float(self.diff_c0.text())
+            depth = float(self.diff_depth.text())
+            x_mm, profile = simulate_carburizing(T, t_h, Cs, C0, depth)
+            self.diff_ax.clear()
+            self.diff_ax.plot(x_mm, profile, 'c-', lw=2)
+            self.diff_ax.set_xlabel("Derinlik (mm)")
+            self.diff_ax.set_ylabel("Karbon (%)")
+            self.diff_ax.set_title("Karbon Profili")
+            self.diff_ax.grid(True, alpha=0.3)
+            self.diff_canvas.draw()
+        except Exception as e:
+            pass
 
     def _on_lang_changed(self, index):
         lang = "tr" if index == 0 else "en"
@@ -1221,218 +998,14 @@ class MainWindow(QMainWindow):
         self.failure_fractography_content.setText(data["fractography"]["content"][lang])
         self.failure_prevention_title.setText(data["prevention"]["title"][lang])
         self.failure_prevention_list.setText("\n".join([f"• {item}" for item in data["prevention"]["items"][lang]]))
-    
-    def _open_tool(self, tool_name):
-        """Profesyonel araç penceresini açar"""
-        windows = {
-            "metrical": MetricalWindow,
-            "pandat": PandatWindow,
-            "steelmaking": SteelmakingWindow,
-            "simufact": SimufactWindow,
-            "steeluni": SteeluniversityWindow,
-            "mipar": MiparWindow,
-            "comsol": ComsolWindow,
-            "vesta": VestaWindow,
-            "clemex": ClemexWindow,
-            "ironmaking": IronmakingWindow,
-        }
-        if tool_name in windows:
-            self._tool_window = windows[tool_name](self)
-            self._tool_window.show()
-
-    def _translate_tools(self):
-        """Araçlar sekmesindeki metinleri güncelle"""
-        lang = self.lang_manager.current_lang
-        with open(os.path.join(BASE_DIR, "..", "database", "tools_resources.json"), encoding='utf-8') as f:
-            tools_data = json.load(f)
-        self.tools_title.setText(tools_data["title"][lang])
-        self.tools_intro.setText(tools_data["intro"][lang])
-        if hasattr(self, 'tools_widgets'):
-            for i, (name_lbl, desc_lbl) in enumerate(self.tools_widgets):
-                tool = tools_data["tools"][i]
-                name_lbl.setText(tool["name"])
-                desc_lbl.setText(tool[f"desc_{lang}"])
-
-    # --- Moleküler Dinamik ---
-    def _run_md(self):
-        try:
-            n = self.md_n.value()
-            temp = self.md_temp.value()
-            pot = 'LJ' if 'LJ' in self.md_pot.currentText() else 'EAM'
-            # Pozisyonları güvenli şekilde oluştur [0.5, 9.5] aralığında
-            pos = np.random.rand(n, 2) * 9.0 + 0.5
-            md = MolecularDynamics(pos, 10.0, potential=pot, temperature=temp, dt=0.005)
-            self.md_status.setText(f"Simülasyon çalışıyor... ({n} atom)")
-            QApplication.processEvents()
-            md.run_nve(200)
-            self.md_ax.clear()
-            self.md_ax.scatter(md.positions[:, 0], md.positions[:, 1], c='cyan', s=20)
-            self.md_ax.set_xlim(0, 10); self.md_ax.set_ylim(0, 10)
-            self.md_ax.set_title(f"MD Simülasyonu ({n} atom, {pot})", color='#cdd6f4')
-            self.md_canvas.draw()
-            self.md_status.setText(f"✅ Tamamlandı | Son kinetik enerji: {md.energy_history[-1]:.2f}")
-        except Exception as e:
-            self.md_status.setText(f"❌ Hata: {e}")
-
-    # --- Veri Analizi (Origin) ---
-    def _get_xy(self):
-        x = [float(v.strip()) for v in self.fit_x.text().split(',')]
-        y = [float(v.strip()) for v in self.fit_y.text().split(',')]
-        return np.array(x), np.array(y)
-
-    def _linear_fit(self):
-        x, y = self._get_xy()
-        r = linear_fit(x, y)
-        self.fit_ax.clear(); self.fit_ax.scatter(x, y, c='cyan'); self.fit_ax.plot(x, r['slope']*x + r['intercept'], 'r-')
-        self.fit_canvas.draw()
-        self.fit_result.setText(f"Doğrusal: y = {r['slope']:.4f}x + {r['intercept']:.4f} | R² = {r['r_squared']:.4f}")
-
-    def _poly_fit(self):
-        x, y = self._get_xy()
-        r = poly_fit(x, y, 2)
-        self.fit_ax.clear(); self.fit_ax.scatter(x, y, c='cyan')
-        xs = np.linspace(min(x), max(x), 100)
-        self.fit_ax.plot(xs, np.polyval(r['coeffs'], xs), 'r-')
-        self.fit_canvas.draw()
-        self.fit_result.setText(f"Polinom 2°: R² = {r['r_squared']:.4f}")
-
-    def _exp_fit(self):
-        x, y = self._get_xy()
-        r = exp_fit(x, y)
-        if r:
-            self.fit_ax.clear(); self.fit_ax.scatter(x, y, c='cyan')
-            xs = np.linspace(min(x), max(x), 100)
-            self.fit_ax.plot(xs, r['a']*np.exp(r['b']*xs), 'r-')
-            self.fit_canvas.draw()
-            self.fit_result.setText(f"Üstel: y = {r['a']:.4f}*exp({r['b']:.4f}x) | R² = {r['r_squared']:.4f}")
-        else:
-            self.fit_result.setText("Üstel fit başarısız.")
-
-    def _gauss_fit(self):
-        x, y = self._get_xy()
-        r = gaussian_fit(x, y)
-        if r:
-            self.fit_ax.clear(); self.fit_ax.scatter(x, y, c='cyan')
-            xs = np.linspace(min(x), max(x), 100)
-            self.fit_ax.plot(xs, r['amplitude']*np.exp(-(xs-r['mean'])**2/(2*r['sigma']**2)), 'r-')
-            self.fit_canvas.draw()
-            self.fit_result.setText(f"Gaussian: A={r['amplitude']:.2f}, μ={r['mean']:.2f}, σ={r['sigma']:.2f} | R²={r['r_squared']:.4f}")
-        else:
-            self.fit_result.setText("Gaussian fit başarısız.")
-
-    def _calc_stats(self):
-        _, y = self._get_xy()
-        s = descriptive_stats(y)
-        self.fit_result.setText(f"Ort: {s['mean']:.4f} | Std: {s['std']:.4f} | Çarpıklık: {s['skew']:.4f} | Basıklık: {s['kurtosis']:.4f}")
-
-    # --- Termodinamik (Thermo-Calc) ---
-    def _calc_equilibrium(self):
-        try:
-            T = float(self.thermo_T.text())
-            omega = float(self.thermo_omega.text())
-            x0 = float(self.thermo_x0.text())
-            x_eq = equilibrium_composition(T, omega, x0)
-            self.thermo_result.setText(f"Denge kompozisyonu: x = {x_eq:.4f}")
-        except Exception as e:
-            self.thermo_result.setText(f"Hata: {e}")
-
-    # --- Alaşım Termodinamiği (FactSage) ---
-    def _calc_activity(self):
-        try:
-            x = float(self.alloy_x.text())
-            T = float(self.alloy_T.text())
-            params = [float(v.strip()) for v in self.alloy_params.text().split(',')]
-            gamma = activity_coefficient(x, T, params)
-            self.alloy_result.setText(f"Aktivite katsayısı: γ = {gamma:.6f}")
-        except Exception as e:
-            self.alloy_result.setText(f"Hata: {e}")
-
-    # --- Katılaşma (Click2Cast) ---
-    def _calc_solidification(self):
-        try:
-            V = float(self.cast_V.text())
-            A = float(self.cast_A.text())
-            Cm = float(self.cast_Cm.text())
-            t = chvorinov_rule(V, A, Cm)
-            self.cast_result.setText(f"Katılaşma süresi: t = {t:.2f} s")
-        except Exception as e:
-            self.cast_result.setText(f"Hata: {e}")
-
-    # --- Kristal Yapı (Crystal Maker) ---
-    def _draw_crystal(self):
-        try:
-            system = self.xtal_system.currentText()
-            size = self.xtal_size.value()
-            pos = generate_lattice(system, size, size, size)
-            self.xtal_ax.clear()
-            self.xtal_ax.scatter(pos[:, 0], pos[:, 1], pos[:, 2], c='steelblue', s=50, alpha=0.8)
-            self.xtal_ax.set_title(f"{system.upper()} Kristal Yapı", color='#cdd6f4')
-            self.xtal_canvas.draw()
-        except Exception as e:
-            pass
-
-    # --- Difüzyon (Dictra) ---
-
-    def _load_image(self):
-        path, _ = QFileDialog.getOpenFileName(None, "Görüntü Seç", "", "Images (*.png *.jpg *.bmp)")
-        if path:
-            from matplotlib.image import imread
-            self._loaded_img = imread(path)
-            if len(self._loaded_img.shape) == 3:
-                self._loaded_img = np.mean(self._loaded_img, axis=2)
-            self.img_ax.clear(); self.img_ax.imshow(self._loaded_img, cmap='gray')
-            self.img_canvas.draw()
-            self.img_status.setText(f"Yüklendi: {os.path.basename(path)}")
-
-    def _apply_otsu(self):
-        if hasattr(self, '_loaded_img'):
-            binary = auto_threshold_otsu(self._loaded_img)
-            self.img_ax.clear(); self.img_ax.imshow(binary, cmap='gray')
-            self.img_canvas.draw()
-            self.img_status.setText("Otsu eşikleme uygulandı")
-
-    def _analyze_particles(self):
-        if hasattr(self, '_loaded_img'):
-            binary = auto_threshold_otsu(self._loaded_img)
-            particles, labeled = particle_analysis(binary)
-            self.img_ax.clear(); self.img_ax.imshow(labeled, cmap='nipy_spectral')
-            self.img_canvas.draw()
-            self.img_status.setText(f"✅ {len(particles)} parçacık bulundu")
-
-    # --- JMatPro ---
-    def _calc_jmatpro(self):
-        try:
-            comp = {'C': float(self.jmatpro_C.text())/100, 'Mn': float(self.jmatpro_Mn.text())/100, 'Cr': float(self.jmatpro_Cr.text())/100}
-            ttt = calculate_ttt(comp)
-            Ms = ttt['Ms']
-            hardness = hardness_from_cct(10, comp)
-            self.jmatpro_result.setText(f"Ms = {Ms:.0f}°C | Tahmini Sertlik (10°C/s): {hardness:.0f} HV")
-        except Exception as e:
-            self.jmatpro_result.setText(f"Hata: {e}")
-
-    def _simulate_diffusion(self):
-        """Karbon difüzyon profilini hesapla ve çiz"""
-        from simulation.carburizing_sim import simulate_carburizing
-        try:
-            x_mm, profile = simulate_carburizing(T, t_h, Cs, C0)
-        except Exception as e:
-            QMessageBox.warning(self, "Difüzyon Hatası", str(e))
-    
-        import numpy as np
-        try:
-            x_m = np.linspace(0, L, 200)
-            profile = C0 + (Cs - C0) * np.exp(-x_m**2 / (4 * D * t + 1e-20))
-            profile_pct = profile * 100
-        except Exception as e:
-            QMessageBox.warning(self, 'Difüzyon Hatası', str(e))
 
 def main():
-        app = QApplication(sys.argv)
-        app.setStyle("Fusion")
-        app.setFont(QFont("Segoe UI", 9))
-        win = MainWindow()
-        win.show()
-        sys.exit(app.exec_())
+    app = QApplication(sys.argv)
+    app.setStyle("Fusion")
+    app.setFont(QFont("Segoe UI", 9))
+    win = MainWindow()
+    win.show()
+    sys.exit(app.exec_())
 
 if __name__ == "__main__":
-        main()
+    main()

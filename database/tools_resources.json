@@ -1,0 +1,66 @@
+{
+  "title": {
+    "tr": "🔗 Metalurji Araçları & Kaynaklar",
+    "en": "🔗 Metallurgy Tools & Resources"
+  },
+  "intro": {
+    "tr": "Metalurji ve malzeme bilimi alanında kullanılan profesyonel yazılımlar.",
+    "en": "Professional software used in metallurgy and materials science."
+  },
+  "tools": [
+    {
+      "name": "LAMMPS",
+      "desc_tr": "Moleküler Dinamik simülatörü",
+      "desc_en": "Molecular Dynamics simulator",
+      "url": "https://www.lammps.org"
+    },
+    {
+      "name": "Origin",
+      "desc_tr": "Veri çizim ve analiz yazılımı",
+      "desc_en": "Data plotting and analysis software",
+      "url": "https://www.originlab.com"
+    },
+    {
+      "name": "Thermo-Calc",
+      "desc_tr": "Termodinamik ve özellik hesaplamaları",
+      "desc_en": "Thermodynamics and property calculations",
+      "url": "https://www.thermocalc.com"
+    },
+    {
+      "name": "FactSage",
+      "desc_tr": "Termokimyasal veritabanı ve hesaplama",
+      "desc_en": "Thermochemical database and calculation system",
+      "url": "https://www.factsage.com"
+    },
+    {
+      "name": "Click2Cast",
+      "desc_tr": "Döküm simülasyon yazılımı",
+      "desc_en": "Casting simulation software",
+      "url": "https://www.3dsman.com"
+    },
+    {
+      "name": "Crystal Maker",
+      "desc_tr": "Kristal yapı analizi",
+      "desc_en": "Crystal structure analysis",
+      "url": "https://www.crystalmaker.com"
+    },
+    {
+      "name": "Dictra",
+      "desc_tr": "Difüzyon simülasyonu (Thermo-Calc ürünü)",
+      "desc_en": "Diffusion simulation (Thermo-Calc product)",
+      "url": "https://www.thermocalc.com"
+    },
+    {
+      "name": "ImageJ",
+      "desc_tr": "Bilimsel görüntü analizi",
+      "desc_en": "Scientific image analysis",
+      "url": "https://imagej.nih.gov"
+    },
+    {
+      "name": "JMatPro",
+      "desc_tr": "CCT / TTT eğrileri oluşturma",
+      "desc_en": "CCT / TTT curve generation",
+      "url": "https://www.sentesoftware.co.uk/jmatpro"
+    }
+  ]
+}
