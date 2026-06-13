@@ -14,6 +14,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "..", "database", "steels.json")
 
 from tools.ironmaking_window import IronmakingWindow
+from tools.steelmaking_bof_window import BOFSteelmakingWindow
 from models.steel_model import Material
 from models.phase_state import SimulationResult, PhaseResult, HardnessResult
 from heat_treatment.quenching import Quenching
